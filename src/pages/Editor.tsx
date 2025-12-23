@@ -1,0 +1,308 @@
+import React, { useState, useEffect } from 'react';
+import { TEMPLATES } from '@/lib/constants';
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData } from '@/data/initialData';
+import { compressImage } from '@/utils/image';
+import { callGemini } from '@/utils/gemini';
+import { generatePdf } from '@/utils/pdf';
+
+// Icons
+import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package } from '@/components/icons';
+
+// Editors
+import { RecipeEditor } from '@/components/editors/RecipeEditor';
+import { CoverEditor } from '@/components/editors/CoverEditor';
+import { IntroEditor } from '@/components/editors/IntroEditor';
+import { SectionEditor } from '@/components/editors/SectionEditor';
+import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
+
+// Views
+import { CoverView } from '@/components/views/CoverView';
+import { SectionView } from '@/components/views/SectionView';
+import { RecipeView } from '@/components/views/RecipeView';
+import { TocView } from '@/components/views/TocView';
+import { IntroView } from '@/components/views/IntroView';
+import { ShoppingView } from '@/components/views/ShoppingView';
+import { LegendView } from '@/components/views/LegendView';
+
+const Editor: React.FC = () => {
+    const [pages, setPages] = useState<PageData[]>(() => {
+        const saved = localStorage.getItem('luiza_studio_v7_flex');
+        return saved ? JSON.parse(saved) : PDF_LUIZA_DATA;
+    });
+    const [selectedId, setSelectedId] = useState<string | null>(pages[0]?.id || null);
+    const [showImporter, setShowImporter] = useState(false);
+    const [importText, setImportText] = useState("");
+    const [importLoading, setImportLoading] = useState(false);
+    const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
+    const [isGenerating, setIsGenerating] = useState(false);
+    
+    const [dragItem, setDragItem] = useState<number | null>(null);
+    const [dragOverItem, setDragOverItem] = useState<number | null>(null);
+    const [unsavedChanges, setUnsavedChanges] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('luiza_studio_v7_flex', JSON.stringify(pages));
+        setUnsavedChanges(true);
+    }, [pages]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => { if (unsavedChanges) { e.preventDefault(); e.returnValue = ''; } };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [unsavedChanges]);
+
+    const loadPdfData = () => { 
+        if(confirm("Restaurar padrão? Todo o trabalho atual será perdido.")) { 
+            setPages(JSON.parse(JSON.stringify(PDF_LUIZA_DATA))); 
+            setSelectedId(PDF_LUIZA_DATA[0].id); 
+            setUnsavedChanges(false);
+        } 
+    };
+
+    const addPage = (type: TEMPLATES) => { 
+        const newId = `p_${Date.now()}`; 
+        const pageData = { id: newId, type, ...JSON.parse(JSON.stringify(INITIAL_DATA[type])) }; 
+        setPages([...pages, pageData]); 
+        setSelectedId(newId); 
+    };
+
+    const updatePage = (newData: Partial<PageData>) => { 
+        setPages(pages.map(p => p.id === selectedId ? { ...p, ...newData } : p)); 
+    };
+   
+    const handleSort = () => {
+        if (dragItem === null || dragOverItem === null) return;
+        let _pages = [...pages];
+        const draggedItemContent = _pages.splice(dragItem, 1)[0];
+        _pages.splice(dragOverItem, 0, draggedItemContent);
+        setDragItem(null); 
+        setDragOverItem(null);
+        setPages(_pages);
+    };
+
+    const exportProject = () => {
+        const blob = new Blob([JSON.stringify(pages, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); 
+        a.href = url; 
+        a.download = `ebook_luiza_projeto.json`; 
+        a.click();
+        setUnsavedChanges(false);
+    };
+
+    const importProject = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]; 
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => { 
+            try { 
+                const data = JSON.parse(ev.target?.result as string); 
+                setPages(data); 
+                if (data.length > 0) setSelectedId(data[0].id); 
+                setUnsavedChanges(false); 
+            } catch (err) { 
+                alert("Erro ao importar."); 
+            } 
+        };
+        reader.readAsText(file);
+    };
+
+    const handlePrint = async () => { 
+        alert("⚠️ DICA DE IMPRESSÃO:\n1. Use Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'"); 
+        const element = document.getElementById('preview-container');
+        if (element) {
+            await generatePdf(element, 'ebook_luiza.pdf');
+        }
+    };
+
+    const organizeRecipeWithAI = async () => {
+        if (!importText.trim()) return;
+        setImportLoading(true);
+        try {
+            const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "...", "tips": "...", "storage": "..." }. Sem markdown.`);
+            const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
+            const recipeData = JSON.parse(cleanJson);
+            const newId = `p_${Date.now()}`;
+            const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...recipeData };
+            setPages([...pages, pageData]); setSelectedId(newId); setShowImporter(false); setImportText("");
+        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setImportLoading(false); }
+    };
+
+    const handleMagicSubmit = async () => {
+        if (!magicModal.prompt.trim()) return;
+        setIsGenerating(true);
+        try {
+            let prompt = "";
+            if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Sem markdown.`;
+            else if (magicModal.type === 'intro') prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Texto puro.`;
+            else if (magicModal.type === 'shopping') prompt = `Crie lista compras JSON para dieta: "${magicModal.prompt}". Chaves: hortifruti, acougue, laticinios, padaria, mercearia. Sem markdown.`;
+           
+            const text = await callGemini(prompt);
+            const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+            if (magicModal.type === 'recipe') {
+                const newId = `p_${Date.now()}`;
+                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...JSON.parse(cleanText) }]);
+                setSelectedId(newId);
+            } else if (magicModal.type === 'intro') {
+                updatePage({ text: cleanText });
+            }
+            else if (magicModal.type === 'shopping') {
+                updatePage(JSON.parse(cleanText));
+            }
+           
+            setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
+        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsGenerating(false); }
+    };
+
+    const openMagicModal = (type: string) => {
+        const config: typeof magicModal = { isOpen: true, type, prompt: '', title: '', description: '', placeholder: '' };
+        if (type === 'recipe') { config.title = 'Receita Mágica IA'; config.description = 'Diga o que você quer comer...'; config.placeholder = 'Ex: Bolo de cenoura fit...'; }
+        else if (type === 'intro') { config.title = 'Escritora IA'; config.description = 'Tema do ebook...'; config.placeholder = 'Ex: Emagrecimento saudável...'; }
+        else if (type === 'shopping') { config.title = 'Lista IA'; config.description = 'Tipo de dieta...'; config.placeholder = 'Ex: Low Carb...'; }
+        setMagicModal(config);
+    };
+
+    const activePage = pages.find(p => p.id === selectedId);
+
+    return (
+        <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
+            <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
+            <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+            {/* MODAIS */}
+            {showImporter && (
+                <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
+                    <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
+                        <h3 className="text-xl font-serif font-bold text-navy mb-4 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
+                        <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
+                            <button onClick={organizeRecipeWithAI} disabled={importLoading || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
+                                {importLoading ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {importLoading ? "Organizando..." : "Organizar com IA"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {magicModal.isOpen && (
+                <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
+                    <div className="bg-white p-8 rounded-[2.5rem] w-full max-w-lg shadow-glass border border-white relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent via-pastel to-orange-300"></div>
+                        <h3 className="text-2xl font-serif italic mb-2 flex items-center gap-2 text-navy"><Sparkles className="text-accent animate-pulse"/> {magicModal.title}</h3>
+                        <p className="text-sm text-navy/60 mb-6">{magicModal.description}</p>
+                        <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isGenerating}/>
+                        <div className="flex justify-end gap-3 pt-4">
+                            <button onClick={() => setMagicModal({...magicModal, isOpen: false})} className="px-5 py-3 text-xs font-bold uppercase hover:bg-surface rounded-xl text-navy/60 transition-colors">Cancelar</button>
+                            <button onClick={handleMagicSubmit} disabled={isGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
+                                {isGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* SIDEBAR */}
+            <aside className="w-72 bg-white/80 backdrop-blur-md border-r border-white/50 flex flex-col no-print shrink-0 z-10 shadow-soft">
+                <div className="p-6 border-b border-gray-100/50">
+                    <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30"><BookOpen className="text-white" size={20} /></div>
+                        <div><h1 className="text-lg font-playfair italic font-bold leading-tight text-navy">Luiza<span className="text-accent">.Studio</span></h1><p className="text-[9px] uppercase tracking-widest text-navy/40 font-bold">Blush Edition v7.0</p></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <button onClick={exportProject} className={`flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-bold border transition-all ${unsavedChanges ? 'bg-orange-50 text-orange-500 border-orange-100' : 'bg-surface text-navy/60 border-transparent hover:bg-gray-100'}`}><Save size={12}/> {unsavedChanges ? 'Salvar*' : 'Salvo'}</button>
+                        <label className="flex items-center justify-center gap-2 p-2 bg-surface rounded-xl text-[10px] font-bold text-navy/60 cursor-pointer hover:bg-gray-100 transition-all"><FileUp size={12}/> Abrir <input type="file" className="hidden" onChange={importProject}/></label>
+                    </div>
+                    <button onClick={loadPdfData} className="w-full mt-2 bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+                    {pages.map((p, i) => (
+                    <div
+                        key={p.id}
+                        draggable
+                        onDragStart={() => setDragItem(i)}
+                        onDragEnter={() => setDragOverItem(i)}
+                        onDragEnd={handleSort}
+                        onDragOver={(e) => e.preventDefault()}
+                        onClick={() => setSelectedId(p.id)}
+                        className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
+                    >
+                        <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
+                        <div className="flex-1 truncate text-[11px] font-bold uppercase tracking-widest font-sans">{p.title || 'Sem Título'}</div>
+                    </div>
+                    ))}
+                </div>
+
+                <div className="p-4 border-t border-gray-100/50 bg-white/50">
+                    <button onClick={() => openMagicModal('recipe')} className="w-full bg-gradient-to-r from-accent to-rose-500 hover:from-accent hover:to-rose-600 py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 shadow-lg shadow-accent/20 transition-all mb-3 text-white transform active:scale-95"><Sparkles size={16}/> ✨ Receita Mágica IA</button>
+                    
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                        <button onClick={() => setShowImporter(true)} className="bg-surface hover:bg-gray-100 p-2 rounded-xl text-[9px] font-bold uppercase text-navy/70 flex items-center justify-center gap-1 transition-colors"><FileUp size={12}/> Importar Txt</button>
+                        <button onClick={() => addPage(TEMPLATES.RECIPE)} className="bg-rose-50 hover:bg-rose-100 text-rose-500 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-1 transition-colors"><Plus size={12}/> Manual</button>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-1 mb-4">
+                        <button onClick={() => addPage(TEMPLATES.COVER)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capa"><Layout size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.SECTION)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capítulo"><Settings size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.TOC)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Sumário"><List size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.INTRO)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Intro"><AlignLeft size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.LEGEND)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Legendas"><BookOpen size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.SHOPPING)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Compras"><Package size={14}/></button>
+                    </div>
+                    <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Imprimir PDF</button>
+                </div>
+            </aside>
+
+            {/* EDITOR */}
+            <main className="w-[450px] bg-surface/50 border-r border-white/50 overflow-y-auto p-8 custom-scrollbar no-print shrink-0 z-10">
+                {activePage ? (
+                <div className="space-y-8 animate-fade-in">
+                    <div className="flex justify-between items-center pb-6 border-b border-navy/5">
+                        <div className="space-y-1"><h2 className="text-accent text-[12px] font-black uppercase tracking-widest">Painel de Edição</h2><p className="text-[10px] text-navy/40 font-bold uppercase font-sans">{activePage.type}</p></div>
+                        <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
+                    </div>
+                    <div className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
+                            <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
+                        </div>
+                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
+                        {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
+                    </div>
+                </div>
+                ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center p-10 opacity-30 text-navy"><ImageIcon size={48} className="mb-4" /><p className="text-sm font-bold uppercase tracking-widest">Selecione uma página</p></div>
+                )}
+            </main>
+
+            {/* PREVIEW */}
+            <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
+                {pages.map((p, idx) => (
+                <div key={p.id} id={`preview-${p.id}`} className={`a4-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}>
+                    <div className="a4-page-texture"></div>
+                    <div className="z-10 relative h-full flex flex-col">
+                    {p.type === TEMPLATES.COVER && <CoverView data={p} />}
+                    {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
+                    {p.type === TEMPLATES.RECIPE && <RecipeView data={p} />}
+                    {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
+                    {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
+                    {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
+                    {p.type === TEMPLATES.LEGEND && <LegendView />}
+                   
+                    <div className="mt-auto flex justify-between items-end text-[9px] text-navy/30 font-bold tracking-[0.2em] uppercase border-t border-navy/5 pt-4 w-full px-12 pb-8 no-print-footer">
+                        <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
+                    </div>
+                    </div>
+                </div>
+                ))}
+                <div className="h-40 no-print"></div>
+            </section>
+        </div>
+    );
+};
+
+export default Editor;

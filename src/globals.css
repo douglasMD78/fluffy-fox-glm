@@ -97,5 +97,87 @@
 
   body {
     @apply bg-background text-foreground;
+    /* Custom global styles */
+    background-color: #FFF0F5; /* Cream */
+    color: #2D2D2D; /* Navy */
+    font-family: 'Nunito', sans-serif;
   }
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #FFB7C5; border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #FF2D75; }
+
+/* Grain background */
+.bg-grain {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* A4 Page styles */
+.a4-page { 
+    width: 210mm; 
+    height: 297mm; 
+    background: white; 
+    color: #2D2D2D; 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 0; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+    box-shadow: 0 10px 40px -10px rgba(74, 74, 74, 0.15); 
+    border-radius: 2px; 
+}
+.a4-page-texture { 
+    position: absolute; 
+    top: 0; left: 0; width: 100%; height: 100%; 
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); 
+    pointer-events: none; 
+    z-index: 1; 
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+
+/* Print styles for html2pdf.js */
+@media print {
+    body, html, #root, #app-container { 
+        width: 100%; 
+        height: auto !important; 
+        overflow: visible !important; 
+        background-color: white !important; 
+        display: block !important; 
+    }
+    aside, main, .no-print, .modal-overlay { 
+        display: none !important; 
+    }
+    #preview-container { 
+        display: block !important; 
+        width: 100% !important; 
+        height: auto !important; 
+        overflow: visible !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    }
+    .a4-page { 
+        margin: 0 !important; 
+        border: none !important; 
+        box-shadow: none !important; 
+        page-break-after: always !important; 
+        width: 210mm !important; 
+        height: 297mm !important; 
+    }
+    .a4-page:last-child { 
+        page-break-after: auto !important; 
+    }
+    .no-print-footer {
+        display: none !important;
+    }
 }
