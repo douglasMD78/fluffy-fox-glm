@@ -282,7 +282,7 @@ const Editor: React.FC = () => {
             {/* PREVIEW */}
             <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
                 {pages.map((p, idx) => (
-                <div key={p.id} id={`preview-${p.id}`} className={`a4-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}>
+                <div key={p.id} id={`preview-${p.id}`} className={`a4-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'} ${p.type === TEMPLATES.COVER ? 'bg-cream' : ''}`}>
                     <div className="a4-page-texture"></div>
                     <div className="z-10 relative h-full flex flex-col">
                     {p.type === TEMPLATES.COVER && <CoverView data={p} />}

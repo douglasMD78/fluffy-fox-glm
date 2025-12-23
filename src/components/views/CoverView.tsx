@@ -8,7 +8,7 @@ interface CoverViewProps {
 
 export const CoverView: React.FC<CoverViewProps> = ({ data }) => {
     return (
-        <div className="flex-1 flex flex-col items-center justify-between py-20 text-navy bg-cream h-full relative overflow-hidden font-sans">
+        <div className="flex-1 flex flex-col items-center justify-between py-20 text-navy h-full relative overflow-hidden font-sans">
             <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/5 to-transparent pointer-events-none z-20" />
             <div className="absolute right-6 top-0 bottom-0 w-px bg-black/5 z-20" />
             
