@@ -11,6 +11,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
             logging: false, // Disable logging
             letterRendering: true, // Improve text rendering
             allowTaint: true, // Allow images from other origins to taint the canvas
+            backgroundColor: '#ffffff', // Explicitly set background color for html2canvas
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Control page breaks
@@ -31,6 +32,9 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
     document.body.appendChild(tempDiv);
 
     try {
+        // Add a small delay to ensure all styles are computed and applied to the cloned element
+        await new Promise(resolve => setTimeout(resolve, 500)); // 500ms delay
+
         await html2pdf().set(opt).from(clonedElement).save();
     } finally {
         // Clean up the temporary div
