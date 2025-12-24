@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { ImageIcon, Sparkles, Package, PlayCircle } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
@@ -21,6 +21,114 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     };
     
     const p = SPACING_MAP[data.spacing || 'normal'];
+    const imageZoom = data.imageZoom || 100;
+
+    const imgRef = useRef<HTMLImageElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null); // Ref for the clipping container
+
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartMouseX, setDragStartMouseX] = useState(0);
+    const [dragStartMouseY, setDragStartMouseY] = useState(0);
+    const [dragStartImageX, setDragStartImageX] = useState(50); // Current object-position x percentage
+    const [dragStartImageY, setDragStartImageY] = useState(50); // Current object-position y percentage
+
+    const parseObjectPosition = (pos: string | undefined) => {
+        if (!pos) return { x: 50, y: 50 };
+        const parts = pos.split(' ').map(p => parseFloat(p));
+        return { x: parts[0] || 50, y: parts[1] || 50 };
+    };
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (!imgRef.current || !containerRef.current || !data.image) return;
+
+        setIsDragging(true);
+        setDragStartMouseX(e.clientX);
+        setDragStartMouseY(e.clientY);
+
+        const { x, y } = parseObjectPosition(data.imageAlignment);
+        setDragStartImageX(x);
+        setDragStartImageY(y);
+
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isDragging || !imgRef.current || !containerRef.current) return;
+
+            const container = containerRef.current;
+            const img = imgRef.current;
+
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            const imgNaturalWidth = img.naturalWidth;
+            const imgNaturalHeight = img.naturalHeight;
+
+            // Calculate effective image dimensions when object-fit: cover
+            const containerAspectRatio = containerWidth / containerHeight;
+            const imageAspectRatio = imgNaturalWidth / imgNaturalHeight;
+
+            let effectiveImageWidth, effectiveImageHeight;
+
+            if (imageAspectRatio > containerAspectRatio) {
+                effectiveImageHeight = containerHeight;
+                effectiveImageWidth = imgNaturalWidth * (containerHeight / imgNaturalHeight);
+            } else {
+                effectiveImageWidth = containerWidth;
+                effectiveImageHeight = imgNaturalHeight * (containerWidth / imgNaturalWidth);
+            }
+
+            // Apply zoom to effective dimensions
+            const zoomedImageWidth = effectiveImageWidth * (imageZoom / 100);
+            const zoomedImageHeight = effectiveImageHeight * (imageZoom / 100);
+
+            const deltaX = e.clientX - dragStartMouseX;
+            const deltaY = e.clientY - dragStartMouseY;
+
+            // Calculate maximum shift in pixels for object-position
+            const maxShiftX = zoomedImageWidth - containerWidth;
+            const maxShiftY = zoomedImageHeight - containerHeight;
+
+            let newX = dragStartImageX;
+            let newY = dragStartImageY;
+
+            if (maxShiftX > 0) {
+                // If mouse moves right (deltaX > 0), we want content to move right.
+                // This means object-position-x percentage should INCREASE.
+                newX = dragStartImageX + (deltaX / maxShiftX) * 100;
+                newX = Math.max(0, Math.min(100, newX));
+            } else {
+                newX = 50; // Center if no horizontal overflow
+            }
+            
+            if (maxShiftY > 0) {
+                // If mouse moves down (deltaY > 0), we want content to move down.
+                // This means object-position-y percentage should INCREASE.
+                newY = dragStartImageY + (deltaY / maxShiftY) * 100;
+                newY = Math.max(0, Math.min(100, newY));
+            } else {
+                newY = 50; // Center if no vertical overflow
+            }
+            
+            updatePage({ imageAlignment: `${newX.toFixed(0)}% ${newY.toFixed(0)}%` });
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+        };
+
+        if (isDragging) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging, dragStartMouseX, dragStartMouseY, dragStartImageX, dragStartImageY, data.imageAlignment, updatePage, imageZoom]);
+
 
     const renderVideoOverlay = (imageContainerClasses: string) => {
         if (data.videoLink && data.videoDisplayStyle === 'overlay') {
@@ -39,8 +147,13 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return null;
     };
 
-    // Apply the object-position style based on the string value
-    const objectPositionStyle = { objectPosition: data.imageAlignment || 'center' }; // Default to 'center'
+    // Apply the object-position and transform: scale styles
+    const currentImageAlignment = data.imageAlignment || '50% 50%';
+    const imageStyle = {
+        objectPosition: currentImageAlignment,
+        transform: `scale(${imageZoom / 100})`,
+        transformOrigin: 'center center' // Ensure scaling is from the center
+    };
 
     // Layout 6: Macros no Topo (Novo)
     if (layout === '6') {
@@ -76,8 +189,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0 relative">
-                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover`} style={objectPositionStyle} /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                <div ref={containerRef} className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
+                     {data.image ? <img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
@@ -126,8 +239,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} style={objectPositionStyle} /> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
@@ -171,8 +284,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} style={objectPositionStyle} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
@@ -217,8 +330,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} style={objectPositionStyle} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
