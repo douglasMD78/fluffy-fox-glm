@@ -39,9 +39,9 @@ const Editor: React.FC = () => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showImporter, setShowImporter] = useState(false);
     const [importText, setImportText] = useState("");
-    const [importLoading, setIsGenerating] = useState(false);
+    const [isImporting, setIsImporting] = useState(false); // Renomeado de importLoading
     const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
-    const [isGenerating, setMagicLoading] = useState(false);
+    const [isMagicGenerating, setIsMagicGenerating] = useState(false); // Renomeado de isGenerating
     const [isSaving, setIsSaving] = useState(false);
     
     // Theme State
@@ -196,7 +196,7 @@ const Editor: React.FC = () => {
 
     const organizeRecipeWithAI = async () => {
         if (!importText.trim()) return;
-        setMagicLoading(true); // Use setMagicLoading for AI operations
+        setIsImporting(true); // Usando a nova variável de estado
         try {
             const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "...", "tips": "...", "storage": "..." }. Sem markdown.`);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -204,12 +204,12 @@ const Editor: React.FC = () => {
             const newId = `p_${Date.now()}`;
             const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...recipeData };
             setPages([...pages, pageData]); setSelectedId(newId); setShowImporter(false); setImportText("");
-        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setMagicLoading(false); }
+        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setIsImporting(false); } // Usando a nova variável de estado
     };
 
     const handleMagicSubmit = async () => {
         if (!magicModal.prompt.trim()) return;
-        setMagicLoading(true); // Use setMagicLoading for AI operations
+        setIsMagicGenerating(true); // Usando a nova variável de estado
         try {
             let prompt = "";
             if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Sem markdown.`;
@@ -231,7 +231,7 @@ const Editor: React.FC = () => {
             }
            
             setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
-        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setMagicLoading(false); }
+        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsMagicGenerating(false); } // Usando a nova variável de estado
     };
 
     const openMagicModal = (type: string) => {
@@ -275,8 +275,8 @@ const Editor: React.FC = () => {
                         <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
                         <div className="flex justify-end gap-2">
                             <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
-                            <button onClick={organizeRecipeWithAI} disabled={isGenerating || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
-                                {isGenerating ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isGenerating ? "Organizando..." : "Organizar com IA"}
+                            <button onClick={organizeRecipeWithAI} disabled={isImporting || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
+                                {isImporting ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isImporting ? "Organizando..." : "Organizar com IA"}
                             </button>
                         </div>
                     </div>
@@ -288,11 +288,11 @@ const Editor: React.FC = () => {
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent via-pastel to-orange-300"></div>
                         <h3 className="text-2xl font-serif italic mb-2 flex items-center gap-2 text-navy"><Sparkles className="text-accent animate-pulse"/> {magicModal.title}</h3>
                         <p className="text-sm text-navy/60 mb-6">{magicModal.description}</p>
-                        <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isGenerating}/>
+                        <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isMagicGenerating}/>
                         <div className="flex justify-end gap-3 pt-4">
                             <button onClick={() => setMagicModal({...magicModal, isOpen: false})} className="px-5 py-3 text-xs font-bold uppercase hover:bg-surface rounded-xl text-navy/60 transition-colors">Cancelar</button>
-                            <button onClick={handleMagicSubmit} disabled={isGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
-                                {isGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
+                            <button onClick={handleMagicSubmit} disabled={isMagicGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
+                                {isMagicGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
                             </button>
                         </div>
                     </div>
@@ -355,6 +355,36 @@ const Editor: React.FC = () => {
                     <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Salvar PDF (A5)</button>
                 </div>
             </aside>
+
+            {/* EDITOR */}
+            <main className="w-[450px] bg-surface/50 border-r border-white/50 overflow-y-auto p-8 custom-scrollbar no-print shrink-0 z-10">
+                {activePage ? (
+                <div className="space-y-8 animate-fade-in">
+                    <div className="flex justify-between items-center pb-6 border-b border-navy/5">
+                        <div className="space-y-1"><h2 className="text-accent text-[12px] font-black uppercase tracking-widest">Painel de Edição</h2><p className="text-[10px] text-navy/40 font-bold uppercase font-sans">{activePage.type}</p></div>
+                        <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
+                    </div>
+                    <div className="space-y-6">
+                        {/* Titulo comum a todos exceto capas que tem campos proprios */}
+                        {activePage.type !== TEMPLATES.COVER && activePage.type !== TEMPLATES.SECTION && activePage.type !== TEMPLATES.TOC && activePage.type !== TEMPLATES.INTRO && activePage.type !== TEMPLATES.LEGEND && (
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
+                            <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
+                        </div>
+                        )}
+
+                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
+                        {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
+                        {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
+                    </div>
+                </div>
+                ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center p-10 opacity-30 text-navy"><ImageIcon size={48} className="mb-4" /><p className="text-sm font-bold uppercase tracking-widest">Selecione uma página</p></div>
+                )}
+            </main>
 
             {/* PREVIEW */}
             <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
