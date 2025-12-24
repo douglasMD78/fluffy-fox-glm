@@ -125,6 +125,55 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         );
     }
 
+    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO ---
+    if (layout === '9') {
+        return (
+            <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
+                {/* Imagem em Destaque */}
+                <div className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 aspect-[16/9]">
+                    {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={48}/></div>}
+                    {renderVideoOverlay("aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
+                </div>
+
+                {/* Título e Meta */}
+                <div className="mb-4 shrink-0">
+                    <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
+                    <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
+                    <div className="flex items-center gap-2">
+                        <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
+                        <div className="h-2 w-px bg-accent/30"></div>
+                        <TagList tags={data.code} />
+                    </div>
+                </div>
+
+                {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
+                <div className="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                    {/* Ingredientes */}
+                    <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                        <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
+                        <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
+                        </ul>
+                    </div>
+
+                    {/* Preparo */}
+                    <div className="flex flex-col min-h-0">
+                        <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
+                        <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
+                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                                <div key={i} className="flex gap-2">
+                                    <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
+                                    <p>{renderMarkdownText(step)}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <InfoFooter data={data} compact={true} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // --- LAYOUT 2: EDITORIAL (FOTO ESQUERDA) ---
     if (layout === '2') {
         return (
