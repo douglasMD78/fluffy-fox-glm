@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
 import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize } from '@/components/icons';
@@ -10,6 +10,43 @@ interface RecipeEditorProps {
 }
 
 export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePage }) => {
+    const [positionX, setPositionX] = useState(50);
+    const [positionY, setPositionY] = useState(50);
+
+    useEffect(() => {
+        const parsePosition = (pos: string) => {
+            if (!pos) return { x: 50, y: 50 }; // Default to center
+
+            const keywordMap: { [key: string]: { x: number, y: number } } = {
+                'center': { x: 50, y: 50 },
+                'top': { x: 50, y: 0 },
+                'bottom': { x: 50, y: 100 },
+                'left': { x: 0, y: 50 },
+                'right': { x: 100, y: 50 },
+                'top left': { x: 0, y: 0 },
+                'top right': { x: 100, y: 0 },
+                'bottom left': { x: 0, y: 100 },
+                'bottom right': { x: 100, y: 100 },
+            };
+
+            if (keywordMap[pos]) {
+                return keywordMap[pos];
+            }
+
+            // Try to parse as "X% Y%"
+            const parts = pos.split(' ').map(p => parseInt(p.replace('%', '')));
+            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                return { x: parts[0], y: parts[1] };
+            }
+
+            return { x: 50, y: 50 }; // Fallback
+        };
+
+        const { x, y } = parsePosition(activePage.objectPosition || 'center');
+        setPositionX(x);
+        setPositionY(y);
+    }, [activePage.objectPosition]);
+
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) { compressImage(file).then(res => updatePage({ image: res })); }
@@ -31,6 +68,29 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         const currentZoom = activePage.imageZoom || 100;
         const newZoom = Math.max(50, Math.min(200, currentZoom + delta)); // Limites de 50% a 200%
         updatePage({ imageZoom: newZoom });
+    };
+
+    const handleZoomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value);
+        if (!isNaN(value)) {
+            const newZoom = Math.max(50, Math.min(200, value));
+            updatePage({ imageZoom: newZoom });
+        }
+    };
+
+    const handlePositionChange = (axis: 'x' | 'y', value: number) => {
+        const clampedValue = Math.max(0, Math.min(100, value));
+        let newX = positionX;
+        let newY = positionY;
+
+        if (axis === 'x') {
+            newX = clampedValue;
+            setPositionX(clampedValue);
+        } else {
+            newY = clampedValue;
+            setPositionY(clampedValue);
+        }
+        updatePage({ objectPosition: `${newX}% ${newY}%` });
     };
 
     return (
@@ -123,28 +183,45 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 {/* Object Position */}
                 {activePage.objectFit === 'cover' && ( // Apenas mostra se objectFit for 'cover'
                     <div className="space-y-2">
-                        <span className="text-[10px] font-bold text-navy/60 uppercase block">Posição</span>
-                        <div className="grid grid-cols-3 gap-1 bg-gray-50 p-1 rounded-lg border border-gray-100">
-                            {['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right'].map(pos => (
-                                <button 
-                                    key={pos}
-                                    onClick={() => updatePage({ objectPosition: pos })}
-                                    className={`h-8 rounded-md text-[8px] font-bold uppercase transition-all ${activePage.objectPosition === pos ? 'bg-accent text-white shadow-sm' : 'bg-white text-navy/40 hover:bg-gray-100'}`}
-                                >
-                                    {pos.replace(' ', '-')}
-                                </button>
-                            ))}
+                        <span className="text-[10px] font-bold text-navy/60 uppercase block">Posição (%)</span>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-100">
+                                <span className="text-[9px] font-bold text-navy/60 uppercase w-4 text-center">X</span>
+                                <input 
+                                    type="number" 
+                                    value={positionX} 
+                                    onChange={(e) => handlePositionChange('x', parseInt(e.target.value))}
+                                    className="flex-1 h-8 bg-white border border-gray-200 rounded-lg text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
+                                    min="0" max="100"
+                                />
+                            </div>
+                            <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-100">
+                                <span className="text-[9px] font-bold text-navy/60 uppercase w-4 text-center">Y</span>
+                                <input 
+                                    type="number" 
+                                    value={positionY} 
+                                    onChange={(e) => handlePositionChange('y', parseInt(e.target.value))}
+                                    className="flex-1 h-8 bg-white border border-gray-200 rounded-lg text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
+                                    min="0" max="100"
+                                />
+                            </div>
                         </div>
                     </div>
                 )}
 
                 {/* Image Zoom */}
                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-navy/60 uppercase">Zoom</span>
+                    <span className="text-[10px] font-bold text-navy/60 uppercase">Zoom (%)</span>
                     <div className="flex items-center gap-2">
-                        <button onClick={() => changeImageZoom(-10)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
-                        <span className="text-xs font-mono font-bold w-8 text-center">{activePage.imageZoom || 100}%</span>
-                        <button onClick={() => changeImageZoom(10)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
+                        <button onClick={() => changeImageZoom(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
+                        <input 
+                            type="number" 
+                            value={activePage.imageZoom || 100} 
+                            onChange={handleZoomInputChange}
+                            className="w-12 h-8 bg-gray-50 border border-gray-200 rounded-lg text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
+                            min="50" max="200"
+                        />
+                        <button onClick={() => changeImageZoom(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
                     </div>
                 </div>
             </div>
