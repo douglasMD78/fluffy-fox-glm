@@ -148,6 +148,51 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         );
     }
 
+    // --- LAYOUT 7: EDITORIAL OTIMIZADO (FOTO ESQUERDA) ---
+    if (layout === '7') {
+        // Usaremos o espaçamento 'compact' como base para otimização
+        const optimizedP = SPACING_MAP['compact']; 
+        return (
+            <div className={`h-full flex flex-col ${optimizedP} font-sans`}> {/* Removido overflow-hidden aqui para permitir fluxo */}
+                <div className="flex gap-2 mb-2 shrink-0"> {/* Reduzido mb-3 para mb-2, gap-3 para gap-2 */}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>} {/* Rounded-2xl para rounded-xl, size 24 para 20 */}
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center py-0.5"> {/* Adicionado py-0.5 para alinhar melhor */}
+                        <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span> {/* Reduzido text-[8px] para text-[7px] */}
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1> {/* Reduzido mb-1.5 para mb-1, título um pouco menor */}
+                        <div className="mt-auto flex items-center gap-1"> {/* Reduzido gap-2 para gap-1 */}
+                            <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span> {/* Reduzido text-[8px] para text-[7px] */}
+                            <div className="h-2 w-px bg-accent/30"></div>
+                            <TagList tags={data.code} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0"> {/* Reduzido gap-3 para gap-2 */}
+                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm"> {/* Rounded-2xl para rounded-xl, p-2 */}
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3> {/* Reduzido text-xl para text-lg, mb-1.5 para mb-1, pb-1 para pb-0.5 */}
+                        <ul className="space-y-0.5 pr-0.5"> {/* Removido overflow-y-auto custom-scrollbar, reduzido space-y-1 para space-y-0.5, pr-1 para pr-0.5 */}
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{g.items.split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing * 0.9}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{item}</li>))}</React.Fragment>))} {/* Reduzido font-size, text-[8px] para text-[7px], adicionado break-inside-avoid */}
+                        </ul>
+                    </div>
+                    <div className="flex flex-col min-h-0">
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3> {/* Reduzido text-xl para text-lg, mb-1 para mb-1, pb-1 para pb-0.5 */}
+                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep * 0.9}px` }}> {/* Removido overflow-y-auto custom-scrollbar, reduzido space-y-1.5 para space-y-1, pr-1 para pr-0.5, leading-relaxed para leading-snug, font-size um pouco menor */}
+                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                                <p key={i} className="flex gap-1 break-inside-avoid"> {/* Adicionado break-inside-avoid */}
+                                    <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span> {/* Reduzido text-[10px] para text-[9px] */}
+                                    <span>{step}</span>
+                                </p>
+                            ))}
+                        </div>
+                        <InfoFooter data={data} compact={true} /> {/* Garantindo que o footer seja compacto */}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // --- LAYOUT 3: EDITORIAL (FOTO DIREITA) ---
     if (layout === '3') {
         return (
