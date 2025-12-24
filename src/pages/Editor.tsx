@@ -234,14 +234,6 @@ const Editor = () => {
         } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsMagicGenerating(false); }
     };
 
-    const openMagicModal = (type: string) => {
-        const config: typeof magicModal = { isOpen: true, type, prompt: '', title: '', description: '', placeholder: '' };
-        if (type === 'recipe') { config.title = 'Receita Mágica IA'; config.description = 'Diga o que você quer comer...'; config.placeholder = 'Ex: Bolo de cenoura fit...'; }
-        else if (type === 'intro') { config.title = 'Escritora IA'; config.description = 'Tema do ebook...'; config.placeholder = 'Ex: Emagrecimento saudável...'; }
-        else if (type === 'shopping') { config.title = 'Lista IA'; config.description = 'Tipo de dieta...'; config.placeholder = 'Ex: Low Carb...'; }
-        setMagicModal(config);
-    };
-
     const handlePageClick = (pageId: string) => {
         setSelectedId(pageId);
         const previewElement = document.getElementById(`preview-${pageId}`);
@@ -403,7 +395,7 @@ const Editor = () => {
                             {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
                             
                             {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
-                            {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} />}
+                            {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
                             
                             {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
                             {p.type === TEMPLATES.INTRO && <IntroView data={p} />}

@@ -1,35 +1,19 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { ImageIcon, Sparkles, Package, PlayCircle } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
 import { TagList } from './TagList';
 import { InfoFooter } from './InfoFooter';
-import { renderMarkdownText } from '@/utils/markdown'; // Importar o utilitário
+import { renderMarkdownText } from '@/utils/markdown';
 
 interface RecipeViewProps {
     data: RecipePageData;
+    updatePage: (newData: Partial<RecipePageData>) => void; // Adicionado updatePage aqui
 }
 
-// Helper to map imageAlignment string to Tailwind object-position classes
-const getImageAlignmentClass = (alignment: string | undefined) => {
-    switch (alignment) {
-        case 'top left': return 'object-top-left';
-        case 'top': return 'object-top';
-        case 'top right': return 'object-top-right';
-        case 'left': return 'object-left';
-        case 'center': return 'object-center';
-        case 'right': return 'object-right';
-        case 'bottom left': return 'object-bottom-left';
-        case 'bottom': return 'object-bottom';
-        case 'bottom right': return 'object-bottom-right';
-        default: return 'object-center'; // Default to center
-    }
-};
-
-export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
+export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     const layout = data.layout || '2';
     const imgSize = data.imageSize || 3;
-    // Fonts: Default to pixel values if provided, else map old index to pixels
     const fs = {
         title: typeof data.fontSizes?.title === 'number' && data.fontSizes.title > 10 ? data.fontSizes.title : parseInt(FONT_SIZES.title[data.fontSizes?.title || 3].match(/\d+/)?.[0] || '28'),
         ing: typeof data.fontSizes?.ingredients === 'number' && data.fontSizes.ingredients > 5 ? data.fontSizes.ingredients : parseInt(FONT_SIZES.ingredients[data.fontSizes?.ingredients || 2].match(/\d+/)?.[0] || '9'),
@@ -37,7 +21,109 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
     };
     
     const p = SPACING_MAP[data.spacing || 'normal'];
-    const imageAlignmentClass = getImageAlignmentClass(data.imageAlignment); // Get the alignment class
+
+    const imgRef = useRef<HTMLImageElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartMouseX, setDragStartMouseX] = useState(0);
+    const [dragStartMouseY, setDragStartMouseY] = useState(0);
+    const [dragStartImageX, setDragStartImageX] = useState(50); // Current object-position x percentage
+    const [dragStartImageY, setDragStartImageY] = useState(50); // Current object-position y percentage
+
+    const parseObjectPosition = (pos: string | undefined) => {
+        if (!pos) return { x: 50, y: 50 };
+        const parts = pos.split(' ').map(p => parseFloat(p));
+        return { x: parts[0] || 50, y: parts[1] || 50 };
+    };
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (!imgRef.current || !containerRef.current || !data.image) return; // Only drag if there's an image
+
+        setIsDragging(true);
+        setDragStartMouseX(e.clientX);
+        setDragStartMouseY(e.clientY);
+
+        const { x, y } = parseObjectPosition(data.imageAlignment);
+        setDragStartImageX(x);
+        setDragStartImageY(y);
+
+        e.preventDefault(); // Prevent default browser drag behavior
+        e.stopPropagation(); // Stop propagation to prevent parent elements from handling
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isDragging || !imgRef.current || !containerRef.current) return;
+
+            const container = containerRef.current;
+            const img = imgRef.current;
+
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            const imgNaturalWidth = img.naturalWidth;
+            const imgNaturalHeight = img.naturalHeight;
+
+            // Calculate the actual rendered dimensions of the image when object-fit: cover
+            const containerAspectRatio = containerWidth / containerHeight;
+            const imageAspectRatio = imgNaturalWidth / imgNaturalHeight;
+
+            let renderedImageWidth, renderedImageHeight;
+
+            if (imageAspectRatio > containerAspectRatio) {
+                // Image is wider than container, so it will be cropped horizontally
+                renderedImageHeight = containerHeight;
+                renderedImageWidth = imgNaturalWidth * (containerHeight / imgNaturalHeight);
+            } else {
+                // Image is taller than container, so it will be cropped vertically
+                renderedImageWidth = containerWidth;
+                renderedImageHeight = imgNaturalHeight * (containerWidth / imgNaturalWidth);
+            }
+
+            const deltaX = e.clientX - dragStartMouseX;
+            const deltaY = e.clientY - dragStartMouseY;
+
+            // Calculate the maximum possible pixel shift for object-position
+            const maxShiftX = renderedImageWidth - containerWidth;
+            const maxShiftY = renderedImageHeight - containerHeight;
+
+            let newX = dragStartImageX;
+            let newY = dragStartImageY;
+
+            if (maxShiftX > 0) {
+                // Dragging left/right affects object-position X
+                // A positive deltaX (mouse moved right) means we want to show more of the left side of the image,
+                // which means decreasing the object-position X percentage.
+                newX = dragStartImageX - (deltaX / maxShiftX) * 100;
+                newX = Math.max(0, Math.min(100, newX));
+            }
+            if (maxShiftY > 0) {
+                // Dragging up/down affects object-position Y
+                // A positive deltaY (mouse moved down) means we want to show more of the top side of the image,
+                // which means decreasing the object-position Y percentage.
+                newY = dragStartImageY - (deltaY / maxShiftY) * 100;
+                newY = Math.max(0, Math.min(100, newY));
+            }
+            
+            // Update the page data with the new alignment
+            updatePage({ imageAlignment: `${newX.toFixed(0)}% ${newY.toFixed(0)}%` });
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+        };
+
+        if (isDragging) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging, dragStartMouseX, dragStartMouseY, dragStartImageX, dragStartImageY, data.imageAlignment, updatePage]);
+
 
     const renderVideoOverlay = (imageContainerClasses: string) => {
         if (data.videoLink && data.videoDisplayStyle === 'overlay') {
@@ -55,6 +141,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         }
         return null;
     };
+
+    // Apply the object-position style
+    const currentImageAlignment = data.imageAlignment || '50% 50%'; // Default to center
+    const objectPositionStyle = { objectPosition: currentImageAlignment };
 
     // Layout 6: Macros no Topo (Novo)
     if (layout === '6') {
@@ -90,8 +180,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0 relative">
-                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                <div ref={containerRef} className="w-full mb-4 shrink-0 relative">
+                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
@@ -140,8 +230,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
@@ -186,8 +276,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         return (
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}> {/* Removido overflow-hidden aqui para permitir fluxo */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
@@ -232,8 +322,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">

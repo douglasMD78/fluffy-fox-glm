@@ -81,8 +81,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
-        {/* Image Alignment Controls */}
-        <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
+        {/* Image Alignment Controls - REMOVIDO PARA DRAG-AND-DROP */}
+        {/* <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
             <label className="text-[10px] font-black text-navy/40 uppercase tracking-widest flex items-center gap-2"><Move size={12}/> Alinhamento da Imagem</label>
             <div className="grid grid-cols-3 gap-1">
                 {['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right'].map((alignValue) => (
@@ -112,7 +112,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </button>
                 ))}
             </div>
-        </div>
+        </div> */}
 
         <div className="space-y-2">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Foto do Prato</label>
