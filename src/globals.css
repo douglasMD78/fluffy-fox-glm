@@ -54,7 +54,7 @@
     --color-bg: #FFF0F5;
     --color-text: #2D2D2D;
     --color-accent: #FF2D75;
-    --color-accent-light: #FF2D7520; /* 12% opacity of accent */
+    --color-accent-light: color-mix(in srgb, var(--color-accent) 12%, white); /* 12% opacity of accent, dynamic */
 
     /* Cover Page Specific Colors */
     --color-cover-title-text: #5d4037;

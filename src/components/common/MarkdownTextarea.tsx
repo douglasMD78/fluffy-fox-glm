@@ -59,7 +59,7 @@ export const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
             <div className="relative">
                 <textarea
                     ref={textareaRef}
-                    className={`w-full bg-white border border-gray-200 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-${accentColor} outline-none shadow-sm pr-10 ${className}`}
+                    className={`w-full bg-white border border-gray-200 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-${accentColor} outline-none shadow-sm pr-12 ${className}`} {/* Aumentado pr-12 */}
                     rows={rows}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
@@ -68,7 +68,7 @@ export const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
                 <button
                     type="button"
                     onClick={applyBold}
-                    className={`absolute top-2 right-2 p-1 rounded-md bg-gray-50 text-navy/60 hover:bg-gray-100 transition-colors`}
+                    className={`absolute top-2 right-3 p-1 rounded-md bg-gray-50 text-navy/60 hover:bg-gray-100 transition-colors`} {/* Ajustado right-3 */}
                     title="Negrito (Markdown)"
                 >
                     <Type size={14} className="font-bold" />
