@@ -441,14 +441,23 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                     {/* Tabela de Macros no Título (similar ao Layout 6) */}
                     {data.nutrition && (
-                        <div className="mt-4 p-2 rounded-xl border border-accent/20 bg-cream/30">
-                            <div className="flex justify-between items-center text-center">
-                                {Object.entries(data.nutrition || {}).map(([key, val]) => (
-                                    <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
-                                        <span className="block text-[12px] font-black text-accent leading-none">{val}</span>
-                                        <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
-                                    </div>
-                                ))}
+                        <div className="flex justify-between items-center mt-4 p-2 rounded-xl border border-accent/20 bg-cream/30">
+                            <div className="text-center">
+                                <span className="block text-[14px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
+                                <span className="block text-[8px] uppercase font-bold text-navy/40">Kcal</span>
+                            </div>
+                            <div className="h-6 w-px bg-gray-200"></div>
+                            <div className="text-center">
+                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
+                                <span className="block text-[8px] uppercase font-bold text-navy/40">Prot</span>
+                            </div>
+                            <div className="text-center">
+                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
+                                <span className="block text-[8px] uppercase font-bold text-navy/40">Carb</span>
+                            </div>
+                            <div className="text-center">
+                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
+                                <span className="block text-[8px] uppercase font-bold text-navy/40">Gord</span>
                             </div>
                         </div>
                     )}
