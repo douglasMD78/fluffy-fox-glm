@@ -420,7 +420,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         );
     }
 
-    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO COM MACROS NO TÍTULO ---
+    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO COM MACROS NO TÍTULO (Minimalista) ---
     if (layout === '9') {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
@@ -430,7 +430,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     {renderVideoOverlay("aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
-                {/* Título e Meta com Macros */}
+                {/* Título e Meta com Macros Minimalistas */}
                 <div className="mb-4 shrink-0">
                     <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
                     <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
@@ -439,25 +439,27 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className="h-2 w-px bg-accent/30"></div>
                         <TagList tags={data.code} />
                     </div>
-                    {/* Tabela de Macros no Título (similar ao Layout 6) */}
+                    {/* Tabela de Macros Minimalista e Horizontal */}
                     {data.nutrition && (
-                        <div className="flex justify-between items-center mt-4 p-2 rounded-xl border border-accent/20 bg-cream/30">
-                            <div className="text-center">
-                                <span className="block text-[14px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
-                                <span className="block text-[8px] uppercase font-bold text-navy/40">Kcal</span>
+                        <div className="flex items-center gap-3 mt-3 text-center">
+                            <div className="flex-1">
+                                <span className="block text-[12px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
+                                <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">Kcal</span>
                             </div>
-                            <div className="h-6 w-px bg-gray-200"></div>
-                            <div className="text-center">
-                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
-                                <span className="block text-[8px] uppercase font-bold text-navy/40">Prot</span>
+                            <div className="h-5 w-px bg-gray-200"></div>
+                            <div className="flex-1">
+                                <span className="block text-[12px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
+                                <span className="block text-[7px] uppercase text-navy/40 font-bold tracking-widest mt-0.5">Prot</span>
                             </div>
-                            <div className="text-center">
-                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
-                                <span className="block text-[8px] uppercase font-bold text-navy/40">Carb</span>
+                            <div className="h-5 w-px bg-gray-200"></div>
+                            <div className="flex-1">
+                                <span className="block text-[12px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
+                                <span className="block text-[7px] uppercase text-navy/40 font-bold tracking-widest mt-0.5">Carb</span>
                             </div>
-                            <div className="text-center">
-                                <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
-                                <span className="block text-[8px] uppercase font-bold text-navy/40">Gord</span>
+                            <div className="h-5 w-px bg-gray-200"></div>
+                            <div className="flex-1">
+                                <span className="block text-[12px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
+                                <span className="block text-[7px] uppercase text-navy/40 font-bold tracking-widest mt-0.5">Gord</span>
                             </div>
                         </div>
                     )}
