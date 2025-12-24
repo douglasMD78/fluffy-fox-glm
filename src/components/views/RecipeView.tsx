@@ -193,6 +193,66 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         );
     }
 
+    // --- LAYOUT 8: EDITORIAL OTIMIZADO COM MACROS NO TOPO (Variação do Layout 7) ---
+    if (layout === '8') {
+        const optimizedP = SPACING_MAP['compact']; 
+        return (
+            <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
+                {/* Cabeçalho com Imagem, Título e Macros */}
+                <div className="flex gap-2 mb-2 shrink-0">
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center py-0.5">
+                        <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1>
+                        <div className="flex items-center gap-1 mb-2"> {/* Adicionado mb-2 para espaçar dos macros */}
+                            <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
+                            <div className="h-2 w-px bg-accent/30"></div>
+                            <TagList tags={data.code} />
+                        </div>
+                        
+                        {/* Mini Tabela de Macros Visual - MOVIDA PARA CÁ */}
+                        {data.nutrition && (
+                            <div className="mt-auto p-1 rounded-lg border border-accent/20 bg-cream/30">
+                                <div className="flex justify-between items-center text-center">
+                                    {Object.entries(data.nutrition || {}).map(([key, val]) => (
+                                        <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
+                                            <span className="block text-[10px] font-black text-accent leading-none">{val}</span> {/* Font size ajustado */}
+                                            <span className="block text-[5px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key}</span> {/* Font size ajustado */}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Colunas de Ingredientes e Preparo */}
+                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0">
+                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
+                        <ul className="space-y-0.5 pr-0.5">
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{g.items.split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing * 0.9}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{item}</li>))}</React.Fragment>))}
+                        </ul>
+                    </div>
+                    <div className="flex flex-col min-h-0">
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
+                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep * 0.9}px` }}>
+                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                                <p key={i} className="flex gap-1 break-inside-avoid">
+                                    <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
+                                    <span>{step}</span>
+                                </p>
+                            ))}
+                        </div>
+                        <InfoFooter data={data} compact={true} hideNutrition={true} /> {/* Esconde nutrição aqui */}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // --- LAYOUT 3: EDITORIAL (FOTO DIREITA) ---
     if (layout === '3') {
         return (
