@@ -16,7 +16,7 @@ import { IntroEditor } from '@/components/editors/IntroEditor';
 import { SectionEditor } from '@/components/editors/SectionEditor';
 import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
 import { LegendEditor } from '@/components/editors/LegendEditor';
-import { GlobalSettingsEditor } from '@/components/editors/GlobalSettings/Editor';
+import { GlobalSettingsEditor } from '@/components/editors/GlobalSettingsEditor';
 
 // Views
 import { CoverView } from '@/components/views/CoverView';
@@ -34,7 +34,7 @@ import { ThemeStyles } from '@/components/ThemeStyles';
 import { getPageBackgroundColor } from '@/utils/pageStyles';
 
 
-const Editor = () => {
+const Editor = () => { // Removido React.FC
     const [pages, setPages] = useState<PageData[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showImporter, setShowImporter] = useState(false);
@@ -253,173 +253,171 @@ const Editor = () => {
     const activePage = pages.find(p => p.id === selectedId);
     
     return (
-        <>
-            <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
-                <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
-                <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
+        <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
+            <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
+            <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
 
-                <ThemeStyles theme={theme} />
+            <ThemeStyles theme={theme} />
 
-                {/* MODAIS */}
-                {showThemeEditor && (
-                    <GlobalSettingsEditor 
-                        theme={theme} 
-                        updateTheme={setTheme} 
-                        onClose={() => setShowThemeEditor(false)} 
-                    />
-                )}
+            {/* MODAIS */}
+            {showThemeEditor && (
+                <GlobalSettingsEditor 
+                    theme={theme} 
+                    updateTheme={setTheme} 
+                    onClose={() => setShowThemeEditor(false)} 
+                />
+            )}
 
-                {showImporter && (
-                    <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
-                        <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
-                            <h3 className="text-xl font-serif font-bold text-navy mb-4 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
-                            <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
-                            <div className="flex justify-end gap-2">
-                                <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
-                                <button onClick={organizeRecipeWithAI} disabled={isImporting || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
-                                    {isImporting ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isImporting ? "Organizando..." : "Organizar com IA"}
-                                </button>
-                            </div>
+            {showImporter && (
+                <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
+                    <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
+                        <h3 className="text-xl font-serif font-bold text-navy mb-4 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
+                        <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
+                            <button onClick={organizeRecipeWithAI} disabled={isImporting || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
+                                {isImporting ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isImporting ? "Organizando..." : "Organizar com IA"}
+                            </button>
                         </div>
                     </div>
-                )}
-                {magicModal.isOpen && (
-                    <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
-                        <div className="bg-white p-8 rounded-[2.5rem] w-full max-w-lg shadow-glass border border-white relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent via-pastel to-orange-300"></div>
-                            <h3 className="text-2xl font-serif italic mb-2 flex items-center gap-2 text-navy"><Sparkles className="text-accent animate-pulse"/> {magicModal.title}</h3>
-                            <p className="text-sm text-navy/60 mb-6">{magicModal.description}</p>
-                            <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isMagicGenerating}/>
-                            <div className="flex justify-end gap-3 pt-4">
-                                <button onClick={() => setMagicModal({...magicModal, isOpen: false})} className="px-5 py-3 text-xs font-bold uppercase hover:bg-surface rounded-xl text-navy/60 transition-colors">Cancelar</button>
-                                <button onClick={handleMagicSubmit} disabled={isMagicGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
-                                    {isMagicGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
-                                </button>
-                            </div>
+                </div>
+            )}
+            {magicModal.isOpen && (
+                <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
+                    <div className="bg-white p-8 rounded-[2.5rem] w-full max-w-lg shadow-glass border border-white relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent via-pastel to-orange-300"></div>
+                        <h3 className="text-2xl font-serif italic mb-2 flex items-center gap-2 text-navy"><Sparkles className="text-accent animate-pulse"/> {magicModal.title}</h3>
+                        <p className="text-sm text-navy/60 mb-6">{magicModal.description}</p>
+                        <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isMagicGenerating}/>
+                        <div className="flex justify-end gap-3 pt-4">
+                            <button onClick={() => setMagicModal({...magicModal, isOpen: false})} className="px-5 py-3 text-xs font-bold uppercase hover:bg-surface rounded-xl text-navy/60 transition-colors">Cancelar</button>
+                            <button onClick={handleMagicSubmit} disabled={isMagicGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
+                                {isMagicGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
+                            </button>
                         </div>
                     </div>
-                )}
+                </div>
+            )}
 
-                {/* SIDEBAR */}
-                <aside className="w-72 bg-white/80 backdrop-blur-md border-r border-white/50 flex flex-col no-print shrink-0 z-10 shadow-soft">
-                    <div className="p-6 border-b border-gray-100/50">
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30"><BookOpen className="text-white" size={20} /></div>
-                            <div><h1 className="text-lg font-playfair italic font-bold leading-tight text-navy">Luiza<span className="text-accent">.Studio</span></h1><p className="text-[9px] uppercase tracking-widest text-navy/40 font-bold">Fixed Final v10.13</p></div>
-                        </div>
-                        <div className="flex justify-center mb-2">
-                            {isSaving && <span className="text-[9px] font-black text-accent uppercase tracking-widest animate-pulse">Salvando...</span>}
-                            {!isSaving && <span className="text-[9px] font-bold text-navy/30 uppercase tracking-widest">Sincronizado</span>}
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 mb-2">
-                            <button onClick={exportProject} className={`flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-bold border transition-all ${unsavedChanges ? 'bg-orange-50 text-orange-500 border-orange-100' : 'bg-surface text-navy/60 border-transparent hover:bg-gray-100'}`}><Save size={12}/> {unsavedChanges ? 'Salvar*' : 'Salvo'}</button>
-                            <label className="flex items-center justify-center gap-2 p-2 bg-surface rounded-xl text-[10px] font-bold text-navy/60 cursor-pointer hover:bg-gray-100 transition-all"><FileUp size={12}/> Abrir <input type="file" className="hidden" onChange={importProject}/></label>
-                        </div>
-                        <button onClick={() => setShowThemeEditor(true)} className="w-full bg-surface hover:bg-gray-100 text-navy/60 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all mb-2"><Palette size={12} /> Configurar Cores</button>
-                        <button onClick={loadPdfData} className="w-full bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
+            {/* SIDEBAR */}
+            <aside className="w-72 bg-white/80 backdrop-blur-md border-r border-white/50 flex flex-col no-print shrink-0 z-10 shadow-soft">
+                <div className="p-6 border-b border-gray-100/50">
+                    <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30"><BookOpen className="text-white" size={20} /></div>
+                        <div><h1 className="text-lg font-playfair italic font-bold leading-tight text-navy">Luiza<span className="text-accent">.Studio</span></h1><p className="text-[9px] uppercase tracking-widest text-navy/40 font-bold">Fixed Final v10.13</p></div>
                     </div>
-
-                    <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
-                        {pages.map((p, i) => (
-                        <div
-                            key={p.id}
-                            draggable
-                            onDragStart={() => setDragItem(i)}
-                            onDragEnter={() => setDragOverItem(i)}
-                            onDragEnd={handleSort}
-                            onDragOver={(e) => e.preventDefault()}
-                            onClick={() => handlePageClick(p.id)}
-                            className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
-                        >
-                            <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
-                            <div className="flex-1 truncate text-[11px] font-bold uppercase tracking-widest font-sans">{p.title || 'Sem Título'}</div>
-                        </div>
-                        ))}
+                     <div className="flex justify-center mb-2">
+                         {isSaving && <span className="text-[9px] font-black text-accent uppercase tracking-widest animate-pulse">Salvando...</span>}
+                         {!isSaving && <span className="text-[9px] font-bold text-navy/30 uppercase tracking-widest">Sincronizado</span>}
                     </div>
-
-                    <div className="p-4 border-t border-gray-100/50 bg-white/50">
-                        <button onClick={() => openMagicModal('recipe')} className="w-full bg-gradient-to-r from-accent to-rose-500 hover:from-accent hover:to-rose-600 py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 shadow-lg shadow-accent/20 transition-all mb-3 text-white transform active:scale-95"><Sparkles size={16}/> ✨ Receita Mágica IA</button>
-                        
-                        <div className="grid grid-cols-2 gap-2 mb-3">
-                            <button onClick={() => setShowImporter(true)} className="bg-surface hover:bg-gray-100 p-2 rounded-xl text-[9px] font-bold uppercase text-navy/70 flex items-center justify-center gap-1 transition-colors"><FileUp size={12}/> Importar Txt</button>
-                            <button onClick={() => addPage(TEMPLATES.RECIPE)} className="bg-rose-50 hover:bg-rose-100 text-rose-500 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-1 transition-colors"><Plus size={12}/> Manual</button>
-                        </div>
-
-                        <div className="grid grid-cols-4 gap-1 mb-4">
-                            <button onClick={() => addPage(TEMPLATES.COVER)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capa"><Layout size={14}/></button>
-                            <button onClick={() => addPage(TEMPLATES.SECTION)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capítulo"><Settings size={14}/></button>
-                            <button onClick={() => addPage(TEMPLATES.TOC)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Sumário"><List size={14}/></button>
-                            <button onClick={() => addPage(TEMPLATES.INTRO)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Intro"><AlignLeft size={14}/></button>
-                            <button onClick={() => addPage(TEMPLATES.LEGEND)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Legendas"><BookOpen size={14}/></button>
-                            <button onClick={() => addPage(TEMPLATES.SHOPPING)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Compras"><Package size={14}/></button>
-                        </div>
-                        <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Salvar PDF (A5)</button>
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                        <button onClick={exportProject} className={`flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-bold border transition-all ${unsavedChanges ? 'bg-orange-50 text-orange-500 border-orange-100' : 'bg-surface text-navy/60 border-transparent hover:bg-gray-100'}`}><Save size={12}/> {unsavedChanges ? 'Salvar*' : 'Salvo'}</button>
+                        <label className="flex items-center justify-center gap-2 p-2 bg-surface rounded-xl text-[10px] font-bold text-navy/60 cursor-pointer hover:bg-gray-100 transition-all"><FileUp size={12}/> Abrir <input type="file" className="hidden" onChange={importProject}/></label>
                     </div>
-                </aside>
+                     <button onClick={() => setShowThemeEditor(true)} className="w-full bg-surface hover:bg-gray-100 text-navy/60 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all mb-2"><Palette size={12} /> Configurar Cores</button>
+                    <button onClick={loadPdfData} className="w-full bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
+                </div>
 
-                {/* EDITOR */}
-                <main className="w-[450px] bg-surface/50 border-r border-white/50 overflow-y-auto p-8 custom-scrollbar no-print shrink-0 z-10">
-                    {activePage ? (
-                    <div className="space-y-8 animate-fade-in">
-                        <div className="flex justify-between items-center pb-6 border-b border-navy/5">
-                            <div className="space-y-1"><h2 className="text-accent text-[12px] font-black uppercase tracking-widest">Painel de Edição</h2><p className="text-[10px] text-navy/40 font-bold uppercase font-sans">{activePage.type}</p></div>
-                            <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
-                        </div>
-                        <div className="space-y-6">
-                            {/* Titulo comum a todos exceto capas que tem campos proprios */}
-                            {activePage.type !== TEMPLATES.COVER && activePage.type !== TEMPLATES.SECTION && activePage.type !== TEMPLATES.TOC && activePage.type !== TEMPLATES.INTRO && activePage.type !== TEMPLATES.LEGEND && (
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
-                                <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
-                            </div>
-                            )}
-
-                            {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
-                            {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
-                            {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
-                        </div>
-                    </div>
-                    ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-center p-10 opacity-30 text-navy"><ImageIcon size={48} className="mb-4" /><p className="text-sm font-bold uppercase tracking-widest">Selecione uma página</p></div>
-                    )}
-                </main>
-
-                {/* PREVIEW */}
-                <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
-                    {pages.map((p, idx) => (
-                    <div 
-                        key={p.id} 
-                        id={`preview-${p.id}`} 
-                        className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
-                        style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
+                <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+                    {pages.map((p, i) => (
+                    <div
+                        key={p.id}
+                        draggable
+                        onDragStart={() => setDragItem(i)}
+                        onDragEnter={() => setDragOverItem(i)}
+                        onDragEnd={handleSort}
+                        onDragOver={(e) => e.preventDefault()}
+                        onClick={() => handlePageClick(p.id)}
+                        className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
                     >
-                        <div className="a4-page-texture"></div>
-                        {/* Wrapper "Safe Print Area" */}
-                        <div className="z-10 relative h-full flex flex-col">
-                            {p.type === TEMPLATES.COVER && <CoverView data={p} />}
-                            {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
-                            
-                            {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
-                            {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} />}
-                            
-                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
-                            {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
-                            {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
-                            {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
-                            
-                            <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
-                                <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
-                            </div>
-                        </div>
+                        <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
+                        <div className="flex-1 truncate text-[11px] font-bold uppercase tracking-widest font-sans">{p.title || 'Sem Título'}</div>
                     </div>
                     ))}
-                    <div className="h-40 no-print"></div>
-                </section>
-            </div>
-        </>
+                </div>
+
+                <div className="p-4 border-t border-gray-100/50 bg-white/50">
+                    <button onClick={() => openMagicModal('recipe')} className="w-full bg-gradient-to-r from-accent to-rose-500 hover:from-accent hover:to-rose-600 py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 shadow-lg shadow-accent/20 transition-all mb-3 text-white transform active:scale-95"><Sparkles size={16}/> ✨ Receita Mágica IA</button>
+                    
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                        <button onClick={() => setShowImporter(true)} className="bg-surface hover:bg-gray-100 p-2 rounded-xl text-[9px] font-bold uppercase text-navy/70 flex items-center justify-center gap-1 transition-colors"><FileUp size={12}/> Importar Txt</button>
+                        <button onClick={() => addPage(TEMPLATES.RECIPE)} className="bg-rose-50 hover:bg-rose-100 text-rose-500 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-1 transition-colors"><Plus size={12}/> Manual</button>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-1 mb-4">
+                        <button onClick={() => addPage(TEMPLATES.COVER)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capa"><Layout size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.SECTION)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capítulo"><Settings size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.TOC)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Sumário"><List size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.INTRO)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Intro"><AlignLeft size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.LEGEND)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Legendas"><BookOpen size={14}/></button>
+                        <button onClick={() => addPage(TEMPLATES.SHOPPING)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Compras"><Package size={14}/></button>
+                    </div>
+                    <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Salvar PDF (A5)</button>
+                </div>
+            </aside>
+
+            {/* EDITOR */}
+            <main className="w-[450px] bg-surface/50 border-r border-white/50 overflow-y-auto p-8 custom-scrollbar no-print shrink-0 z-10">
+                {activePage ? (
+                <div className="space-y-8 animate-fade-in">
+                    <div className="flex justify-between items-center pb-6 border-b border-navy/5">
+                        <div className="space-y-1"><h2 className="text-accent text-[12px] font-black uppercase tracking-widest">Painel de Edição</h2><p className="text-[10px] text-navy/40 font-bold uppercase font-sans">{activePage.type}</p></div>
+                        <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
+                    </div>
+                    <div className="space-y-6">
+                        {/* Titulo comum a todos exceto capas que tem campos proprios */}
+                        {activePage.type !== TEMPLATES.COVER && activePage.type !== TEMPLATES.SECTION && activePage.type !== TEMPLATES.TOC && activePage.type !== TEMPLATES.INTRO && activePage.type !== TEMPLATES.LEGEND && (
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
+                            <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
+                        </div>
+                        )}
+
+                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
+                        {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
+                        {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
+                        {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
+                    </div>
+                </div>
+                ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center p-10 opacity-30 text-navy"><ImageIcon size={48} className="mb-4" /><p className="text-sm font-bold uppercase tracking-widest">Selecione uma página</p></div>
+                )}
+            </main>
+
+            {/* PREVIEW */}
+            <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
+                {pages.map((p, idx) => (
+                <div 
+                    key={p.id} 
+                    id={`preview-${p.id}`} 
+                    className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
+                    style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
+                >
+                    <div className="a4-page-texture"></div>
+                    {/* Wrapper "Safe Print Area" */}
+                    <div className="z-10 relative h-full flex flex-col">
+                        {p.type === TEMPLATES.COVER && <CoverView data={p} />}
+                        {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
+                        
+                        {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
+                        {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} />}
+                        
+                        {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
+                        {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
+                        {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
+                        {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
+                        
+                        <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
+                            <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
+                        </div>
+                    </div>
+                </div>
+                ))}
+                <div className="h-40 no-print"></div>
+            </section>
+        </div>
     );
 };
 
