@@ -10,6 +10,22 @@ interface RecipeViewProps {
     data: RecipePageData;
 }
 
+// Helper to map imageAlignment string to Tailwind object-position classes
+const getImageAlignmentClass = (alignment: string | undefined) => {
+    switch (alignment) {
+        case 'top left': return 'object-top-left';
+        case 'top': return 'object-top';
+        case 'top right': return 'object-top-right';
+        case 'left': return 'object-left';
+        case 'center': return 'object-center';
+        case 'right': return 'object-right';
+        case 'bottom left': return 'object-bottom-left';
+        case 'bottom': return 'object-bottom';
+        case 'bottom right': return 'object-bottom-right';
+        default: return 'object-center'; // Default to center
+    }
+};
+
 export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
     const layout = data.layout || '2';
     const imgSize = data.imageSize || 3;
@@ -21,6 +37,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
     };
     
     const p = SPACING_MAP[data.spacing || 'normal'];
+    const imageAlignmentClass = getImageAlignmentClass(data.imageAlignment); // Get the alignment class
 
     const renderVideoOverlay = (imageContainerClasses: string) => {
         if (data.videoLink && data.videoDisplayStyle === 'overlay') {
@@ -73,8 +90,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0 relative"> {/* Adicionado relative aqui */}
-                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                <div className="w-full mb-4 shrink-0 relative">
+                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
@@ -123,8 +140,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
-                        {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
@@ -168,35 +185,35 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         const optimizedP = SPACING_MAP['compact']; 
         return (
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}> {/* Removido overflow-hidden aqui para permitir fluxo */}
-                <div className="flex gap-2 mb-2 shrink-0"> {/* Reduzido mb-3 para mb-2, gap-3 para gap-2 */}
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>} {/* Rounded-2xl para rounded-xl, size 24 para 20 */}
+                <div className="flex gap-2 mb-2 shrink-0">
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
-                    <div className="flex-1 flex flex-col justify-center py-0.5"> {/* Adicionado py-0.5 para alinhar melhor */}
-                        <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span> {/* Reduzido text-[8px] para text-[7px] */}
-                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1> {/* Reduzido mb-1.5 para mb-1, título um pouco menor */}
-                        <div className="mt-auto flex items-center gap-1"> {/* Reduzido gap-2 para gap-1 */}
-                            <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span> {/* Reduzido text-[8px] para text-[7px] */}
+                    <div className="flex-1 flex flex-col justify-center py-0.5">
+                        <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1>
+                        <div className="mt-auto flex items-center gap-1">
+                            <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
                         </div>
                     </div>
                 </div>
 
-                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0"> {/* Reduzido gap-3 para gap-2 */}
-                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm"> {/* Rounded-2xl para rounded-xl, p-2 */}
-                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3> {/* Reduzido text-xl para text-lg, mb-1.5 para mb-1, pb-1 para pb-0.5 */}
-                        <ul className="space-y-0.5 pr-0.5"> {/* Removido overflow-y-auto custom-scrollbar, reduzido space-y-1 para space-y-0.5, pr-1 para pr-0.5 */}
-                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing * 0.9}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))} {/* Reduzido font-size, text-[8px] para text-[7px], adicionado break-inside-avoid */}
+                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0">
+                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
+                        <ul className="space-y-0.5 pr-0.5">
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing * 0.9}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
                     </div>
                     <div className="flex flex-col min-h-0">
-                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3> {/* Reduzido text-xl para text-lg, mb-1 para mb-1, pb-1 para pb-0.5 */}
-                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep * 0.9}px` }}> {/* Removido overflow-y-auto custom-scrollbar, reduzido space-y-1.5 para space-y-1, pr-1 para pr-0.5, leading-relaxed para leading-snug, font-size um pouco menor */}
+                        <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
+                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep * 0.9}px` }}>
                             {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
-                                <p key={i} className="flex gap-1 break-inside-avoid"> {/* Adicionado break-inside-avoid */}
-                                    <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span> {/* Reduzido text-[10px] para text-[9px] */}
+                                <p key={i} className="flex gap-1 break-inside-avoid">
+                                    <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
                                     <span>{renderMarkdownText(step)}</span>
                                 </p>
                             ))}
@@ -215,8 +232,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
+                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className={`w-full h-full object-cover ${imageAlignmentClass}`} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
