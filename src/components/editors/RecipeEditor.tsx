@@ -3,6 +3,7 @@ import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
 import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
+import { MarkdownTextarea } from '@/components/common/MarkdownTextarea'; // Importar o novo componente
 
 interface RecipeEditorProps {
     activePage: RecipePageData;
@@ -267,23 +268,49 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 <input placeholder="Título (Ex: Massa)" className="w-full bg-transparent border-b border-gray-100 py-1 text-[11px] font-bold uppercase text-navy focus:border-accent outline-none" value={group.title} onChange={e => {
                 const newG = [...activePage.ingredientGroups]; newG[gIdx].title = e.target.value; updatePage({ingredientGroups: newG});
                 }} />
-                <textarea className="w-full bg-surface border border-gray-100 p-2 rounded-lg text-xs text-navy/80 focus:bg-white focus:border-accent outline-none transition-all" rows={4} value={group.items} onChange={e => {
-                const newG = [...activePage.ingredientGroups]; newG[gIdx].items = e.target.value; updatePage({ingredientGroups: newG});
-                }} />
+                <MarkdownTextarea 
+                    placeholder="Lista de ingredientes" 
+                    rows={4} 
+                    value={group.items} 
+                    onChange={value => {
+                        const newG = [...activePage.ingredientGroups]; 
+                        newG[gIdx].items = value; 
+                        updatePage({ingredientGroups: newG});
+                    }} 
+                    className="!p-2 !pr-8" // Ajuste de padding para o botão
+                    accentColor="accent"
+                />
             </div>
             ))}
         </div>
         <div className="space-y-2">
-            <label className="text-[10px] font-bold text-accent uppercase">Modo de Preparo</label>
-            <textarea className="w-full bg-white border border-gray-200 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-accent outline-none shadow-sm" rows={8} value={activePage.prepSteps} onChange={e => updatePage({prepSteps: e.target.value})} />
+            <MarkdownTextarea 
+                label="Modo de Preparo" 
+                rows={8} 
+                value={activePage.prepSteps} 
+                onChange={value => updatePage({prepSteps: value})} 
+                accentColor="accent"
+            />
         </div>
         <div className="space-y-2">
-            <label className="text-[10px] font-bold text-accent uppercase">Dica da Nutri</label>
-            <textarea className="w-full bg-orange-50 border border-orange-100 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-orange-200 outline-none" rows={3} value={activePage.tips} onChange={e => updatePage({tips: e.target.value})} />
+            <MarkdownTextarea 
+                label="Dica da Nutri" 
+                rows={3} 
+                value={activePage.tips} 
+                onChange={value => updatePage({tips: value})} 
+                className="!bg-orange-50 !border-orange-100 focus:!border-orange-200"
+                accentColor="orange-200"
+            />
         </div>
         <div className="space-y-2">
-            <label className="text-[10px] font-bold text-accent uppercase">Armazenamento</label>
-            <textarea className="w-full bg-blue-50 border border-blue-100 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-blue-200 outline-none" rows={2} value={activePage.storage} onChange={e => updatePage({storage: e.target.value})} />
+            <MarkdownTextarea 
+                label="Armazenamento" 
+                rows={2} 
+                value={activePage.storage} 
+                onChange={value => updatePage({storage: value})} 
+                className="!bg-blue-50 !border-blue-100 focus:!border-blue-200"
+                accentColor="blue-200"
+            />
         </div>
         <div className="grid grid-cols-4 gap-2">
             {['cal', 'prot', 'carb', 'Gord'].map(m => (

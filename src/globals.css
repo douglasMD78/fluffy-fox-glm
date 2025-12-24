@@ -113,6 +113,12 @@
     font-family: 'Nunito', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Custom text selection color */
+  ::selection {
+    background-color: var(--color-accent);
+    color: white;
+  }
 }
 
 /* Custom scrollbar */
