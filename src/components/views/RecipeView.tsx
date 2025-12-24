@@ -443,9 +443,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         </div>
                     </div>
 
-                    {/* Lado direito: Tabela de Macros Minimalista e Vertical */}
+                    {/* Lado direito: Tabela de Macros Minimalista e Horizontal */}
                     {data.nutrition && (
-                        <div className="flex flex-col items-end gap-0.5 text-right"> {/* Reduzido o gap */}
+                        <div className="flex items-center gap-2 text-right mt-1"> {/* Ajustado para horizontal e mais compacto */}
                             {data.nutrition.cal && (
                                 <div className="flex items-baseline gap-0.5">
                                     <span className="text-[10px] font-black text-accent leading-none">{data.nutrition.cal}</span>
@@ -453,22 +453,31 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             )}
                             {data.nutrition.prot && (
-                                <div className="flex items-baseline gap-0.5">
-                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.prot}</span>
-                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Prot</span>
-                                </div>
+                                <>
+                                    <div className="h-4 w-px bg-gray-200"></div>
+                                    <div className="flex items-baseline gap-0.5">
+                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.prot}</span>
+                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Prot</span>
+                                    </div>
+                                </>
                             )}
                             {data.nutrition.carb && (
-                                <div className="flex items-baseline gap-0.5">
-                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.carb}</span>
-                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Carb</span>
-                                </div>
+                                <>
+                                    <div className="h-4 w-px bg-gray-200"></div>
+                                    <div className="flex items-baseline gap-0.5">
+                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.carb}</span>
+                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Carb</span>
+                                    </div>
+                                </>
                             )}
                             {data.nutrition.fat && (
-                                <div className="flex items-baseline gap-0.5">
-                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.fat}</span>
-                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Gord</span>
-                                </div>
+                                <>
+                                    <div className="h-4 w-px bg-gray-200"></div>
+                                    <div className="flex items-baseline gap-0.5">
+                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.fat}</span>
+                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Gord</span>
+                                    </div>
+                                </>
                             )}
                         </div>
                     )}
