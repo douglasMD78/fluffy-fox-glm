@@ -242,6 +242,14 @@ const Editor: React.FC = () => {
         setMagicModal(config);
     };
 
+    const handlePageClick = (pageId: string) => {
+        setSelectedId(pageId);
+        const previewElement = document.getElementById(`preview-${pageId}`);
+        if (previewElement) {
+            previewElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
     const activePage = pages.find(p => p.id === selectedId);
     
     return (
@@ -319,7 +327,7 @@ const Editor: React.FC = () => {
                         onDragEnter={() => setDragOverItem(i)}
                         onDragEnd={handleSort}
                         onDragOver={(e) => e.preventDefault()}
-                        onClick={() => setSelectedId(p.id)}
+                        onClick={() => handlePageClick(p.id)} {/* Updated onClick handler */}
                         className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
                     >
                         <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
@@ -347,36 +355,6 @@ const Editor: React.FC = () => {
                     <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Salvar PDF (A5)</button>
                 </div>
             </aside>
-
-            {/* EDITOR */}
-            <main className="w-[450px] bg-surface/50 border-r border-white/50 overflow-y-auto p-8 custom-scrollbar no-print shrink-0 z-10">
-                {activePage ? (
-                <div className="space-y-8 animate-fade-in">
-                    <div className="flex justify-between items-center pb-6 border-b border-navy/5">
-                        <div className="space-y-1"><h2 className="text-accent text-[12px] font-black uppercase tracking-widest">Painel de Edição</h2><p className="text-[10px] text-navy/40 font-bold uppercase font-sans">{activePage.type}</p></div>
-                        <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
-                    </div>
-                    <div className="space-y-6">
-                        {/* Titulo comum a todos exceto capas que tem campos proprios */}
-                        {activePage.type !== TEMPLATES.COVER && activePage.type !== TEMPLATES.SECTION && activePage.type !== TEMPLATES.TOC && activePage.type !== TEMPLATES.INTRO && activePage.type !== TEMPLATES.LEGEND && (
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
-                            <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
-                        </div>
-                        )}
-
-                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
-                        {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
-                        {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
-                        {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
-                        {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
-                        {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
-                    </div>
-                </div>
-                ) : (
-                <div className="h-full flex flex-col items-center justify-center text-center p-10 opacity-30 text-navy"><ImageIcon size={48} className="mb-4" /><p className="text-sm font-bold uppercase tracking-widest">Selecione uma página</p></div>
-                )}
-            </main>
 
             {/* PREVIEW */}
             <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
