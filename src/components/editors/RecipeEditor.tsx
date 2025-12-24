@@ -27,6 +27,12 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ imageSize: newValue });
     };
 
+    const changeImageZoom = (delta: number) => {
+        const currentZoom = activePage.imageZoom || 100;
+        const newZoom = Math.max(100, Math.min(300, currentZoom + delta * 10)); // Zoom de 100% a 300%, passos de 10%
+        updatePage({ imageZoom: newZoom });
+    };
+
     const handleImageAlignmentChange = (axis: 'x' | 'y', value: string) => {
         const currentAlignment = activePage.imageAlignment || '50% 50%';
         const parts = currentAlignment.split(' ');
@@ -93,6 +99,14 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <button onClick={() => changeImageSize(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
                         <span className="text-xs font-mono font-bold w-4 text-center">{activePage.imageSize || 3}</span>
                         <button onClick={() => changeImageSize(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
+                    </div>
+                </div>
+                <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
+                    <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Zoom Imagem</span>
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => changeImageZoom(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
+                        <span className="text-xs font-mono font-bold w-8 text-center">{(activePage.imageZoom || 100)}%</span>
+                        <button onClick={() => changeImageZoom(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
                     </div>
                 </div>
             </div>
