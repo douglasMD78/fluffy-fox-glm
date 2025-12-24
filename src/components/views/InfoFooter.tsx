@@ -42,7 +42,7 @@ export const InfoFooter: React.FC<InfoFooterProps> = ({ data, compact = false, h
                     {Object.entries(data.nutrition || {}).map(([key, val]) => (
                         <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
                             <span className="block text-[12px] font-black text-accent leading-none">{val}</span>
-                            <span className="block text-[6px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key}</span>
+                            <span className="block text-[6px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
                         </div>
                     ))}
                 </div>
