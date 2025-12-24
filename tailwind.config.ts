@@ -75,6 +75,17 @@ export default {
             500: '#f43f5e',
             900: '#881337',
         },
+        // Adicionando as cores 'orange' e 'blue'
+        orange: {
+            50: '#fff7ed',
+            100: '#ffedd5',
+            200: '#fed7aa',
+        },
+        blue: {
+            50: '#eff6ff',
+            100: '#dbeafe',
+            200: '#bfdbfe',
+        },
         // Cores das Tags
         tag: {
             cm: '#fb923c', // Laranja
@@ -141,6 +152,9 @@ export default {
   safelist: [
     'bg-tag-cm', 'bg-tag-lm', 'bg-tag-a', 'bg-tag-lt', 
     'bg-tag-j', 'bg-tag-s', 'bg-tag-ac', 'bg-tag-b',
-    'text-white', 'text-navy', 'p-4', 'p-8', 'p-12'
+    'text-white', 'text-navy', 'p-4', 'p-8', 'p-12',
+    // Adicionando classes dinâmicas ao safelist para garantir que sejam geradas
+    'focus:border-orange-200',
+    'focus:border-blue-200'
   ]
 } satisfies Config;
