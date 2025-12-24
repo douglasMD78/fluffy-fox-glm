@@ -1,4 +1,5 @@
 import { TEMPLATES } from "@/lib/constants";
+import { ColumnRatioKey } from "@/lib/constants";
 
 export const INITIAL_DATA = {
     [TEMPLATES.COVER]: { title: "Receitinhas", subtitle: "FIT", author: "@LU.MTSFIT", edition: "EDIÇÃO ESPECIAL" },
@@ -20,7 +21,8 @@ export const INITIAL_DATA = {
         videoDisplayStyle: 'button', // New: Default video display style
         objectFit: 'cover', // Novo: 'cover' ou 'contain'
         objectPosition: 'center', // Novo: 'top', 'center', 'bottom', 'left', 'right', '50% 50%', etc.
-        imageZoom: 100 // Novo: 100 (sem zoom), 120 (20% zoom), etc.
+        imageZoom: 100, // Novo: 100 (sem zoom), 120 (20% zoom), etc.
+        columnRatio: 'default' as ColumnRatioKey // Nova propriedade para proporção de colunas
     }
 };
 
@@ -77,7 +79,8 @@ export const PDF_LUIZA_DATA = [
         videoDisplayStyle: 'button', // New: Default video display style
         objectFit: 'cover',
         objectPosition: 'center',
-        imageZoom: 100
+        imageZoom: 100,
+        columnRatio: 'default' as ColumnRatioKey
     },
      { 
         id: 'p_final', 

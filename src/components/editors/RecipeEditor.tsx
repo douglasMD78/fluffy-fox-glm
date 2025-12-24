@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
 import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize } from '@/components/icons';
-import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
+import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea'; // Importar o novo componente
 
 interface RecipeEditorProps {
@@ -94,6 +94,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ objectPosition: `${newX}% ${newY}%` });
     };
 
+    const isTwoColumnLayout = ['2', '7', '8', '9'].includes(activePage.layout);
+
     return (
         <div className="space-y-5">
         
@@ -121,6 +123,23 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         ))}
                     </div>
                 </div>
+                {isTwoColumnLayout && (
+                    <div className="flex items-center justify-between border-t border-rose-200/50 pt-2 mt-2">
+                        <span className="text-[9px] font-bold text-navy/50 uppercase">Proporção Colunas</span>
+                        <div className="flex bg-white rounded-lg p-0.5 border border-rose-100">
+                            {Object.keys(COLUMN_RATIOS).map(ratioKey => (
+                                <button 
+                                    key={ratioKey}
+                                    onClick={() => updatePage({ columnRatio: ratioKey as ColumnRatioKey })}
+                                    title={ratioKey}
+                                    className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.columnRatio === ratioKey ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-50'}`}
+                                >
+                                    {ratioKey === 'default' ? 'Padrão' : ratioKey === 'balanced' ? 'Balanceado' : ratioKey === 'ingredients-heavy' ? 'Ingred.' : 'Preparo'}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
             
             {/* Font Size Manual Inputs */}
@@ -131,7 +150,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <span className="text-[10px] font-bold text-navy/60 uppercase w-20">{type === 'title' ? 'Título' : type === 'ingredients' ? 'Ingred.' : 'Preparo'}</span>
                         <input 
                             type="number" 
-                            value={(activePage.fontSizes && activePage.fontSizes[type]) || 12} 
+                            value={(activePage.fontSizes && activePage.fontSizes[type]) || FONT_SIZES[type][2]} // Default to level 2 if not set
                             onChange={(e) => changeFontSize(type, e.target.value)}
                             className="w-16 h-8 bg-gray-50 border border-gray-200 rounded-lg text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
                         />

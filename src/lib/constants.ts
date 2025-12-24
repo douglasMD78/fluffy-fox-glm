@@ -28,9 +28,9 @@ export const getTagStyle = (code: string) => {
 };
 
 export const FONT_SIZES = {
-    title: { 1: 'text-[20px]', 2: 'text-[24px]', 3: 'text-[28px]', 4: 'text-[34px]', 5: 'text-[40px]' },
-    ingredients: { 1: 'text-[9px] leading-tight', 2: 'text-[10px] leading-snug', 3: 'text-[11px] leading-snug', 4: 'text-[12px] leading-normal', 5: 'text-[13px] leading-relaxed' }, // Ajustado para melhor legibilidade
-    prep: { 1: 'text-[11px] leading-snug', 2: 'text-[12px] leading-relaxed', 3: 'text-[13px] leading-relaxed', 4: 'text-[14px] leading-loose', 5: 'text-[15px] leading-loose' } // Ajustado para melhor legibilidade
+    title: { 1: 20, 2: 24, 3: 28, 4: 34, 5: 40 },
+    ingredients: { 1: 9, 2: 10, 3: 11, 4: 12, 5: 13 },
+    prep: { 1: 11, 2: 12, 3: 13, 4: 14, 5: 15 }
 };
 
 export const IMG_SIZES = {
@@ -44,3 +44,12 @@ export const SPACING_MAP = {
     normal: 'p-8',
     airy: 'p-12'
 };
+
+export const COLUMN_RATIOS = {
+    'default': 'grid-cols-[1fr_1.8fr]', // Padrão atual
+    'balanced': 'grid-cols-[1.5fr_1.5fr]', // 50/50
+    'ingredients-heavy': 'grid-cols-[1.8fr_1fr]', // Mais espaço para ingredientes
+    'prep-heavy': 'grid-cols-[1fr_2.5fr]' // Mais espaço para o modo de preparo
+};
+
+export type ColumnRatioKey = keyof typeof COLUMN_RATIOS;

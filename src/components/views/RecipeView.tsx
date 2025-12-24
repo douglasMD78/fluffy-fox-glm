@@ -1,7 +1,7 @@
 import React from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { ImageIcon, Sparkles, Package, PlayCircle } from '@/components/icons';
-import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
+import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS } from '@/lib/constants';
 import { TagList } from './TagList';
 import { InfoFooter } from './InfoFooter';
 import { renderMarkdownText } from '@/utils/markdown';
@@ -14,13 +14,12 @@ interface RecipeViewProps {
 export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     const layout = data.layout || '2';
     const imgSize = data.imageSize || 3;
+    const columnRatioClass = COLUMN_RATIOS[data.columnRatio || 'default'];
     
     // Helper function to get pixel value from FONT_SIZES
     const getFontSizePx = (type: 'title' | 'ingredients' | 'prep', sizeLevel: number | undefined, defaultLevel: number): number => {
         const level = sizeLevel && sizeLevel >= 1 && sizeLevel <= 5 ? sizeLevel : defaultLevel;
-        const sizeClass = FONT_SIZES[type][level as keyof typeof FONT_SIZES['title']];
-        const match = sizeClass.match(/text-\[(\d+)px\]/);
-        return match ? parseInt(match[1]) : (type === 'title' ? 28 : type === 'ingredients' ? 10 : 12); // Fallback values ajustados
+        return FONT_SIZES[type][level as keyof typeof FONT_SIZES['title']];
     };
 
     const fs = {
@@ -75,7 +74,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                 </div>
 
-                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-3 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-3 min-h-0`}>
                     <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
@@ -121,7 +120,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
-                <div className="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
                     <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
@@ -168,7 +167,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                 </div>
 
-                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-3 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-3 min-h-0`}>
                     <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
@@ -208,7 +207,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
-                <div className="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
                     <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
@@ -275,7 +274,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* 3. Colunas de Texto */}
-                 <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-4 min-h-0">
+                 <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
                     <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
@@ -335,7 +334,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                 </div>
 
-                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-2 min-h-0`}>
                     <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
@@ -396,7 +395,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Colunas de Ingredientes e Preparo */}
-                <div className="flex-1 grid grid-cols-[1fr_1.8fr] gap-2 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-2 min-h-0`}>
                     <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
@@ -484,7 +483,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
-                <div className="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
                     <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
