@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
-import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain } from '@/components/icons'; // Importar Brain para nutrição
+import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain, AlignLeft } from '@/components/icons'; // Importar AlignLeft para alinhamento
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 
@@ -96,6 +96,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
 
     // Atualizado para incluir todos os layouts de duas colunas
     const isTwoColumnLayout = ['2', '3', '4', '5', '6', '7', '8', '9'].includes(activePage.layout);
+    const isSideImage = ['2', '4', '7', '8'].includes(activePage.layout); // Layouts com imagem lateral
 
     return (
         <div className="space-y-5">
@@ -157,14 +158,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         />
                     </div>
                 ))}
-                 <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
-                    <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Tam. Imagem</span>
-                    <div className="flex items-center gap-2">
-                        <button onClick={() => changeImageSize(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
-                        <span className="text-xs font-mono font-bold w-4 text-center">{activePage.imageSize || 3}</span>
-                        <button onClick={() => changeImageSize(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -177,7 +170,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
-        {/* Controles de Imagem (object-fit, object-position, zoom) */}
+        {/* Controles de Imagem (object-fit, object-position, zoom, e agora tamanho da moldura) */}
         {activePage.image && (
             <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
                 <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><ImageIcon size={12}/> Ajuste da Imagem</label>
@@ -245,6 +238,18 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <button onClick={() => changeImageZoom(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
                     </div>
                 </div>
+
+                {/* Tamanho da Moldura da Imagem (apenas para layouts com imagem lateral) */}
+                {isSideImage && (
+                    <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
+                        <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Tam. Moldura</span>
+                        <div className="flex items-center gap-2">
+                            <button onClick={() => changeImageSize(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
+                            <span className="text-xs font-mono font-bold w-4 text-center">{activePage.imageSize || 3}</span>
+                            <button onClick={() => changeImageSize(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
+                        </div>
+                    </div>
+                )}
             </div>
         )}
 
@@ -271,6 +276,28 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activePage.videoDisplayStyle === 'overlay' ? 'bg-accent text-white shadow-md' : 'bg-surface text-navy/60 hover:bg-gray-100'}`}
                 >
                     Ícone na Imagem
+                </button>
+            </div>
+        </div>
+
+        {/* Controle de Alinhamento do Título */}
+        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><AlignLeft size={12}/> Alinhamento do Título</label>
+            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
+                {['left', 'center', 'right'].map(alignment => (
+                    <button 
+                        key={alignment}
+                        onClick={() => updatePage({ titleAlignment: alignment as RecipePageData['titleAlignment'] })}
+                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.titleAlignment === alignment ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                    >
+                        {alignment === 'left' ? 'Esquerda' : alignment === 'center' ? 'Centro' : 'Direita'}
+                    </button>
+                ))}
+                <button 
+                    onClick={() => updatePage({ titleAlignment: null })} // Opção para remover o alinhamento explícito
+                    className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.titleAlignment === null ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                >
+                    Padrão
                 </button>
             </div>
         </div>

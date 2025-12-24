@@ -25,7 +25,8 @@ export const INITIAL_DATA = {
         columnRatio: 'default' as ColumnRatioKey, // Nova propriedade para proporção de colunas
         tipPlacement: 'footer', // 'footer', 'ingredients', 'prep', 'hidden'
         storagePlacement: 'footer', // 'footer', 'ingredients', 'prep', 'hidden'
-        nutritionDisplayStyle: 'default' // 'default', 'inline-compact', 'block-detailed', 'hidden'
+        nutritionDisplayStyle: 'default', // 'default', 'inline-compact', 'block-detailed', 'hidden'
+        titleAlignment: null, // Nova propriedade para alinhamento do título
     }
 };
 
@@ -86,7 +87,8 @@ export const PDF_LUIZA_DATA = [
         columnRatio: 'default' as ColumnRatioKey,
         tipPlacement: 'footer',
         storagePlacement: 'footer',
-        nutritionDisplayStyle: 'default'
+        nutritionDisplayStyle: 'default',
+        titleAlignment: null,
     },
      { 
         id: 'p_final', 

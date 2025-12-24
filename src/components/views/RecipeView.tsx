@@ -57,6 +57,30 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         transformOrigin: 'center center'
     };
 
+    // Lógica para determinar o alinhamento do título
+    const getTitleAlignmentClass = () => {
+        if (data.titleAlignment) {
+            return `text-${data.titleAlignment}`;
+        }
+        // Alinhamentos padrão por layout
+        switch (layout) {
+            case '2': // Imagem esquerda
+            case '7': // Imagem esquerda otimizada
+                return 'text-left';
+            case '4': // Imagem direita
+            case '8': // Imagem direita otimizada
+                return 'text-right';
+            case '3': // Imagem topo
+            case '5': // Somente texto
+            case '6': // Macros no topo
+            case '9': // Imagem topo com macros no título
+            default:
+                return 'text-center';
+        }
+    };
+
+    const titleAlignmentClass = getTitleAlignmentClass();
+
     // --- LAYOUT 2: EDITORIAL (FOTO ESQUERDA) ---
     if (layout === '2') {
         return (
@@ -66,10 +90,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
-                    <div className="flex-1 flex flex-col justify-center">
+                    <div className={`flex-1 flex flex-col justify-center ${titleAlignmentClass}`}>
                         <span className="text-[8px] font-black text-accent uppercase tracking-widest mb-1">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-none text-navy mb-1.5" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
-                        <div className="mt-auto flex items-center gap-2">
+                        <div className={`mt-auto flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : ''}`}>
                             <span className="text-[8px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
@@ -119,10 +143,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Título e Meta */}
-                <div className="mb-4 shrink-0">
+                <div className={`mb-4 shrink-0 ${titleAlignmentClass}`}>
                     <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
                     <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : titleAlignmentClass === 'text-center' ? 'justify-center' : ''}`}>
                         <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                         <div className="h-2 w-px bg-accent/30"></div>
                         <TagList tags={data.code} />
@@ -173,10 +197,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
-                    <div className="flex-1 flex flex-col justify-center text-right"> {/* text-right para alinhar texto à esquerda da imagem */}
+                    <div className={`flex-1 flex flex-col justify-center ${titleAlignmentClass}`}> {/* text-right para alinhar texto à esquerda da imagem */}
                         <span className="text-[8px] font-black text-accent uppercase tracking-widest mb-1">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-none text-navy mb-1.5" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
-                        <div className="mt-auto flex items-center justify-end gap-2"> {/* justify-end para alinhar tags à direita */}
+                        <div className={`mt-auto flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : ''}`}> {/* justify-end para alinhar tags à direita */}
                             <span className="text-[8px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
@@ -220,10 +244,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 {/* Título e Meta */}
-                <div className="mb-4 shrink-0 text-center">
+                <div className={`mb-4 shrink-0 ${titleAlignmentClass}`}>
                     <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
                     <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
-                    <div className="flex items-center justify-center gap-2">
+                    <div className={`flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : titleAlignmentClass === 'text-center' ? 'justify-center' : ''}`}>
                         <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                         <div className="h-2 w-px bg-accent/30"></div>
                         <TagList tags={data.code} />
@@ -270,8 +294,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
          return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 {/* 1. Cabeçalho de Macros em Destaque */}
-                <div className="flex justify-between items-center mb-4 pb-3 border-b border-accent/20">
-                     <div className="text-left">
+                <div className={`flex justify-between items-center mb-4 pb-3 border-b border-accent/20 ${titleAlignmentClass}`}>
+                     <div className="text-left"> {/* Mantido text-left para o bloco de categoria/título */}
                         <span className="text-[8px] font-black text-accent uppercase tracking-widest block mb-0.5">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-none text-navy" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1>
                      </div>
@@ -332,10 +356,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
-                    <div className="flex-1 flex flex-col justify-center py-0.5">
+                    <div className={`flex-1 flex flex-col justify-center py-0.5 ${titleAlignmentClass}`}>
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
-                        <div className="mt-auto flex items-center gap-1">
+                        <div className={`mt-auto flex items-center gap-1 ${titleAlignmentClass === 'text-right' ? 'justify-end' : ''}`}>
                             <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
@@ -385,10 +409,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
-                    <div className="flex-1 flex flex-col justify-center py-0.5">
+                    <div className={`flex-1 flex flex-col justify-center py-0.5 ${titleAlignmentClass}`}>
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
-                        <div className="flex items-center gap-1 mb-2">
+                        <div className={`flex items-center gap-1 mb-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : ''}`}>
                             <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
@@ -441,12 +465,12 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* Título e Meta com Macros Ultra-Minimalistas e ao lado */}
-                <div className="flex justify-between items-start mb-4 shrink-0">
+                <div className={`flex justify-between items-start mb-4 shrink-0 ${titleAlignmentClass}`}>
                     {/* Lado esquerdo: Categoria, Título, Rendimento, Tags */}
-                    <div className="flex-1 pr-4"> {/* Adicionado pr-4 para espaçamento */}
+                    <div className={`flex-1 pr-4 ${titleAlignmentClass}`}> {/* Adicionado pr-4 para espaçamento */}
                         <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
-                        <div className="flex items-center gap-2">
+                        <div className={`flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : titleAlignmentClass === 'text-center' ? 'justify-center' : ''}`}>
                             <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
