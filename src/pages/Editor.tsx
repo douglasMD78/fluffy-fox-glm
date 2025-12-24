@@ -16,7 +16,7 @@ import { IntroEditor } from '@/components/editors/IntroEditor';
 import { SectionEditor } from '@/components/editors/SectionEditor';
 import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
 import { LegendEditor } from '@/components/editors/LegendEditor';
-import { GlobalSettingsEditor } from '@/components/editors/GlobalSettings/Editor';
+import { GlobalSettingsEditor } from '@/components/editors/GlobalSettingsEditor'; // Caminho corrigido
 
 // Views
 import { CoverView } from '@/components/views/CoverView';
