@@ -27,6 +27,12 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ imageSize: newValue });
     };
 
+    const changeImageZoom = (delta: number) => {
+        const currentZoom = activePage.imageZoom || 100;
+        const newZoom = Math.max(50, Math.min(200, currentZoom + delta)); // Limites de 50% a 200%
+        updatePage({ imageZoom: newZoom });
+    };
+
     return (
         <div className="space-y-5">
         
@@ -89,6 +95,60 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             {activePage.image && <button onClick={() => updatePage({image: ''})} className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={10}/></button>}
             </div>
         </div>
+
+        {/* Controles de Imagem (object-fit, object-position, zoom) */}
+        {activePage.image && (
+            <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+                <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><ImageIcon size={12}/> Ajuste da Imagem</label>
+                
+                {/* Object Fit */}
+                <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-navy/60 uppercase">Encaixe</span>
+                    <div className="flex bg-gray-50 rounded-lg p-0.5 border border-gray-100">
+                        <button 
+                            onClick={() => updatePage({ objectFit: 'cover' })} 
+                            className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.objectFit === 'cover' ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                        >
+                            Cobrir
+                        </button>
+                        <button 
+                            onClick={() => updatePage({ objectFit: 'contain' })} 
+                            className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.objectFit === 'contain' ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                        >
+                            Conter
+                        </button>
+                    </div>
+                </div>
+
+                {/* Object Position */}
+                {activePage.objectFit === 'cover' && ( // Apenas mostra se objectFit for 'cover'
+                    <div className="space-y-2">
+                        <span className="text-[10px] font-bold text-navy/60 uppercase block">Posição</span>
+                        <div className="grid grid-cols-3 gap-1 bg-gray-50 p-1 rounded-lg border border-gray-100">
+                            {['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right'].map(pos => (
+                                <button 
+                                    key={pos}
+                                    onClick={() => updatePage({ objectPosition: pos })}
+                                    className={`h-8 rounded-md text-[8px] font-bold uppercase transition-all ${activePage.objectPosition === pos ? 'bg-accent text-white shadow-sm' : 'bg-white text-navy/40 hover:bg-gray-100'}`}
+                                >
+                                    {pos.replace(' ', '-')}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Image Zoom */}
+                <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-navy/60 uppercase">Zoom</span>
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => changeImageZoom(-10)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
+                        <span className="text-xs font-mono font-bold w-8 text-center">{activePage.imageZoom || 100}%</span>
+                        <button onClick={() => changeImageZoom(10)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
+                    </div>
+                </div>
+            </div>
+        )}
 
         <div className="space-y-2">
              <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Link do Vídeo (Opcional)</label>
