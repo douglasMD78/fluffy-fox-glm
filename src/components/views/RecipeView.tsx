@@ -20,7 +20,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         const level = sizeLevel && sizeLevel >= 1 && sizeLevel <= 5 ? sizeLevel : defaultLevel;
         const sizeClass = FONT_SIZES[type][level as keyof typeof FONT_SIZES['title']];
         const match = sizeClass.match(/text-\[(\d+)px\]/);
-        return match ? parseInt(match[1]) : (type === 'title' ? 28 : type === 'ingredients' ? 9 : 11); // Fallback values
+        return match ? parseInt(match[1]) : (type === 'title' ? 28 : type === 'ingredients' ? 10 : 12); // Fallback values ajustados
     };
 
     const fs = {
@@ -250,26 +250,26 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                      <div className="flex gap-2">
                         <div className="text-center">
                             <span className="block text-[14px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Kcal</span> {/* Increased font size */}
+                            <span className="block text-[8px] uppercase font-bold text-navy/40">Kcal</span>
                         </div>
                         <div className="h-6 w-px bg-gray-200"></div>
                         <div className="text-center">
                             <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Prot</span> {/* Increased font size */}
+                            <span className="block text-[8px] uppercase font-bold text-navy/40">Prot</span>
                         </div>
                          <div className="text-center">
                             <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Carb</span> {/* Increased font size */}
+                            <span className="block text-[8px] uppercase font-bold text-navy/40">Carb</span>
                         </div>
                          <div className="text-center">
                             <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Gord</span> {/* Increased font size */}
+                            <span className="block text-[8px] uppercase font-bold text-navy/40">Gord</span>
                         </div>
                      </div>
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 aspect-[16/9]"> {/* Changed aspect ratio */}
+                <div className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 aspect-[16/9]">
                      {data.image ? <img src={data.image} className={`w-full h-full`} style={imageStyle} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
@@ -326,7 +326,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
-                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1> {/* Removed *0.9 */}
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
                         <div className="mt-auto flex items-center gap-1">
                             <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
@@ -339,12 +339,12 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
-                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))} {/* Removed *0.9 */}
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
-                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}> {/* Removed *0.9 */}
+                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
                             {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
@@ -372,7 +372,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
-                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1> {/* Removed *0.9 */}
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title}px` }}>{data.title}</h1>
                         <div className="flex items-center gap-1 mb-2">
                             <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
@@ -386,7 +386,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                     {Object.entries(data.nutrition || {}).map(([key, val]) => (
                                         <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
                                             <span className="block text-[10px] font-black text-accent leading-none">{val}</span>
-                                            <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span> {/* Increased font size */}
+                                            <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -400,12 +400,12 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
-                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))} {/* Removed *0.9 */}
+                            {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
-                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}> {/* Removed *0.9 */}
+                        <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
                             {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
@@ -420,7 +420,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         );
     }
 
-    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO ---
+    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO COM MACROS NO TÍTULO ---
     if (layout === '9') {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
@@ -430,15 +430,28 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     {renderVideoOverlay("aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
-                {/* Título e Meta */}
+                {/* Título e Meta com Macros */}
                 <div className="mb-4 shrink-0">
                     <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
                     <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mb-2">
                         <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                         <div className="h-2 w-px bg-accent/30"></div>
                         <TagList tags={data.code} />
                     </div>
+                    {/* Tabela de Macros no Título (similar ao Layout 6) */}
+                    {data.nutrition && (
+                        <div className="mt-4 p-2 rounded-xl border border-accent/20 bg-cream/30">
+                            <div className="flex justify-between items-center text-center">
+                                {Object.entries(data.nutrition || {}).map(([key, val]) => (
+                                    <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
+                                        <span className="block text-[12px] font-black text-accent leading-none">{val}</span>
+                                        <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
@@ -462,7 +475,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
-                        <InfoFooter data={data} compact={true} />
+                        <InfoFooter data={data} compact={true} hideNutrition={true} /> {/* Esconder nutrição no footer */}
                     </div>
                 </div>
             </div>

@@ -29,8 +29,8 @@ export const getTagStyle = (code: string) => {
 
 export const FONT_SIZES = {
     title: { 1: 'text-[20px]', 2: 'text-[24px]', 3: 'text-[28px]', 4: 'text-[34px]', 5: 'text-[40px]' },
-    ingredients: { 1: 'text-[8px] leading-tight', 2: 'text-[9px] leading-snug', 3: 'text-[10px] leading-snug', 4: 'text-[11px] leading-normal', 5: 'text-[12px] leading-relaxed' },
-    prep: { 1: 'text-[10px] leading-snug', 2: 'text-[11px] leading-relaxed', 3: 'text-[12px] leading-relaxed', 4: 'text-[13px] leading-loose', 5: 'text-[14px] leading-loose' }
+    ingredients: { 1: 'text-[9px] leading-tight', 2: 'text-[10px] leading-snug', 3: 'text-[11px] leading-snug', 4: 'text-[12px] leading-normal', 5: 'text-[13px] leading-relaxed' }, // Ajustado para melhor legibilidade
+    prep: { 1: 'text-[11px] leading-snug', 2: 'text-[12px] leading-relaxed', 3: 'text-[13px] leading-relaxed', 4: 'text-[14px] leading-loose', 5: 'text-[15px] leading-loose' } // Ajustado para melhor legibilidade
 };
 
 export const IMG_SIZES = {
