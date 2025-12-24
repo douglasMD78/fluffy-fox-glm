@@ -1,6 +1,7 @@
 import React from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { PlayCircle, Sparkles, Package } from '@/components/icons';
+import { renderMarkdownText } from '@/utils/markdown'; // Importar renderMarkdownText
 
 interface InfoFooterProps {
     data: RecipePageData;
@@ -22,7 +23,7 @@ export const InfoFooter: React.FC<InfoFooterProps> = ({ data, compact = false, h
                     <div className="text-accent shrink-0 mt-0.5"><Sparkles size={10}/></div>
                     <div>
                         <h5 className="text-[10px] font-hand font-bold text-accent mb-0.5">Dica</h5>
-                        <p className="text-[9px] text-navy/80 italic font-medium leading-tight">{data.tips}</p>
+                        <p className="text-[9px] text-navy/80 italic font-medium leading-tight">{renderMarkdownText(data.tips)}</p>
                     </div>
                 </div>
             )}
@@ -31,7 +32,7 @@ export const InfoFooter: React.FC<InfoFooterProps> = ({ data, compact = false, h
                     <div className="text-navy/40 shrink-0 mt-0.5"><Package size={10}/></div>
                     <div>
                         <h5 className="text-[10px] font-hand font-bold text-navy/60 mb-0.5">Armazenamento</h5>
-                        <p className="text-[9px] text-navy/70 font-medium leading-tight">{data.storage}</p>
+                        <p className="text-[9px] text-navy/70 font-medium leading-tight">{renderMarkdownText(data.storage)}</p>
                     </div>
                 </div>
             )}
