@@ -8,7 +8,7 @@ import { renderMarkdownText } from '@/utils/markdown';
 
 interface RecipeViewProps {
     data: RecipePageData;
-    updatePage: (newData: Partial<RecipePageData>) => void; // Adicionado updatePage aqui
+    updatePage: (newData: Partial<RecipePageData>) => void;
 }
 
 export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
@@ -21,6 +21,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     };
     
     const p = SPACING_MAP[data.spacing || 'normal'];
+    const imageZoom = data.imageZoom || 100; // Obter o nível de zoom
 
     const imgRef = useRef<HTMLImageElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -28,8 +29,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [dragStartMouseX, setDragStartMouseX] = useState(0);
     const [dragStartMouseY, setDragStartMouseY] = useState(0);
-    const [dragStartImageX, setDragStartImageX] = useState(50); // Current object-position x percentage
-    const [dragStartImageY, setDragStartImageY] = useState(50); // Current object-position y percentage
+    const [dragStartImageX, setDragStartImageX] = useState(50); // Porcentagem atual de object-position x
+    const [dragStartImageY, setDragStartImageY] = useState(50); // Porcentagem atual de object-position y
 
     const parseObjectPosition = (pos: string | undefined) => {
         if (!pos) return { x: 50, y: 50 };
@@ -38,7 +39,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     };
 
     const handleMouseDown = (e: React.MouseEvent) => {
-        if (!imgRef.current || !containerRef.current || !data.image) return; // Only drag if there's an image
+        if (!imgRef.current || !containerRef.current || !data.image) return; // Só arrasta se houver imagem
 
         setIsDragging(true);
         setDragStartMouseX(e.clientX);
@@ -48,8 +49,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         setDragStartImageX(x);
         setDragStartImageY(y);
 
-        e.preventDefault(); // Prevent default browser drag behavior
-        e.stopPropagation(); // Stop propagation to prevent parent elements from handling
+        e.preventDefault(); // Previne o comportamento padrão de arrastar do navegador
+        e.stopPropagation(); // Impede a propagação para elementos pai
     };
 
     useEffect(() => {
@@ -61,51 +62,43 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
 
             const containerWidth = container.clientWidth;
             const containerHeight = container.clientHeight;
-            const imgNaturalWidth = img.naturalWidth;
-            const imgNaturalHeight = img.naturalHeight;
 
-            // Calculate the actual rendered dimensions of the image when object-fit: cover
-            const containerAspectRatio = containerWidth / containerHeight;
-            const imageAspectRatio = imgNaturalWidth / imgNaturalHeight;
-
-            let renderedImageWidth, renderedImageHeight;
-
-            if (imageAspectRatio > containerAspectRatio) {
-                // Image is wider than container, so it will be cropped horizontally
-                renderedImageHeight = containerHeight;
-                renderedImageWidth = imgNaturalWidth * (containerHeight / imgNaturalHeight);
-            } else {
-                // Image is taller than container, so it will be cropped vertically
-                renderedImageWidth = containerWidth;
-                renderedImageHeight = imgNaturalHeight * (containerWidth / imgNaturalWidth);
-            }
+            // Calcular as dimensões reais do elemento da imagem com base no zoom
+            const imgRenderedWidth = containerWidth * (imageZoom / 100);
+            const imgRenderedHeight = containerHeight * (imageZoom / 100);
 
             const deltaX = e.clientX - dragStartMouseX;
             const deltaY = e.clientY - dragStartMouseY;
 
-            // Calculate the maximum possible pixel shift for object-position
-            const maxShiftX = renderedImageWidth - containerWidth;
-            const maxShiftY = renderedImageHeight - containerHeight;
+            // Calcular o deslocamento máximo em pixels para object-position
+            // Esta é a diferença entre o tamanho renderizado da imagem e o tamanho do contêiner
+            const maxShiftX = imgRenderedWidth - containerWidth;
+            const maxShiftY = imgRenderedHeight - containerHeight;
 
             let newX = dragStartImageX;
             let newY = dragStartImageY;
 
             if (maxShiftX > 0) {
-                // Dragging left/right affects object-position X
-                // A positive deltaX (mouse moved right) means we want to show more of the left side of the image,
-                // which means decreasing the object-position X percentage.
+                // Um deltaX positivo (mouse movido para a direita) significa que queremos mostrar mais do lado esquerdo da imagem,
+                // o que significa diminuir a porcentagem de object-position X.
                 newX = dragStartImageX - (deltaX / maxShiftX) * 100;
                 newX = Math.max(0, Math.min(100, newX));
-            }
-            if (maxShiftY > 0) {
-                // Dragging up/down affects object-position Y
-                // A positive deltaY (mouse moved down) means we want to show more of the top side of the image,
-                // which means decreasing the object-position Y percentage.
-                newY = dragStartImageY - (deltaY / maxShiftY) * 100;
-                newY = Math.max(0, Math.min(100, newY));
+            } else {
+                // Se a imagem não for mais larga que o contêiner (ou o zoom for 100% e a imagem couber), centralize-a
+                newX = 50;
             }
             
-            // Update the page data with the new alignment
+            if (maxShiftY > 0) {
+                // Um deltaY positivo (mouse movido para baixo) significa que queremos mostrar mais da parte superior da imagem,
+                // o que significa diminuir a porcentagem de object-position Y.
+                newY = dragStartImageY - (deltaY / maxShiftY) * 100;
+                newY = Math.max(0, Math.min(100, newY));
+            } else {
+                // Se a imagem não for mais alta que o contêiner (ou o zoom for 100% e a imagem couber), centralize-a
+                newY = 50;
+            }
+            
+            // Atualizar os dados da página com o novo alinhamento
             updatePage({ imageAlignment: `${newX.toFixed(0)}% ${newY.toFixed(0)}%` });
         };
 
@@ -122,7 +115,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [isDragging, dragStartMouseX, dragStartMouseY, dragStartImageX, dragStartImageY, data.imageAlignment, updatePage]);
+    }, [isDragging, dragStartMouseX, dragStartMouseY, dragStartImageX, dragStartImageY, data.imageAlignment, updatePage, imageZoom]);
 
 
     const renderVideoOverlay = (imageContainerClasses: string) => {
@@ -142,9 +135,14 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return null;
     };
 
-    // Apply the object-position style
-    const currentImageAlignment = data.imageAlignment || '50% 50%'; // Default to center
+    // Aplicar o estilo object-position
+    const currentImageAlignment = data.imageAlignment || '50% 50%'; // Padrão para centro
     const objectPositionStyle = { objectPosition: currentImageAlignment };
+    const imageStyle = {
+        width: `${imageZoom}%`,
+        height: `${imageZoom}%`,
+        ...objectPositionStyle // Aplicar object-position aqui
+    };
 
     // Layout 6: Macros no Topo (Novo)
     if (layout === '6') {
@@ -180,8 +178,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div ref={containerRef} className="w-full mb-4 shrink-0 relative">
-                     {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                <div ref={containerRef} className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100"> {/* Adicionado overflow-hidden aqui */}
+                     {data.image ? <img ref={imgRef} src={data.image} className={`absolute top-0 left-0 cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
@@ -230,8 +228,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`absolute top-0 left-0 cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
@@ -271,13 +269,12 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
 
     // --- LAYOUT 7: EDITORIAL OTIMIZADO (FOTO ESQUERDA) ---
     if (layout === '7') {
-        // Usaremos o espaçamento 'compact' como base para otimização
         const optimizedP = SPACING_MAP['compact']; 
         return (
-            <div className={`h-full flex flex-col ${optimizedP} font-sans`}> {/* Removido overflow-hidden aqui para permitir fluxo */}
+            <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`absolute top-0 left-0 cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
@@ -308,7 +305,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </p>
                             ))}
                         </div>
-                        <InfoFooter data={data} compact={true} /> {/* Garantindo que o footer seja compacto */}
+                        <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
             </div>
@@ -322,14 +319,14 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}>
-                        {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img ref={imgRef} src={data.image} className={`w-full h-full object-cover cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={objectPositionStyle} onMouseDown={handleMouseDown} /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div ref={containerRef} className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
+                        {data.image ? <img ref={imgRef} src={data.image} className={`absolute top-0 left-0 cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`} style={imageStyle} onMouseDown={handleMouseDown} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
                         <h1 className="font-playfair font-bold leading-tight text-navy mb-1" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1>
-                        <div className="flex items-center gap-1 mb-2"> {/* Adicionado mb-2 para espaçar dos macros */}
+                        <div className="flex items-center gap-1 mb-2">
                             <span className="text-[7px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
                             <TagList tags={data.code} />
@@ -341,8 +338,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 <div className="flex justify-between items-center text-center">
                                     {Object.entries(data.nutrition || {}).map(([key, val]) => (
                                         <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
-                                            <span className="block text-[10px] font-black text-accent leading-none">{val}</span> {/* Font size ajustado */}
-                                            <span className="block text-[5px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span> {/* Font size ajustado */}
+                                            <span className="block text-[10px] font-black text-accent leading-none">{val}</span>
+                                            <span className="block text-[5px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -369,7 +366,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </p>
                             ))}
                         </div>
-                        <InfoFooter data={data} compact={true} hideNutrition={true} /> {/* Esconde nutrição aqui */}
+                        <InfoFooter data={data} compact={true} hideNutrition={true} />
                     </div>
                 </div>
             </div>
