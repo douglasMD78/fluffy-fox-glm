@@ -397,7 +397,7 @@ const Editor = () => {
                             {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                             {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
                             
-                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
+                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} onRecipeClick={handlePageClick} />}
                             {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
                             {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
                             {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}

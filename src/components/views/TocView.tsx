@@ -8,9 +8,10 @@ import { BookOpen } from '@/components/icons'; // Importando o ícone BookOpen
 interface TocViewProps {
     pages: PageData[];
     data: TocPageData;
+    onRecipeClick: (pageId: string) => void; // Nova prop para a função de clique
 }
 
-export const TocView: React.FC<TocViewProps> = ({ pages, data }) => {
+export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
     const items = pages.filter(p => [TEMPLATES.RECIPE, TEMPLATES.SECTION].includes(p.type));
     return (
         <div className="flex-1 flex flex-col py-10 px-8 font-sans"> {/* Aumentado o padding horizontal */}
@@ -30,7 +31,10 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data }) => {
                                 <span className="text-accent font-black text-sm uppercase tracking-widest">{item.title}</span>
                             </div>
                         ) : (
-                            <div className="flex items-baseline justify-between py-2 border-b border-navy/10 last:border-b-0"> {/* Novo estilo para receita */}
+                            <div 
+                                className="flex items-baseline justify-between py-2 border-b border-navy/10 last:border-b-0 cursor-pointer hover:bg-gray-50 rounded-md px-2 -mx-2 transition-colors" // Adicionado cursor-pointer e estilos de hover
+                                onClick={() => onRecipeClick(item.id)} // Torna o item clicável
+                            > {/* Novo estilo para receita */}
                                 <span className="text-navy/90 font-medium text-sm">{item.title}</span> {/* Texto da receita */}
                                 <div className="flex-1 border-b border-dotted border-navy/30 mx-3 mb-1.5"></div> {/* Linha pontilhada mais grossa */}
                                 <span className="text-navy font-bold text-xs bg-cream px-2 py-0.5 rounded-full shadow-sm">{String(pageNum).padStart(2, '0')}</span> {/* Badge do número da página */}
