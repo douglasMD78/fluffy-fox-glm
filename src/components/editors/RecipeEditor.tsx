@@ -98,6 +98,25 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
              </div>
         </div>
 
+        {/* Novo controle para o estilo do vídeo */}
+        <div className="space-y-2">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Estilo do Link do Vídeo</label>
+            <div className="flex gap-2 bg-white border border-gray-200 p-2 rounded-xl">
+                <button 
+                    onClick={() => updatePage({ videoDisplayStyle: 'button' })} 
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activePage.videoDisplayStyle === 'button' ? 'bg-accent text-white shadow-md' : 'bg-surface text-navy/60 hover:bg-gray-100'}`}
+                >
+                    Botão
+                </button>
+                <button 
+                    onClick={() => updatePage({ videoDisplayStyle: 'overlay' })} 
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${activePage.videoDisplayStyle === 'overlay' ? 'bg-accent text-white shadow-md' : 'bg-surface text-navy/60 hover:bg-gray-100'}`}
+                >
+                    Ícone na Imagem
+                </button>
+            </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
             <div><label className="text-[10px] font-bold text-navy/40 uppercase">Categoria</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.category} onChange={e => updatePage({category: e.target.value})} /></div>
             <div><label className="text-[10px] font-bold text-navy/40 uppercase">Tags (Códigos: CM, A, J...)</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: CM, A, J" value={activePage.code} onChange={e => updatePage({code: e.target.value})} /></div>

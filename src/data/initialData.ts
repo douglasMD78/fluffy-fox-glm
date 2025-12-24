@@ -16,7 +16,8 @@ export const INITIAL_DATA = {
         layout: '2', // Default layout
         fontSizes: { title: 3, ingredients: 2, prep: 2 }, // Default font sizes (mapped to FONT_SIZES)
         imageSize: 3, // Default image size (mapped to IMG_SIZES)
-        spacing: 'normal' // Default spacing (mapped to SPACING_MAP)
+        spacing: 'normal', // Default spacing (mapped to SPACING_MAP)
+        videoDisplayStyle: 'button' // New: Default video display style
     }
 };
 
@@ -69,7 +70,8 @@ export const PDF_LUIZA_DATA = [
         layout: '2',
         fontSizes: { title: 3, ingredients: 2, prep: 2 },
         imageSize: 3,
-        spacing: 'normal'
+        spacing: 'normal',
+        videoDisplayStyle: 'button' // New: Default video display style
     },
      { 
         id: 'p_final', 

@@ -21,6 +21,23 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
     
     const p = SPACING_MAP[data.spacing || 'normal'];
 
+    const renderVideoOverlay = (imageContainerClasses: string) => {
+        if (data.videoLink && data.videoDisplayStyle === 'overlay') {
+            return (
+                <a 
+                    href={data.videoLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={`absolute bottom-2 right-2 p-1.5 bg-white/80 backdrop-blur-sm rounded-full text-accent shadow-md hover:scale-110 transition-transform z-10`}
+                    title="Ver Vídeo da Receita"
+                >
+                    <PlayCircle size={16} />
+                </a>
+            );
+        }
+        return null;
+    };
+
     // Layout 6: Macros no Topo (Novo)
     if (layout === '6') {
          return (
@@ -55,8 +72,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0">
+                <div className="w-full mb-4 shrink-0 relative"> {/* Adicionado relative aqui */}
                      {data.image ? <div className="aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                     {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
                 {/* 3. Colunas de Texto */}
@@ -83,13 +101,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
                         
                         {/* Info Footer Simplificado (já que macros estão no topo) */}
                         <div className="mt-auto pt-2 space-y-2">
-                             {data.videoLink && (
-                                <a href={data.videoLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full p-2 rounded-xl border border-accent/20 text-accent hover:bg-accent hover:text-white transition-colors group mb-1 no-underline" style={{backgroundColor: 'var(--color-accent-light)', color: 'var(--color-accent)', borderColor: 'var(--color-accent)'}}>
-                                    <PlayCircle size={12} />
-                                    <span className="text-[9px] font-black uppercase tracking-widest">Ver Vídeo</span>
-                                </a>
-                            )}
-                            {data.tips && (
+                             {data.tips && (
                                 <div className="flex gap-2 items-start p-2 rounded-xl border border-accent/20 bg-cream/50">
                                     <div className="text-accent shrink-0 mt-0.5"><Sparkles size={10}/></div>
                                     <div>
@@ -110,8 +122,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0`}>
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
                         {data.image ? <div className="aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                        {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
                         <span className="text-[8px] font-black text-accent uppercase tracking-widest mb-1">{data.category}</span>
@@ -155,8 +168,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
         return (
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}> {/* Removido overflow-hidden aqui para permitir fluxo */}
                 <div className="flex gap-2 mb-2 shrink-0"> {/* Reduzido mb-3 para mb-2, gap-3 para gap-2 */}
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0`}>
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
                         {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>} {/* Rounded-2xl para rounded-xl, size 24 para 20 */}
+                        {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5"> {/* Adicionado py-0.5 para alinhar melhor */}
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span> {/* Reduzido text-[8px] para text-[7px] */}
@@ -200,8 +214,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0`}>
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative`}> {/* Adicionado relative aqui */}
                         {data.image ? <div className="aspect-square w-full rounded-xl overflow-hidden shadow-sm border border-gray-100"><img src={data.image} className="w-full h-full object-cover" /></div> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                        {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
                         <span className="text-[7px] font-black text-accent uppercase tracking-widest mb-0.5">{data.category}</span>
