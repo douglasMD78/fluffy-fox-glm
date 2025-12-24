@@ -420,7 +420,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         );
     }
 
-    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO COM MACROS NO TÍTULO (Ultra-Minimalista) ---
+    // --- LAYOUT 9: IMAGEM EM DESTAQUE NO TOPO COM MACROS NO TÍTULO (Ultra-Minimalista e ao lado) ---
     if (layout === '9') {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
@@ -430,37 +430,46 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     {renderVideoOverlay("aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
-                {/* Título e Meta com Macros Ultra-Minimalistas */}
-                <div className="mb-4 shrink-0">
-                    <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
-                    <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
-                        <div className="h-2 w-px bg-accent/30"></div>
-                        <TagList tags={data.code} />
+                {/* Título e Meta com Macros Ultra-Minimalistas e ao lado */}
+                <div className="flex justify-between items-start mb-4 shrink-0">
+                    {/* Lado esquerdo: Categoria, Título, Rendimento, Tags */}
+                    <div className="flex-1 pr-4"> {/* Adicionado pr-4 para espaçamento */}
+                        <span className="text-[9px] font-black text-accent uppercase tracking-widest block mb-1">{data.category}</span>
+                        <h1 className="font-playfair font-bold leading-tight text-navy mb-2" style={{ fontSize: `${fs.title * 1.1}px` }}>{data.title}</h1>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[9px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
+                            <div className="h-2 w-px bg-accent/30"></div>
+                            <TagList tags={data.code} />
+                        </div>
                     </div>
-                    {/* Tabela de Macros Ultra-Minimalista e Horizontal */}
+
+                    {/* Lado direito: Tabela de Macros Minimalista e Vertical */}
                     {data.nutrition && (
-                        <div className="flex items-center justify-center gap-2 mt-3"> {/* Removido padding, border e background */}
-                            <div className="flex items-baseline gap-0.5">
-                                <span className="text-[10px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
-                                <span className="text-[6px] uppercase text-rose-400 font-bold tracking-widest">Kcal</span>
-                            </div>
-                            <div className="h-4 w-px bg-gray-200"></div> {/* Divisor mais fino */}
-                            <div className="flex items-baseline gap-0.5">
-                                <span className="text-[10px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
-                                <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Prot</span>
-                            </div>
-                            <div className="h-4 w-px bg-gray-200"></div>
-                            <div className="flex items-baseline gap-0.5">
-                                <span className="text-[10px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
-                                <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Carb</span>
-                            </div>
-                            <div className="h-4 w-px bg-gray-200"></div>
-                            <div className="flex items-baseline gap-0.5">
-                                <span className="text-[10px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
-                                <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Gord</span>
-                            </div>
+                        <div className="flex flex-col items-end gap-0.5 text-right"> {/* Reduzido o gap */}
+                            {data.nutrition.cal && (
+                                <div className="flex items-baseline gap-0.5">
+                                    <span className="text-[10px] font-black text-accent leading-none">{data.nutrition.cal}</span>
+                                    <span className="text-[6px] uppercase text-rose-400 font-bold tracking-widest">Kcal</span>
+                                </div>
+                            )}
+                            {data.nutrition.prot && (
+                                <div className="flex items-baseline gap-0.5">
+                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.prot}</span>
+                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Prot</span>
+                                </div>
+                            )}
+                            {data.nutrition.carb && (
+                                <div className="flex items-baseline gap-0.5">
+                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.carb}</span>
+                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Carb</span>
+                                </div>
+                            )}
+                            {data.nutrition.fat && (
+                                <div className="flex items-baseline gap-0.5">
+                                    <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.fat}</span>
+                                    <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Gord</span>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
