@@ -102,7 +102,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             <div className="space-y-2 bg-rose-50 p-3 rounded-xl border border-rose-100 col-span-2">
                  <label className="text-[10px] font-black text-accent uppercase tracking-widest flex items-center gap-2"><Columns size={12}/> Estilo</label>
                 <div className="flex gap-2">
-                    {['2','3','4','5', '6', '7', '8', '9'].map(l => ( {/* Adicionado '9' aqui */}
+                    {['2','3','4','5', '6', '7', '8', '9'].map(l => ( 
                         <button key={l} onClick={() => updatePage({layout: l})} className={`flex-1 h-8 rounded-lg text-xs font-bold transition-all ${activePage.layout === l ? 'bg-accent text-white shadow-md' : 'bg-white text-navy/60 hover:bg-white/80'}`}>{l}</button>
                     ))}
                 </div>
