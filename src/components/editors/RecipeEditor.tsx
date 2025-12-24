@@ -1,7 +1,7 @@
 import React from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
-import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, Move } from '@/components/icons';
+import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
 
 interface RecipeEditorProps {
@@ -26,29 +26,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         const newValue = Math.max(1, Math.min(5, currentSize + delta));
         updatePage({ imageSize: newValue });
     };
-
-    const changeImageZoom = (delta: number) => {
-        const currentZoom = activePage.imageZoom || 100;
-        const newZoom = Math.max(100, Math.min(300, currentZoom + delta * 10)); // Zoom de 100% a 300%, passos de 10%
-        updatePage({ imageZoom: newZoom });
-    };
-
-    const handleImageAlignmentChange = (axis: 'x' | 'y', value: string) => {
-        const currentAlignment = activePage.imageAlignment || '50% 50%';
-        const parts = currentAlignment.split(' ');
-        let x = parseFloat(parts[0]) || 50;
-        let y = parseFloat(parts[1]) || 50;
-
-        if (axis === 'x') {
-            x = parseFloat(value);
-        } else {
-            y = parseFloat(value);
-        }
-        updatePage({ imageAlignment: `${x}% ${y}%` });
-    };
-
-    const currentImageAlignment = activePage.imageAlignment || '50% 50%';
-    const [alignX, alignY] = currentImageAlignment.split(' ').map(p => parseFloat(p));
 
     return (
         <div className="space-y-5">
@@ -100,45 +77,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <span className="text-xs font-mono font-bold w-4 text-center">{activePage.imageSize || 3}</span>
                         <button onClick={() => changeImageSize(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
                     </div>
-                </div>
-                <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
-                    <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Zoom Imagem</span>
-                    <div className="flex items-center gap-2">
-                        <button onClick={() => changeImageZoom(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
-                        <span className="text-xs font-mono font-bold w-8 text-center">{(activePage.imageZoom || 100)}%</span>
-                        <button onClick={() => changeImageZoom(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {/* Image Alignment Controls - Numerical Inputs */}
-        <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
-            <label className="text-[10px] font-black text-navy/40 uppercase tracking-widest flex items-center gap-2"><Move size={12}/> Posição da Imagem (%)</label>
-            <div className="grid grid-cols-2 gap-2">
-                <div>
-                    <label className="block text-[9px] font-bold text-navy/60 uppercase mb-1">Horizontal (X)</label>
-                    <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        step="1"
-                        value={alignX}
-                        onChange={(e) => handleImageAlignmentChange('x', e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
-                    />
-                </div>
-                <div>
-                    <label className="block text-[9px] font-bold text-navy/60 uppercase mb-1">Vertical (Y)</label>
-                    <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        step="1"
-                        value={alignY}
-                        onChange={(e) => handleImageAlignmentChange('y', e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
-                    />
                 </div>
             </div>
         </div>
