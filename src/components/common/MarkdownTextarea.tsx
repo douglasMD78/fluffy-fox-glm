@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import * as React from 'react'; // Alterado para import * as React
 import { Type } from '@/components/icons'; // Usando o ícone Type para negrito
 
 interface MarkdownTextareaProps {
@@ -20,7 +20,7 @@ export const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
     label,
     accentColor = "accent"
 }) => {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const textareaRef = React.useRef<HTMLTextAreaElement>(null); // Usando React.useRef
 
     const applyBold = () => {
         const textarea = textareaRef.current;
@@ -59,7 +59,7 @@ export const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
             <div className="relative">
                 <textarea
                     ref={textareaRef}
-                    className={`w-full bg-white border border-gray-200 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-${accentColor} outline-none shadow-sm pr-12 ${className}`} {/* Aumentado pr-12 */}
+                    className={`w-full bg-white border border-gray-200 p-4 rounded-xl text-xs leading-relaxed text-navy focus:border-${accentColor} outline-none shadow-sm pr-12 ${className}`}
                     rows={rows}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
@@ -68,7 +68,7 @@ export const MarkdownTextarea: React.FC<MarkdownTextareaProps> = ({
                 <button
                     type="button"
                     onClick={applyBold}
-                    className={`absolute top-2 right-3 p-1 rounded-md bg-gray-50 text-navy/60 hover:bg-gray-100 transition-colors`} {/* Ajustado right-3 */}
+                    className={`absolute top-2 right-3 p-1 rounded-md bg-gray-50 text-navy/60 hover:bg-gray-100 transition-colors`}
                     title="Negrito (Markdown)"
                 >
                     <Type size={14} className="font-bold" />
