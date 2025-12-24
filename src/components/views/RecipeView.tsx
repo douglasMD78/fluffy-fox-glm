@@ -54,7 +54,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         objectFit: data.objectFit || 'cover',
         objectPosition: data.objectPosition || 'center',
         transform: `scale(${ (data.imageZoom || 100) / 100 })`,
-        transformOrigin: 'center center'
+        transformOrigin: data.objectPosition || 'center center' // Dynamic transformOrigin
     };
 
     // --- LAYOUT 2: EDITORIAL (FOTO ESQUERDA) ---

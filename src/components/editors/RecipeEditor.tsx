@@ -334,7 +334,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 rows={3} 
                 value={activePage.tips} 
                 onChange={value => updatePage({tips: value})} 
-                className="!bg-orange-50 !border-orange-100 focus:!border-orange-200"
+                className="bg-orange-50 border-orange-100 focus:border-orange-200" // Removido !important
                 accentColor="orange-200"
             />
         </div>
@@ -360,7 +360,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 rows={2} 
                 value={activePage.storage} 
                 onChange={value => updatePage({storage: value})} 
-                className="!bg-blue-50 !border-blue-100 focus:!border-blue-200"
+                className="bg-blue-50 border-blue-100 focus:border-blue-200" // Removido !important
                 accentColor="blue-200"
             />
         </div>
