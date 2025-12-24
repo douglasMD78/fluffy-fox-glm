@@ -4,7 +4,7 @@ export const INITIAL_DATA = {
     [TEMPLATES.COVER]: { title: "Receitinhas", subtitle: "FIT", author: "@LU.MTSFIT", edition: "EDIÇÃO ESPECIAL" },
     [TEMPLATES.INTRO]: { title: "Um Olá Especial", highlight: "para Você!", text: "Escreva aqui sua mensagem de boas-vindas..." },
     [TEMPLATES.TOC]: { title: "SUMÁRIO" },
-    [TEMPLATES.LEGEND]: { title: "Entendendo as Legendas" },
+    [TEMPLATES.LEGEND]: { title: "Legendas", text: "Estas legendas foram criadas para facilitar a sua organização. Identifique rapidamente em qual refeição cada receita se encaixa melhor no seu dia a dia." },
     [TEMPLATES.SECTION]: { title: "NOME DA SEÇÃO", subtitle: "Subtítulo Manuscrito" },
     [TEMPLATES.SHOPPING]: { title: "Listinha de Compras", hortifruti: "", acougue: "", laticinios: "", padaria: "", mercearia: "" },
     [TEMPLATES.RECIPE]: {
@@ -12,7 +12,11 @@ export const INITIAL_DATA = {
         nutrition: { cal: "000", prot: "0g", carb: "0g", fat: "0g" },
         macroNote: "Valores referentes a 1 porção.",
         ingredientGroups: [{ title: "Ingredientes", items: "" }],
-        prepSteps: "", tips: "", storage: "", image: ""
+        prepSteps: "", tips: "", storage: "", image: "", videoLink: "",
+        layout: '2', // Default layout
+        fontSizes: { title: 3, ingredients: 2, prep: 2 }, // Default font sizes (mapped to FONT_SIZES)
+        imageSize: 3, // Default image size (mapped to IMG_SIZES)
+        spacing: 'normal' // Default spacing (mapped to SPACING_MAP)
     }
 };
 
@@ -40,14 +44,15 @@ export const PDF_LUIZA_DATA = [
     {
         id: 'p_legend',
         type: TEMPLATES.LEGEND,
-        title: "LEGENDAS"
+        title: "LEGENDAS",
+        text: "Estas legendas foram criadas para facilitar a sua organização. Identifique rapidamente em qual refeição cada receita se encaixa melhor no seu dia a dia."
     },
     { 
         id: 'p_receita_01', 
         type: TEMPLATES.RECIPE, 
         title: "PANQUECA FIT", 
         category: "CAFÉ DA MANHÃ E LANCHES RÁPIDOS", 
-        code: "CM, LT, J (LEVE)", 
+        code: "CM, LT, J", 
         yield: "2 PANQUECAS", 
         nutrition: { cal: "110", prot: "5g", carb: "7g", fat: "5g" }, 
         macroNote: "Por porção", 
@@ -60,7 +65,11 @@ export const PDF_LUIZA_DATA = [
         prepSteps: "01 Prepare a massa: Bata os ovos, farinha de aveia, leite, queijo parmesão e sal no liquidificador ou misture bem até formar uma massa homogênea.\n\n02 Despeje a massa em uma frigideira quente e antiaderente. Quando a massa mudar de cor, vire para dourar do outro lado.\n\n03 Monte e sirva: Recheie as panquecas com frango, carne moída ou sardinha.", 
         tips: "Faça o molho em maior quantidade para usar em outras receitas.", 
         storage: "Geladeira: 5 dias em potes bem fechados.", 
-        image: "" 
+        image: "", videoLink: "",
+        layout: '2',
+        fontSizes: { title: 3, ingredients: 2, prep: 2 },
+        imageSize: 3,
+        spacing: 'normal'
     },
      { 
         id: 'p_final', 

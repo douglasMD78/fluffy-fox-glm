@@ -70,7 +70,7 @@ export const Printer: React.FC<IconProps> = (p) => (
 export const Settings: React.FC<IconProps> = (p) => (
   <IconBase {...p}>
     <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
   </IconBase>
 );
 
@@ -171,5 +171,58 @@ export const Package: React.FC<IconProps> = (p) => (
     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
     <line x1="12" y1="22.08" x2="12" y2="12"></line>
+  </IconBase>
+);
+
+export const Columns: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="12" y1="3" x2="12" y2="21"></line>
+  </IconBase>
+);
+
+export const PlayCircle: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <polygon points="10 8 16 12 10 16 10 8"></polygon>
+  </IconBase>
+);
+
+export const Type: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <polyline points="4 7 4 4 20 4 20 7"></polyline>
+    <line x1="9" y1="20" x2="15" y2="20"></line>
+    <line x1="12" y1="4" x2="12" y2="20"></line>
+  </IconBase>
+);
+
+export const Minus: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </IconBase>
+);
+
+export const HardDrive: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <line x1="22" y1="12" x2="2" y2="12"></line>
+    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+    <line x1="6" y1="16" x2="6.01" y2="16"></line>
+    <line x1="10" y1="16" x2="10.01" y2="16"></line>
+  </IconBase>
+);
+
+export const Palette: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <circle cx="13.5" cy="6.5" r=".5"></circle>
+    <circle cx="17.5" cy="10.5" r=".5"></circle>
+    <circle cx="8.5" cy="7.5" r=".5"></circle>
+    <circle cx="6.5" cy="12.5" r=".5"></circle>
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+  </IconBase>
+);
+
+export const Maximize: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
   </IconBase>
 );

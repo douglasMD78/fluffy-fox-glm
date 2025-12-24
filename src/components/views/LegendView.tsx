@@ -1,20 +1,26 @@
 import React from 'react';
+import { LegendPageData } from '@/data/initialData';
+import { TAG_DEFS } from '@/lib/constants';
 
-export const LegendView: React.FC = () => {
-    const codes = [
-        { c: 'CM', l: 'Café da Manhã', color: 'bg-orange-400' }, { c: 'LM', l: 'Lanche da Manhã', color: 'bg-yellow-400' },
-        { c: 'A', l: 'Almoço', color: 'bg-green-500' }, { c: 'LT', l: 'Lanche da Tarde', color: 'bg-teal-400' },
-        { c: 'J', l: 'Jantar', color: 'bg-blue-500' }, { c: 'S', l: 'Sobremesa', color: 'bg-pink-500' },
-        { c: 'AC', l: 'Acompanhamento', color: 'bg-purple-500' }, { c: 'B', l: 'Base', color: 'bg-gray-500' }
-    ];
+interface LegendViewProps {
+    data: LegendPageData;
+}
+
+export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
+    const codes = TAG_DEFS;
     return (
         <div className="flex-1 flex flex-col py-10 items-center justify-center bg-white font-sans">
-            <h1 className="font-playfair text-4xl font-bold text-navy uppercase tracking-widest mb-16">Legendas</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl px-8">
+            <div className="text-center mb-8 px-6">
+                <h1 className="font-playfair text-3xl font-bold text-navy uppercase tracking-widest mb-4">{data.title}</h1>
+                <div className="w-12 h-1 bg-accent mx-auto mb-6 rounded-full opacity-50"></div>
+                <p className="text-navy/70 text-[13px] leading-relaxed italic max-w-sm mx-auto">{data.text}</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 w-full max-w-xs px-6">
                 {codes.map(i => (
-                <div key={i.c} className="flex items-center gap-4 bg-surface p-4 rounded-2xl border border-white shadow-soft">
-                    <span className={`${i.color} text-white font-black text-xs w-10 h-10 flex items-center justify-center rounded-xl shadow-md shrink-0`}>{i.c}</span>
-                    <span className="text-navy font-bold text-sm uppercase tracking-widest">{i.l}</span>
+                <div key={i.code} className="flex items-center gap-3 bg-surface p-2 rounded-xl border border-gray-100 shadow-sm print:border-gray-200">
+                    <span className={`${i.color} ${i.text} font-black text-[9px] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm shrink-0 print-color-adjust`}>{i.code}</span>
+                    <span className="text-navy font-bold text-[11px] uppercase tracking-widest">{i.label}</span>
                 </div>
                 ))}
             </div>

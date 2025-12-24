@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { TEMPLATES } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData } from '@/data/initialData';
+import React, { useState, useEffect, useRef } from 'react';
+import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, LegendPageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
+import * as idb from 'idb-keyval'; // Import idb-keyval
 
 // Icons
-import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package } from '@/components/icons';
+import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize } from '@/components/icons';
 
 // Editors
 import { RecipeEditor } from '@/components/editors/RecipeEditor';
@@ -14,6 +15,8 @@ import { CoverEditor } from '@/components/editors/CoverEditor';
 import { IntroEditor } from '@/components/editors/IntroEditor';
 import { SectionEditor } from '@/components/editors/SectionEditor';
 import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
+import { LegendEditor } from '@/components/editors/LegendEditor';
+import { GlobalSettingsEditor } from '@/components/editors/GlobalSettingsEditor';
 
 // Views
 import { CoverView } from '@/components/views/CoverView';
@@ -25,25 +28,88 @@ import { ShoppingView } from '@/components/views/ShoppingView';
 import { LegendView } from '@/components/views/LegendView';
 
 const Editor: React.FC = () => {
-    const [pages, setPages] = useState<PageData[]>(() => {
-        const saved = localStorage.getItem('luiza_studio_v7_flex');
-        return saved ? JSON.parse(saved) : PDF_LUIZA_DATA;
-    });
-    const [selectedId, setSelectedId] = useState<string | null>(pages[0]?.id || null);
+    const [pages, setPages] = useState<PageData[]>([]);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showImporter, setShowImporter] = useState(false);
     const [importText, setImportText] = useState("");
     const [importLoading, setImportLoading] = useState(false);
     const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
     const [isGenerating, setIsGenerating] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     
+    // Theme State
+    const [theme, setTheme] = useState({
+        bg: '#FFF0F5',
+        text: '#2D2D2D',
+        accent: '#FF2D75'
+    });
+    const [showThemeEditor, setShowThemeEditor] = useState(false);
+
     const [dragItem, setDragItem] = useState<number | null>(null);
     const [dragOverItem, setDragOverItem] = useState<number | null>(null);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
+    
+    const DB_KEY = 'luiza_studio_db_v1';
 
     useEffect(() => {
-        localStorage.setItem('luiza_studio_v7_flex', JSON.stringify(pages));
-        setUnsavedChanges(true);
-    }, [pages]);
+        const initDB = async () => {
+            try {
+                const savedData = await idb.get(DB_KEY);
+                if (savedData) {
+                    if (savedData.pages) { // Check for new format
+                        setPages(savedData.pages);
+                        if (savedData.theme) setTheme(savedData.theme);
+                        setSelectedId(savedData.pages[0]?.id || null);
+                    } else { // Legacy format
+                        setPages(savedData);
+                        setSelectedId(savedData[0]?.id || null);
+                    }
+                } else {
+                    const oldData = localStorage.getItem('luiza_studio_v8_5_classic');
+                    if (oldData) {
+                        const parsed = JSON.parse(oldData);
+                        setPages(parsed);
+                        setSelectedId(parsed[0]?.id || null);
+                        await idb.set(DB_KEY, { pages: parsed, theme }); // Save in new format
+                    } else {
+                        setPages(PDF_LUIZA_DATA);
+                        setSelectedId(PDF_LUIZA_DATA[0].id);
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao carregar DB", err);
+                setPages(PDF_LUIZA_DATA);
+            }
+        };
+        initDB();
+    }, []);
+
+    useEffect(() => {
+        if (pages.length > 0) {
+            setIsSaving(true);
+            const timer = setTimeout(async () => {
+                try {
+                    await idb.set(DB_KEY, { pages, theme });
+                    setUnsavedChanges(true);
+                } catch (err) {
+                    console.error("Erro ao salvar", err);
+                    alert("Atenção: Erro ao salvar dados. Verifique o espaço em disco.");
+                } finally {
+                    setIsSaving(false);
+                }
+            }, 1000); 
+            return () => clearTimeout(timer);
+        }
+    }, [pages, theme]);
+
+    // Update CSS Variables
+    useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('--color-bg', theme.bg);
+        root.style.setProperty('--color-text', theme.text);
+        root.style.setProperty('--color-accent', theme.accent);
+        root.style.setProperty('--color-accent-light', theme.accent + '20'); // 12% opacity hex approximation
+    }, [theme]);
 
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => { if (unsavedChanges) { e.preventDefault(); e.returnValue = ''; } };
@@ -81,7 +147,8 @@ const Editor: React.FC = () => {
     };
 
     const exportProject = () => {
-        const blob = new Blob([JSON.stringify(pages, null, 2)], { type: 'application/json' });
+        const data = { pages, theme };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); 
         a.href = url; 
@@ -97,9 +164,15 @@ const Editor: React.FC = () => {
         reader.onload = (ev) => { 
             try { 
                 const data = JSON.parse(ev.target?.result as string); 
-                setPages(data); 
-                if (data.length > 0) setSelectedId(data[0].id); 
-                setUnsavedChanges(false); 
+                if (data.pages) {
+                    setPages(data.pages); 
+                    if(data.theme) setTheme(data.theme);
+                    if (data.pages.length > 0) setSelectedId(data.pages[0].id); 
+                    setUnsavedChanges(false); 
+                } else { // Legacy format support
+                    setPages(data);
+                    if (data.length > 0) setSelectedId(data[0].id); 
+                }
             } catch (err) { 
                 alert("Erro ao importar."); 
             } 
@@ -108,11 +181,10 @@ const Editor: React.FC = () => {
     };
 
     const handlePrint = async () => { 
-        alert("⚠️ DICA DE IMPRESSÃO:\n1. Use Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'"); 
-        const element = document.getElementById('preview-container');
-        if (element) {
-            await generatePdf(element, 'ebook_luiza.pdf');
-        }
+        document.fonts.ready.then(() => {
+            alert("⚠️ DICA PARA PDF DIGITAL:\n1. Use Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF"); 
+            window.print(); 
+        });
     };
 
     const organizeRecipeWithAI = async () => {
@@ -142,7 +214,7 @@ const Editor: React.FC = () => {
 
             if (magicModal.type === 'recipe') {
                 const newId = `p_${Date.now()}`;
-                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...JSON.parse(cleanText) }]);
+                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...JSON.parse(cleanText) as Partial<RecipePageData> }]);
                 setSelectedId(newId);
             } else if (magicModal.type === 'intro') {
                 updatePage({ text: cleanText });
@@ -164,13 +236,59 @@ const Editor: React.FC = () => {
     };
 
     const activePage = pages.find(p => p.id === selectedId);
+    
+    const getPageBackgroundColor = (pageType: TEMPLATES) => {
+        if (pageType === TEMPLATES.COVER) return theme.bg;
+        if (pageType === TEMPLATES.SHOPPING) return theme.surface || '#F9F9F9';
+        if (pageType === TEMPLATES.LEGEND) return theme.bg; 
+        return 'white';
+    };
 
     return (
         <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
             <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
             <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
 
+            <style>{`
+                .mobile-page { 
+                    width: 148mm; 
+                    height: 210mm; 
+                    color: ${theme.text}; 
+                    position: relative; 
+                    display: flex; 
+                    flex-direction: column; 
+                    padding: 0; 
+                    box-sizing: border-box; 
+                    overflow: hidden; 
+                    box-shadow: 0 10px 40px -10px rgba(74, 74, 74, 0.15); 
+                    border-radius: 2px; 
+                }
+                .safe-print-area {
+                    width: 100%;
+                    height: 100%;
+                    padding: 0;
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    z-index: 2;
+                }
+                .a4-page-texture { 
+                    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); 
+                    pointer-events: none; z-index: 1; 
+                }
+            `}</style>
+
             {/* MODAIS */}
+            {showThemeEditor && (
+                <GlobalSettingsEditor 
+                    theme={theme} 
+                    updateTheme={setTheme} 
+                    onClose={() => setShowThemeEditor(false)} 
+                />
+            )}
+
             {showImporter && (
                 <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
                     <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
@@ -207,13 +325,18 @@ const Editor: React.FC = () => {
                 <div className="p-6 border-b border-gray-100/50">
                     <div className="flex items-center gap-3 mb-5">
                         <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30"><BookOpen className="text-white" size={20} /></div>
-                        <div><h1 className="text-lg font-playfair italic font-bold leading-tight text-navy">Luiza<span className="text-accent">.Studio</span></h1><p className="text-[9px] uppercase tracking-widest text-navy/40 font-bold">Blush Edition v7.0</p></div>
+                        <div><h1 className="text-lg font-playfair italic font-bold leading-tight text-navy">Luiza<span className="text-accent">.Studio</span></h1><p className="text-[9px] uppercase tracking-widest text-navy/40 font-bold">Fixed Final v10.13</p></div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                     <div className="flex justify-center mb-2">
+                         {isSaving && <span className="text-[9px] font-black text-accent uppercase tracking-widest animate-pulse">Salvando...</span>}
+                         {!isSaving && <span className="text-[9px] font-bold text-navy/30 uppercase tracking-widest">Sincronizado</span>}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mb-2">
                         <button onClick={exportProject} className={`flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-bold border transition-all ${unsavedChanges ? 'bg-orange-50 text-orange-500 border-orange-100' : 'bg-surface text-navy/60 border-transparent hover:bg-gray-100'}`}><Save size={12}/> {unsavedChanges ? 'Salvar*' : 'Salvo'}</button>
                         <label className="flex items-center justify-center gap-2 p-2 bg-surface rounded-xl text-[10px] font-bold text-navy/60 cursor-pointer hover:bg-gray-100 transition-all"><FileUp size={12}/> Abrir <input type="file" className="hidden" onChange={importProject}/></label>
                     </div>
-                    <button onClick={loadPdfData} className="w-full mt-2 bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
+                     <button onClick={() => setShowThemeEditor(true)} className="w-full bg-surface hover:bg-gray-100 text-navy/60 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all mb-2"><Palette size={12} /> Configurar Cores</button>
+                    <button onClick={loadPdfData} className="w-full bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
@@ -250,7 +373,7 @@ const Editor: React.FC = () => {
                         <button onClick={() => addPage(TEMPLATES.LEGEND)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Legendas"><BookOpen size={14}/></button>
                         <button onClick={() => addPage(TEMPLATES.SHOPPING)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Compras"><Package size={14}/></button>
                     </div>
-                    <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Imprimir PDF</button>
+                    <button onClick={handlePrint} className="w-full bg-navy text-white py-3 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 hover:bg-navy/90 transition-colors shadow-lg"><Printer size={16}/> Salvar PDF (A5)</button>
                 </div>
             </aside>
 
@@ -263,15 +386,20 @@ const Editor: React.FC = () => {
                         <button onClick={() => { if(confirm("Apagar página?")) setPages(pages.filter(p => p.id !== selectedId)) }} className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 size={18}/></button>
                     </div>
                     <div className="space-y-6">
+                        {/* Titulo comum a todos exceto capas que tem campos proprios */}
+                        {activePage.type !== TEMPLATES.COVER && activePage.type !== TEMPLATES.SECTION && activePage.type !== TEMPLATES.TOC && activePage.type !== TEMPLATES.INTRO && activePage.type !== TEMPLATES.LEGEND && (
                         <div className="space-y-2">
                             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Título Principal</label>
                             <input className="w-full bg-white border border-gray-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none text-navy transition-all shadow-sm" value={activePage.title} onChange={e => updatePage({title: e.target.value})} />
                         </div>
-                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage} updatePage={updatePage} />}
+                        )}
+
+                        {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
                         {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
                         {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
                         {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
                         {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
+                        {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
                     </div>
                 </div>
                 ) : (
@@ -282,20 +410,31 @@ const Editor: React.FC = () => {
             {/* PREVIEW */}
             <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
                 {pages.map((p, idx) => (
-                <div key={p.id} id={`preview-${p.id}`} className={`a4-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'} ${p.type === TEMPLATES.COVER ? 'bg-cream' : ''}`}>
+                <div 
+                    key={p.id} 
+                    id={`preview-${p.id}`} 
+                    className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
+                    style={{ backgroundColor: getPageBackgroundColor(p.type) }}
+                >
                     <div className="a4-page-texture"></div>
-                    <div className="z-10 relative h-full flex flex-col">
-                    {p.type === TEMPLATES.COVER && <CoverView data={p} />}
-                    {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
-                    {p.type === TEMPLATES.RECIPE && <RecipeView data={p} />}
-                    {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
-                    {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
-                    {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
-                    {p.type === TEMPLATES.LEGEND && <LegendView />}
-                   
-                    <div className="mt-auto flex justify-between items-end text-[9px] text-navy/30 font-bold tracking-[0.2em] uppercase border-t border-navy/5 pt-4 w-full px-12 pb-8 no-print-footer">
-                        <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
-                    </div>
+                    {/* Wrapper "Safe Print Area" */}
+                    <div className="safe-print-area">
+                        <div className="z-10 relative h-full flex flex-col">
+                        {p.type === TEMPLATES.COVER && <CoverView data={p} />}
+                        {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
+                        
+                        {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
+                        {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} />}
+                        
+                        {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} />}
+                        {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
+                        {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
+                        {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
+                        
+                        <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
+                            <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
+                        </div>
+                        </div>
                     </div>
                 </div>
                 ))}

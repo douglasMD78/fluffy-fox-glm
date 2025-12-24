@@ -74,12 +74,26 @@ export default {
             200: '#fecdd3',
             500: '#f43f5e',
             900: '#881337',
+        },
+        // Cores das Tags
+        tag: {
+            cm: '#fb923c', // Laranja
+            lm: '#facc15', // Amarelo
+            a: '#4ade80',  // Verde
+            lt: '#2dd4bf', // Teal
+            j: '#60a5fa',  // Azul
+            s: '#f472b6',  // Rosa
+            ac: '#a78bfa', // Roxo
+            b: '#9ca3af',  // Cinza
         }
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        'soft': '1.5rem',
+        'organic': '2rem 0.5rem 2rem 0.5rem',
+        'organic-rev': '0.5rem 2rem 0.5rem 2rem',
       },
       keyframes: {
         "accordion-down": {
@@ -116,12 +130,17 @@ export default {
         lato: ['"Lato"', 'sans-serif'],
       },
       boxShadow: {
-        'glass': '0 8px 32px 0 rgba(255, 45, 117, 0.15)',
+        'glass': '0 8px 32px 0 rgba(255, 45, 117, 0.10)',
         'soft': '0 20px 40px -10px rgba(74, 74, 74, 0.05)',
-        'card-float': '0 20px 50px -15px rgba(45, 45, 45, 0.10)',
+        'card-float': '0 10px 30px -10px rgba(45, 45, 45, 0.08)',
         'glow': '0 0 20px rgba(255, 45, 117, 0.15)',
       }
     },
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: [
+    'bg-tag-cm', 'bg-tag-lm', 'bg-tag-a', 'bg-tag-lt', 
+    'bg-tag-j', 'bg-tag-s', 'bg-tag-ac', 'bg-tag-b',
+    'text-white', 'text-navy', 'p-4', 'p-8', 'p-12'
+  ]
 } satisfies Config;
