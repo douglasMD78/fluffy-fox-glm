@@ -94,7 +94,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ objectPosition: `${newX}% ${newY}%` });
     };
 
-    const isTwoColumnLayout = ['2', '7', '8', '9'].includes(activePage.layout);
+    // Atualizado para incluir todos os layouts de duas colunas
+    const isTwoColumnLayout = ['2', '3', '4', '5', '6', '7', '8', '9'].includes(activePage.layout);
 
     return (
         <div className="space-y-5">
