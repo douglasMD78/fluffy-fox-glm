@@ -382,7 +382,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         </div>
 
         <div className="grid grid-cols-4 gap-2">
-            {['cal', 'prot', 'carb', 'fat'].map(m => ( // Corrigido para 'fat'
+            {['cal', 'prot', 'carb', 'fat'].map(m => (
                 <div key={m} className="space-y-1 text-center">
                     <label className="text-[8px] font-black text-navy/40 uppercase">{m === 'cal' ? 'Kcal' : m === 'prot' ? 'Prot' : m === 'carb' ? 'Carb' : 'Gord'}</label>
                     <input className="w-full bg-white border border-gray-200 p-2 rounded-lg text-center text-xs text-navy font-bold focus:border-accent outline-none" value={activePage.nutrition[m as keyof typeof activePage.nutrition]} onChange={e => updatePage({ nutrition: { ...activePage.nutrition, [m]: e.target.value }})} />

@@ -6,9 +6,10 @@ interface NutritionDisplayProps {
     nutrition: RecipePageData['nutrition'];
     displayStyle: RecipePageData['nutritionDisplayStyle'];
     compact?: boolean;
+    macroNote?: string; // Adicionando macroNote aqui
 }
 
-export const NutritionDisplay: React.FC<NutritionDisplayProps> = ({ nutrition, displayStyle, compact = false }) => {
+export const NutritionDisplay: React.FC<NutritionDisplayProps> = ({ nutrition, displayStyle, compact = false, macroNote }) => {
     if (!nutrition || displayStyle === 'hidden') {
         return null;
     }
@@ -87,7 +88,7 @@ export const NutritionDisplay: React.FC<NutritionDisplayProps> = ({ nutrition, d
                         </div>
                     ))}
                 </div>
-                {nutrition.macroNote && <p className="text-[8px] text-navy/60 italic mt-2">{nutrition.macroNote}</p>}
+                {macroNote && <p className="text-[8px] text-navy/60 italic mt-2">{macroNote}</p>}
             </div>
         );
     }

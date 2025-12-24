@@ -103,7 +103,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
-                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} macroNote={data.macroNote} />
             </div>
         );
     }
@@ -159,7 +159,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
-                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} macroNote={data.macroNote} />
             </div>
         );
     }
@@ -210,7 +210,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
-                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} macroNote={data.macroNote} />
             </div>
         );
     }
@@ -260,7 +260,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
-                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} macroNote={data.macroNote} />
             </div>
         );
     }
@@ -276,8 +276,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <h1 className="font-playfair font-bold leading-none text-navy" style={{ fontSize: `${fs.title * 0.9}px` }}>{data.title}</h1>
                      </div>
                      
-                     {/* Mini Tabela de Macros Visual */}
-                     <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
+                     {/* Mini Tabela de Macros Visual (agora controlada pelo displayStyle) */}
+                     <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} macroNote={data.macroNote} />
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
@@ -317,6 +317,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                  </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                {/* Removido NutritionDisplay duplicado aqui */}
             </div>
         );
     }
@@ -368,7 +369,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
                 {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
                 {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
-                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} compact={true} />
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} compact={true} macroNote={data.macroNote} />
             </div>
         );
     }
@@ -394,7 +395,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         </div>
                         
                         {/* Mini Tabela de Macros Visual - MOVIDA PARA CÁ */}
-                        <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
+                        <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} macroNote={data.macroNote} />
                     </div>
                 </div>
 
@@ -453,7 +454,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
 
                     {/* Lado direito: Tabela de Macros Minimalista e Horizontal */}
-                    <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
+                    <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} macroNote={data.macroNote} />
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
