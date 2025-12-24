@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
-import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize } from '@/components/icons';
+import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive } from '@/components/icons'; // Importar HardDrive para armazenamento
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
-import { MarkdownTextarea } from '@/components/common/MarkdownTextarea'; // Importar o novo componente
+import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 
 interface RecipeEditorProps {
     activePage: RecipePageData;
@@ -311,26 +311,38 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 accentColor="accent"
             />
         </div>
-        <div className="space-y-2">
-            <MarkdownTextarea 
-                label="Dica da Nutri" 
-                rows={3} 
-                value={activePage.tips} 
-                onChange={value => updatePage({tips: value})} 
-                className="!bg-orange-50 !border-orange-100 focus:!border-orange-200"
-                accentColor="orange-200"
-            />
+        
+        {/* Controles de Posição para Dica e Armazenamento */}
+        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Sparkles size={12}/> Posição da Dica</label>
+            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
+                {['footer', 'ingredients', 'prep', 'hidden'].map(placement => (
+                    <button 
+                        key={placement}
+                        onClick={() => updatePage({ tipPlacement: placement as RecipePageData['tipPlacement'] })}
+                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.tipPlacement === placement ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                    >
+                        {placement === 'footer' ? 'Rodapé' : placement === 'ingredients' ? 'Ingred.' : placement === 'prep' ? 'Preparo' : 'Ocultar'}
+                    </button>
+                ))}
+            </div>
         </div>
-        <div className="space-y-2">
-            <MarkdownTextarea 
-                label="Armazenamento" 
-                rows={2} 
-                value={activePage.storage} 
-                onChange={value => updatePage({storage: value})} 
-                className="!bg-blue-50 !border-blue-100 focus:!border-blue-200"
-                accentColor="blue-200"
-            />
+
+        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><HardDrive size={12}/> Posição do Armazenamento</label>
+            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
+                {['footer', 'ingredients', 'prep', 'hidden'].map(placement => (
+                    <button 
+                        key={placement}
+                        onClick={() => updatePage({ storagePlacement: placement as RecipePageData['storagePlacement'] })}
+                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.storagePlacement === placement ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                    >
+                        {placement === 'footer' ? 'Rodapé' : placement === 'ingredients' ? 'Ingred.' : placement === 'prep' ? 'Preparo' : 'Ocultar'}
+                    </button>
+                ))}
+            </div>
         </div>
+
         <div className="grid grid-cols-4 gap-2">
             {['cal', 'prot', 'carb', 'Gord'].map(m => (
                 <div key={m} className="space-y-1 text-center">

@@ -22,7 +22,9 @@ export const INITIAL_DATA = {
         objectFit: 'cover', // Novo: 'cover' ou 'contain'
         objectPosition: 'center', // Novo: 'top', 'center', 'bottom', 'left', 'right', '50% 50%', etc.
         imageZoom: 100, // Novo: 100 (sem zoom), 120 (20% zoom), etc.
-        columnRatio: 'default' as ColumnRatioKey // Nova propriedade para proporção de colunas
+        columnRatio: 'default' as ColumnRatioKey, // Nova propriedade para proporção de colunas
+        tipPlacement: 'footer', // 'footer', 'ingredients', 'prep', 'hidden'
+        storagePlacement: 'footer' // 'footer', 'ingredients', 'prep', 'hidden'
     }
 };
 
@@ -80,7 +82,9 @@ export const PDF_LUIZA_DATA = [
         objectFit: 'cover',
         objectPosition: 'center',
         imageZoom: 100,
-        columnRatio: 'default' as ColumnRatioKey
+        columnRatio: 'default' as ColumnRatioKey,
+        tipPlacement: 'footer',
+        storagePlacement: 'footer'
     },
      { 
         id: 'p_final', 

@@ -5,6 +5,8 @@ import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS } from '@/lib/constan
 import { TagList } from './TagList';
 import { InfoFooter } from './InfoFooter';
 import { renderMarkdownText } from '@/utils/markdown';
+import { RecipeTip } from './RecipeTip'; // Importar RecipeTip
+import { RecipeStorage } from './RecipeStorage'; // Importar RecipeStorage
 
 interface RecipeViewProps {
     data: RecipePageData;
@@ -80,6 +82,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-1 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
@@ -91,6 +95,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
@@ -127,6 +133,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} />}
                     </div>
 
                     {/* Preparo */}
@@ -140,6 +148,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} />}
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
@@ -173,6 +183,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-1 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
@@ -184,6 +196,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
@@ -214,6 +228,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} />}
                     </div>
 
                     {/* Preparo */}
@@ -227,6 +243,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} />}
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
@@ -281,6 +299,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                     </div>
                     
                     {/* Preparo e Extras */}
@@ -294,19 +314,10 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
-                        
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         {/* Info Footer Simplificado (já que macros estão no topo) */}
-                        <div className="mt-auto pt-2 space-y-2">
-                             {data.tips && (
-                                <div className="flex gap-2 items-start p-2 rounded-xl border border-accent/20 bg-cream/50">
-                                    <div className="text-accent shrink-0 mt-0.5"><Sparkles size={10}/></div>
-                                    <div>
-                                        <h5 className="text-[10px] font-hand font-bold text-accent mb-0.5">Dica</h5>
-                                        <p className="text-[9px] text-navy/80 italic font-medium leading-tight">{renderMarkdownText(data.tips)}</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <InfoFooter data={data} compact={true} hideNutrition={true} />
                     </div>
                  </div>
             </div>
@@ -340,6 +351,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-0.5 pr-0.5">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
@@ -351,6 +364,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </p>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
@@ -401,6 +416,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-0.5 pr-0.5">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                     </div>
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
@@ -412,6 +429,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </p>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         <InfoFooter data={data} compact={true} hideNutrition={true} />
                     </div>
                 </div>
@@ -490,6 +509,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
                         </ul>
+                        {data.tipPlacement === 'ingredients' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'ingredients' && data.storage && <RecipeStorage storage={data.storage} />}
                     </div>
 
                     {/* Preparo */}
@@ -503,6 +524,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                                 </div>
                             ))}
                         </div>
+                        {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} />}
+                        {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} />}
                         <InfoFooter data={data} compact={true} hideNutrition={true} /> {/* Esconder nutrição no footer */}
                     </div>
                 </div>
