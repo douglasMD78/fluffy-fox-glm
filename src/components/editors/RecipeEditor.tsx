@@ -328,6 +328,17 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
+        <div className="space-y-2">
+            <MarkdownTextarea 
+                label="Dica da Nutri" 
+                rows={3} 
+                value={activePage.tips} 
+                onChange={value => updatePage({tips: value})} 
+                className="!bg-orange-50 !border-orange-100 focus:!border-orange-200"
+                accentColor="orange-200"
+            />
+        </div>
+
         <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><HardDrive size={12}/> Posição do Armazenamento</label>
             <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
@@ -341,6 +352,17 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </button>
                 ))}
             </div>
+        </div>
+
+        <div className="space-y-2">
+            <MarkdownTextarea 
+                label="Armazenamento" 
+                rows={2} 
+                value={activePage.storage} 
+                onChange={value => updatePage({storage: value})} 
+                className="!bg-blue-50 !border-blue-100 focus:!border-blue-200"
+                accentColor="blue-200"
+            />
         </div>
 
         {/* Controles de Estilo de Nutrição */}
@@ -360,7 +382,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         </div>
 
         <div className="grid grid-cols-4 gap-2">
-            {['cal', 'prot', 'carb', 'fat'].map(m => ( // Alterado 'Gord' para 'fat' para consistência com o objeto nutrition
+            {['cal', 'prot', 'carb', 'fat'].map(m => ( // Corrigido para 'fat'
                 <div key={m} className="space-y-1 text-center">
                     <label className="text-[8px] font-black text-navy/40 uppercase">{m === 'cal' ? 'Kcal' : m === 'prot' ? 'Prot' : m === 'carb' ? 'Carb' : 'Gord'}</label>
                     <input className="w-full bg-white border border-gray-200 p-2 rounded-lg text-center text-xs text-navy font-bold focus:border-accent outline-none" value={activePage.nutrition[m as keyof typeof activePage.nutrition]} onChange={e => updatePage({ nutrition: { ...activePage.nutrition, [m]: e.target.value }})} />
