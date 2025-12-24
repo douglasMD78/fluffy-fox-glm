@@ -311,38 +311,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 accentColor="accent"
             />
         </div>
-
-        {/* Controles de Posicionamento para Dica e Armazenamento */}
-        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
-            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Sparkles size={12}/> Posicionamento da Dica</label>
-            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
-                {['prep', 'ingredients', 'footer', 'hidden'].map(placement => (
-                    <button 
-                        key={placement}
-                        onClick={() => updatePage({ tipPlacement: placement as RecipePageData['tipPlacement'] })}
-                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.tipPlacement === placement ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
-                    >
-                        {placement === 'prep' ? 'Preparo' : placement === 'ingredients' ? 'Ingred.' : placement === 'footer' ? 'Rodapé' : 'Ocultar'}
-                    </button>
-                ))}
-            </div>
-        </div>
-
-        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
-            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Package size={12}/> Posicionamento Armazenamento</label>
-            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
-                {['prep', 'ingredients', 'footer', 'hidden'].map(placement => (
-                    <button 
-                        key={placement}
-                        onClick={() => updatePage({ storagePlacement: placement as RecipePageData['storagePlacement'] })}
-                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.storagePlacement === placement ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
-                    >
-                        {placement === 'prep' ? 'Preparo' : placement === 'ingredients' ? 'Ingred.' : placement === 'footer' ? 'Rodapé' : 'Ocultar'}
-                    </button>
-                ))}
-            </div>
-        </div>
-
         <div className="space-y-2">
             <MarkdownTextarea 
                 label="Dica da Nutri" 
