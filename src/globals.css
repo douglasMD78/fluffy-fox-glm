@@ -55,6 +55,10 @@
     --color-text: #2D2D2D;
     --color-accent: #FF2D75;
     --color-accent-light: #FF2D7520; /* 12% opacity of accent */
+
+    /* Cover Page Specific Colors */
+    --color-cover-title-text: #5d4037;
+    --color-cover-divider-bg: #8d6e63;
   }
 
   .dark {

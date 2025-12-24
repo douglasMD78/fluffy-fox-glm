@@ -30,14 +30,18 @@ import { LegendView } from '@/components/views/LegendView';
 // Theme Styles
 import { ThemeStyles } from '@/components/ThemeStyles';
 
+// Utils
+import { getPageBackgroundColor } from '@/utils/pageStyles';
+
+
 const Editor: React.FC = () => {
     const [pages, setPages] = useState<PageData[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showImporter, setShowImporter] = useState(false);
     const [importText, setImportText] = useState("");
-    const [importLoading, setImportLoading] = useState(false);
+    const [importLoading, setIsGenerating] = useState(false);
     const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
-    const [isGenerating, setIsGenerating] = useState(false);
+    const [isGenerating, setMagicLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     
     // Theme State
@@ -192,7 +196,7 @@ const Editor: React.FC = () => {
 
     const organizeRecipeWithAI = async () => {
         if (!importText.trim()) return;
-        setImportLoading(true);
+        setMagicLoading(true); // Use setMagicLoading for AI operations
         try {
             const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "...", "tips": "...", "storage": "..." }. Sem markdown.`);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -200,12 +204,12 @@ const Editor: React.FC = () => {
             const newId = `p_${Date.now()}`;
             const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...recipeData };
             setPages([...pages, pageData]); setSelectedId(newId); setShowImporter(false); setImportText("");
-        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setImportLoading(false); }
+        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setMagicLoading(false); }
     };
 
     const handleMagicSubmit = async () => {
         if (!magicModal.prompt.trim()) return;
-        setIsGenerating(true);
+        setMagicLoading(true); // Use setMagicLoading for AI operations
         try {
             let prompt = "";
             if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Sem markdown.`;
@@ -227,7 +231,7 @@ const Editor: React.FC = () => {
             }
            
             setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
-        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsGenerating(false); }
+        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setMagicLoading(false); }
     };
 
     const openMagicModal = (type: string) => {
@@ -240,13 +244,6 @@ const Editor: React.FC = () => {
 
     const activePage = pages.find(p => p.id === selectedId);
     
-    const getPageBackgroundColor = (pageType: TEMPLATES) => {
-        if (pageType === TEMPLATES.COVER) return theme.bg;
-        if (pageType === TEMPLATES.SHOPPING) return theme.surface || '#F9F9F9';
-        if (pageType === TEMPLATES.LEGEND) return theme.bg; 
-        return 'white';
-    };
-
     return (
         <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
             <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
@@ -270,8 +267,8 @@ const Editor: React.FC = () => {
                         <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
                         <div className="flex justify-end gap-2">
                             <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
-                            <button onClick={organizeRecipeWithAI} disabled={importLoading || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
-                                {importLoading ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {importLoading ? "Organizando..." : "Organizar com IA"}
+                            <button onClick={organizeRecipeWithAI} disabled={isGenerating || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
+                                {isGenerating ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isGenerating ? "Organizando..." : "Organizar com IA"}
                             </button>
                         </div>
                     </div>
@@ -388,12 +385,11 @@ const Editor: React.FC = () => {
                     key={p.id} 
                     id={`preview-${p.id}`} 
                     className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
-                    style={{ backgroundColor: getPageBackgroundColor(p.type) }}
+                    style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
                 >
                     <div className="a4-page-texture"></div>
                     {/* Wrapper "Safe Print Area" */}
-                    <div className="safe-print-area">
-                        <div className="z-10 relative h-full flex flex-col">
+                    <div className="z-10 relative h-full flex flex-col">
                         {p.type === TEMPLATES.COVER && <CoverView data={p} />}
                         {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
                         
@@ -407,7 +403,6 @@ const Editor: React.FC = () => {
                         
                         <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
                             <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
-                        </div>
                         </div>
                     </div>
                 </div>

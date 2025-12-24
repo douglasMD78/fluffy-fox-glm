@@ -15,13 +15,13 @@ export const CoverView: React.FC<CoverViewProps> = ({ data }) => {
             </div>
 
             <div className="text-center relative z-10 px-4">
-                <h1 className="font-playfair text-[50px] italic leading-none text-[#5d4037] mb-4">{data.title}</h1>
-                <div className="w-12 h-px bg-[#8d6e63] mx-auto opacity-50 mb-4"></div>
-                <h2 className="text-xl font-light tracking-[0.5em] text-[#5d4037] uppercase font-lato scale-90">{data.subtitle}</h2>
+                <h1 className="font-playfair text-[50px] italic leading-none mb-4" style={{ color: 'var(--color-cover-title-text)' }}>{data.title}</h1>
+                <div className="w-12 h-px mx-auto opacity-50 mb-4" style={{ backgroundColor: 'var(--color-cover-divider-bg)' }}></div>
+                <h2 className="text-xl font-light tracking-[0.5em] uppercase font-lato scale-90" style={{ color: 'var(--color-cover-title-text)' }}>{data.subtitle}</h2>
             </div>
 
-            <div className="border border-[#5d4037]/20 px-6 py-3 rounded-full bg-white/40 backdrop-blur-sm mb-12 shadow-sm relative z-10 print:bg-white">
-                <span className="text-xs font-medium tracking-[0.3em] uppercase text-[#5d4037]">{data.author}</span>
+            <div className="px-6 py-3 rounded-full bg-white/40 backdrop-blur-sm mb-12 shadow-sm relative z-10 print:bg-white border border-opacity-20" style={{ borderColor: 'var(--color-cover-title-text)' }}>
+                <span className="text-xs font-medium tracking-[0.3em] uppercase" style={{ color: 'var(--color-cover-title-text)' }}>{data.author}</span>
             </div>
         </div>
     );
