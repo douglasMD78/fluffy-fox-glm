@@ -4,7 +4,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
     const opt = {
         margin: [0, 0, 0, 0], // Top, Left, Bottom, Right
         filename: filename,
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 0.9 }, // Ajustado de 0.98 para 0.9
         html2canvas: { 
             scale: 2, // Increase scale for better quality
             useCORS: true, // Enable CORS for images
