@@ -34,14 +34,14 @@ import { ThemeStyles } from '@/components/ThemeStyles';
 import { getPageBackgroundColor } from '@/utils/pageStyles';
 
 
-const Editor: React.FC = () => {
+const Editor = () => { // Removido React.FC
     const [pages, setPages] = useState<PageData[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [showImporter, setShowImporter] = useState(false);
     const [importText, setImportText] = useState("");
-    const [isImporting, setIsImporting] = useState(false); // Renomeado de importLoading
+    const [isImporting, setIsImporting] = useState(false);
     const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
-    const [isMagicGenerating, setIsMagicGenerating] = useState(false); // Renomeado de isGenerating
+    const [isMagicGenerating, setIsMagicGenerating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     
     // Theme State
@@ -196,7 +196,7 @@ const Editor: React.FC = () => {
 
     const organizeRecipeWithAI = async () => {
         if (!importText.trim()) return;
-        setIsImporting(true); // Usando a nova variável de estado
+        setIsImporting(true);
         try {
             const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "...", "tips": "...", "storage": "..." }. Sem markdown.`);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -204,12 +204,12 @@ const Editor: React.FC = () => {
             const newId = `p_${Date.now()}`;
             const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...recipeData };
             setPages([...pages, pageData]); setSelectedId(newId); setShowImporter(false); setImportText("");
-        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setIsImporting(false); } // Usando a nova variável de estado
+        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setIsImporting(false); }
     };
 
     const handleMagicSubmit = async () => {
         if (!magicModal.prompt.trim()) return;
-        setIsMagicGenerating(true); // Usando a nova variável de estado
+        setIsMagicGenerating(true);
         try {
             let prompt = "";
             if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Sem markdown.`;
@@ -231,7 +231,7 @@ const Editor: React.FC = () => {
             }
            
             setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
-        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsMagicGenerating(false); } // Usando a nova variável de estado
+        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsMagicGenerating(false); }
     };
 
     const openMagicModal = (type: string) => {
@@ -327,7 +327,7 @@ const Editor: React.FC = () => {
                         onDragEnter={() => setDragOverItem(i)}
                         onDragEnd={handleSort}
                         onDragOver={(e) => e.preventDefault()}
-                        onClick={() => handlePageClick(p.id)} {/* Updated onClick handler */}
+                        onClick={() => handlePageClick(p.id)}
                         className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
                     >
                         <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
