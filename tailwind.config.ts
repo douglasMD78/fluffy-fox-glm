@@ -65,7 +65,7 @@ export default {
         // Custom colors from your inline config
         cream: '#FFF0F5',
         navy: '#2D2D2D',
-        // REMOVED: accent: '#FF2D75', // This was a duplicate and caused conflict
+        accent: '#FF2D75',
         pastel: '#FFB7C5',
         surface: '#F9F9F9',
         rose: {
