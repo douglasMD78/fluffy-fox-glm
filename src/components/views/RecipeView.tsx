@@ -21,7 +21,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     };
     
     const p = SPACING_MAP[data.spacing || 'normal'];
-    // const imageZoom = data.imageZoom || 100; // REMOVIDO
 
     const renderVideoOverlay = (imageContainerClasses: string) => {
         if (data.videoLink && data.videoDisplayStyle === 'overlay') {
@@ -39,14 +38,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         }
         return null;
     };
-
-    // REMOVIDO: Apply the object-position and transform: scale styles
-    // const currentImageAlignment = data.imageAlignment || '50% 50%';
-    // const imageStyle = {
-    //     objectPosition: currentImageAlignment,
-    //     transform: `scale(${imageZoom / 100})`,
-    //     transformOrigin: 'center center' // Ensure scaling is from the center
-    // };
 
     // Layout 6: Macros no Topo (Novo)
     if (layout === '6') {
@@ -82,8 +73,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
-                <div className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
-                     {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="aspect-[21/9] w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
+                <div className="w-full mb-4 shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 aspect-[21/9]"> {/* Adicionado aspect-[21/9] */}
+                     {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={32}/></div>}
                      {renderVideoOverlay("aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100")}
                 </div>
 
@@ -132,8 +123,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${p} font-sans overflow-hidden`}>
                 <div className="flex gap-3 mb-3 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 aspect-square`}> {/* Adicionado aspect-square */}
+                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={24}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center">
@@ -177,8 +168,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
         return (
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100 aspect-square`}> {/* Adicionado aspect-square */}
+                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="w-full h-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
@@ -223,8 +214,8 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
             <div className={`h-full flex flex-col ${optimizedP} font-sans`}>
                 {/* Cabeçalho com Imagem, Título e Macros */}
                 <div className="flex gap-2 mb-2 shrink-0">
-                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100`}>
-                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="aspect-square w-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
+                    <div className={`${IMG_SIZES.side[imgSize]} shrink-0 relative overflow-hidden rounded-xl shadow-sm border border-gray-100 aspect-square`}> {/* Adicionado aspect-square */}
+                        {data.image ? <img src={data.image} className={`w-full h-full object-cover`} /> : <div className="w-full h-full rounded-xl bg-gray-100 flex items-center justify-center text-pastel"><ImageIcon size={20}/></div>}
                         {renderVideoOverlay(`${IMG_SIZES.side[imgSize]} shrink-0`)}
                     </div>
                     <div className="flex-1 flex flex-col justify-center py-0.5">
