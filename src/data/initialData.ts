@@ -18,8 +18,6 @@ export const INITIAL_DATA = {
         imageSize: 3, // Default image size (mapped to IMG_SIZES)
         spacing: 'normal', // Default spacing (mapped to SPACING_MAP)
         videoDisplayStyle: 'button', // New: Default video display style
-        imageAlignment: '50% 50%', // NEW: Default image alignment as percentages
-        imageZoom: 100 // NEW: Default image zoom (100% = no zoom)
     }
 };
 
@@ -74,8 +72,6 @@ export const PDF_LUIZA_DATA = [
         imageSize: 3,
         spacing: 'normal',
         videoDisplayStyle: 'button', // New: Default video display style
-        imageAlignment: '50% 50%', // NEW: Default image alignment as percentages
-        imageZoom: 100 // NEW: Default image zoom (100% = no zoom)
     },
      { 
         id: 'p_final', 

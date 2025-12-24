@@ -27,12 +27,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ imageSize: newValue });
     };
 
-    const changeImageZoom = (delta: number) => {
-        const currentZoom = activePage.imageZoom || 100;
-        const newZoom = Math.max(100, Math.min(300, currentZoom + delta * 10)); // Zoom de 100% a 300%, passos de 10%
-        updatePage({ imageZoom: newZoom });
-    };
-
     return (
         <div className="space-y-5">
         
@@ -84,14 +78,39 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <button onClick={() => changeImageSize(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
                     </div>
                 </div>
-                <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
-                    <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Zoom Imagem</span>
-                    <div className="flex items-center gap-2">
-                        <button onClick={() => changeImageZoom(-1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Minus size={12}/></button>
-                        <span className="text-xs font-mono font-bold w-8 text-center">{(activePage.imageZoom || 100)}%</span>
-                        <button onClick={() => changeImageZoom(1)} className="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-navy"><Plus size={12}/></button>
-                    </div>
-                </div>
+            </div>
+        </div>
+
+        {/* Image Alignment Controls - REINTRODUZIDO */}
+        <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
+            <label className="text-[10px] font-black text-navy/40 uppercase tracking-widest flex items-center gap-2"><Move size={12}/> Alinhamento da Imagem</label>
+            <div className="grid grid-cols-3 gap-1">
+                {['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right'].map((alignValue) => (
+                    <button
+                        key={alignValue}
+                        onClick={() => updatePage({ imageAlignment: alignValue })}
+                        className={`flex items-center justify-center p-2 rounded-lg text-[9px] font-bold transition-all ${
+                            (activePage.imageAlignment || 'center') === alignValue // Default to 'center' if not set
+                                ? 'bg-accent text-white shadow-md'
+                                : 'bg-surface text-navy/60 hover:bg-gray-100'
+                        }`}
+                        title={`Alinhar ${alignValue}`}
+                    >
+                        <div className={`w-3 h-3 border border-current rounded-sm relative`}>
+                            <div className={`absolute w-1 h-1 bg-current rounded-full ${
+                                alignValue === 'top left' ? 'top-0 left-0' :
+                                alignValue === 'top' ? 'top-0 left-1/2 -translate-x-1/2' :
+                                alignValue === 'top right' ? 'top-0 right-0' :
+                                alignValue === 'left' ? 'top-1/2 left-0 -translate-y-1/2' :
+                                alignValue === 'center' ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' :
+                                alignValue === 'right' ? 'top-1/2 right-0 -translate-y-1/2' :
+                                alignValue === 'bottom left' ? 'bottom-0 left-0' :
+                                alignValue === 'bottom' ? 'bottom-0 left-1/2 -translate-x-1/2' :
+                                alignValue === 'bottom right' ? 'bottom-0 right-0' : ''
+                            }`}></div>
+                        </div>
+                    </button>
+                ))}
             </div>
         </div>
 
