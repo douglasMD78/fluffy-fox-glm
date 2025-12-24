@@ -7,6 +7,7 @@ import { InfoFooter } from './InfoFooter';
 import { renderMarkdownText } from '@/utils/markdown';
 import { RecipeTip } from './RecipeTip'; // Importar RecipeTip
 import { RecipeStorage } from './RecipeStorage'; // Importar RecipeStorage
+import { NutritionDisplay } from './NutritionDisplay'; // Importar NutritionDisplay
 
 interface RecipeViewProps {
     data: RecipePageData;
@@ -100,6 +101,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
             </div>
         );
     }
@@ -153,6 +157,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
             </div>
         );
     }
@@ -201,6 +208,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
             </div>
         );
     }
@@ -248,6 +258,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} />
             </div>
         );
     }
@@ -264,25 +277,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                      </div>
                      
                      {/* Mini Tabela de Macros Visual */}
-                     <div className="flex gap-2">
-                        <div className="text-center">
-                            <span className="block text-[14px] font-black text-accent leading-none">{data.nutrition?.cal || '000'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Kcal</span>
-                        </div>
-                        <div className="h-6 w-px bg-gray-200"></div>
-                        <div className="text-center">
-                            <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.prot || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Prot</span>
-                        </div>
-                         <div className="text-center">
-                            <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.carb || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Carb</span>
-                        </div>
-                         <div className="text-center">
-                            <span className="block text-[14px] font-black text-navy leading-none">{data.nutrition?.fat || '0g'}</span>
-                            <span className="block text-[8px] uppercase font-bold text-navy/40">Gord</span>
-                        </div>
-                     </div>
+                     <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
                 </div>
 
                 {/* 2. Imagem Centralizada Larga */}
@@ -317,9 +312,11 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
                         {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
                         {/* Info Footer Simplificado (já que macros estão no topo) */}
-                        <InfoFooter data={data} compact={true} hideNutrition={true} />
+                        <InfoFooter data={data} compact={true} />
                     </div>
                  </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
             </div>
         );
     }
@@ -369,6 +366,9 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
+                <NutritionDisplay nutrition={data.nutrition} displayStyle={data.nutritionDisplayStyle} compact={true} />
             </div>
         );
     }
@@ -394,18 +394,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         </div>
                         
                         {/* Mini Tabela de Macros Visual - MOVIDA PARA CÁ */}
-                        {data.nutrition && (
-                            <div className="mt-auto p-1 rounded-lg border border-accent/20 bg-cream/30">
-                                <div className="flex justify-between items-center text-center">
-                                    {Object.entries(data.nutrition || {}).map(([key, val]) => (
-                                        <div key={key} className="flex-1 border-r border-accent/20 last:border-0 group">
-                                            <span className="block text-[10px] font-black text-accent leading-none">{val}</span>
-                                            <span className="block text-[7px] uppercase text-rose-400 font-bold tracking-widest mt-0.5">{key === 'cal' ? 'Kcal' : key === 'fat' ? 'Gord' : key}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                        <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
                     </div>
                 </div>
 
@@ -431,9 +420,11 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         </div>
                         {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} compact={true} />}
                         {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} compact={true} />}
-                        <InfoFooter data={data} compact={true} hideNutrition={true} />
+                        <InfoFooter data={data} compact={true} />
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
             </div>
         );
     }
@@ -462,43 +453,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     </div>
 
                     {/* Lado direito: Tabela de Macros Minimalista e Horizontal */}
-                    {data.nutrition && (
-                        <div className="flex items-center gap-2 text-right mt-1"> {/* Ajustado para horizontal e mais compacto */}
-                            {data.nutrition.cal && (
-                                <div className="flex items-baseline gap-0.5">
-                                    <span className="text-[10px] font-black text-accent leading-none">{data.nutrition.cal}</span>
-                                    <span className="text-[6px] uppercase text-rose-400 font-bold tracking-widest">Kcal</span>
-                                </div>
-                            )}
-                            {data.nutrition.prot && (
-                                <>
-                                    <div className="h-4 w-px bg-gray-200"></div>
-                                    <div className="flex items-baseline gap-0.5">
-                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.prot}</span>
-                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Prot</span>
-                                    </div>
-                                </>
-                            )}
-                            {data.nutrition.carb && (
-                                <>
-                                    <div className="h-4 w-px bg-gray-200"></div>
-                                    <div className="flex items-baseline gap-0.5">
-                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.carb}</span>
-                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Carb</span>
-                                    </div>
-                                </>
-                            )}
-                            {data.nutrition.fat && (
-                                <>
-                                    <div className="h-4 w-px bg-gray-200"></div>
-                                    <div className="flex items-baseline gap-0.5">
-                                        <span className="text-[10px] font-black text-navy leading-none">{data.nutrition.fat}</span>
-                                        <span className="text-[6px] uppercase text-navy/40 font-bold tracking-widest">Gord</span>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    )}
+                    <NutritionDisplay nutrition={data.nutrition} displayStyle={'inline-compact'} />
                 </div>
 
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
@@ -526,9 +481,11 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         </div>
                         {data.tipPlacement === 'prep' && data.tips && <RecipeTip tips={data.tips} />}
                         {data.storagePlacement === 'prep' && data.storage && <RecipeStorage storage={data.storage} />}
-                        <InfoFooter data={data} compact={true} hideNutrition={true} /> {/* Esconder nutrição no footer */}
+                        <InfoFooter data={data} compact={true} /> {/* Esconder nutrição no footer */}
                     </div>
                 </div>
+                {data.tipPlacement === 'footer' && data.tips && <RecipeTip tips={data.tips} />}
+                {data.storagePlacement === 'footer' && data.storage && <RecipeStorage storage={data.storage} />}
             </div>
         );
     }

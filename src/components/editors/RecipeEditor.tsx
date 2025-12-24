@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
-import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive } from '@/components/icons'; // Importar HardDrive para armazenamento
+import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain } from '@/components/icons'; // Importar Brain para nutrição
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 
@@ -343,10 +343,26 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
+        {/* Controles de Estilo de Nutrição */}
+        <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Brain size={12}/> Estilo da Nutrição</label>
+            <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
+                {['default', 'inline-compact', 'block-detailed', 'hidden'].map(style => (
+                    <button 
+                        key={style}
+                        onClick={() => updatePage({ nutritionDisplayStyle: style as RecipePageData['nutritionDisplayStyle'] })}
+                        className={`flex-1 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.nutritionDisplayStyle === style ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
+                    >
+                        {style === 'default' ? 'Padrão' : style === 'inline-compact' ? 'Compacto' : style === 'block-detailed' ? 'Detalhado' : 'Ocultar'}
+                    </button>
+                ))}
+            </div>
+        </div>
+
         <div className="grid grid-cols-4 gap-2">
-            {['cal', 'prot', 'carb', 'Gord'].map(m => (
+            {['cal', 'prot', 'carb', 'fat'].map(m => ( // Alterado 'Gord' para 'fat' para consistência com o objeto nutrition
                 <div key={m} className="space-y-1 text-center">
-                    <label className="text-[8px] font-black text-navy/40 uppercase">{m}</label>
+                    <label className="text-[8px] font-black text-navy/40 uppercase">{m === 'cal' ? 'Kcal' : m === 'prot' ? 'Prot' : m === 'carb' ? 'Carb' : 'Gord'}</label>
                     <input className="w-full bg-white border border-gray-200 p-2 rounded-lg text-center text-xs text-navy font-bold focus:border-accent outline-none" value={activePage.nutrition[m as keyof typeof activePage.nutrition]} onChange={e => updatePage({ nutrition: { ...activePage.nutrition, [m]: e.target.value }})} />
                 </div>
             ))}
