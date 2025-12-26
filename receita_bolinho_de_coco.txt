@@ -1,0 +1,26 @@
+{
+  "title": "BOLINHO DE COCO",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "8 fatias",
+  "nutrition": {
+    "cal": "120",
+    "prot": "6g",
+    "carb": "5g",
+    "fat": "8g"
+  },
+  "macroNote": "Essa tabela representa por fatia. Essa receita rende 8 fatias.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "4 ovos\n50g de coco ralado\n1/2 xícara de leite de coco\n3 colheres de sopa de xilitol (ou o adoçante de sua preferência)\n1/2 xícara de leite em pó\n1 colher de sopa de fermento em pó"
+    },
+    {
+      "title": "Para a cobertura",
+      "items": "Leite em pó (ou whey protein)\nÁgua (para ajustar a consistência)\nCoco ralado (para decorar)"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Misture os ovos, adicione o coco ralado e bata bem. Junte o leite de coco, xilitol, leite em pó ou whey e misture até ficar homogêneo. Por último, adicione o fermento e misture delicadamente.\nUnte a forma: Use óleo de coco e farinha em uma forma de 13 cm.\nAsse: Forno ou airfryer pré-aquecido a 180°C por 20-25 minutos. Teste com o palito; se sair limpo, está pronto.\nPrepare a cobertura: Misture leite em pó (ou whey) com água até virar creme. Cubra o bolo, finalize com coco ralado e leve à geladeira para firmar. Sirva!",
+  "tips": "",
+  "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**.\nEvite armazenar a cobertura separada por muito tempo, pois pode alterar a textura."
+}
