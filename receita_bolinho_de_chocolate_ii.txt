@@ -1,0 +1,22 @@
+{
+  "title": "BOLINHO DE CHOCOLATE II",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "6 fatias",
+  "nutrition": {
+    "cal": "69",
+    "prot": "2.9g",
+    "carb": "10g",
+    "fat": "2.7g"
+  },
+  "macroNote": "Tabela nutricional por fatia. Essa receita rende 6 fatias",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 ovos\n2 bananas maduras\n2 colheres de sopa de cacau em pó\n1 colher de sobremesa de fermento em pó\nMorangos picados (a gosto)\nOpcional: Pedacinhos de chocolate 70% para um sabor extra"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Amasse as bananas em uma tigela até formar um purê. Adicione os ovos e o cacau em pó, misturando bem até obter uma massa homogênea. Acrescente o fermento e misture delicadamente. Se quiser, adicione pedacinhos de chocolate 70% para um sabor extra.\nAsse: Unte uma forma e despeje a massa. Distribua os morangos picados por cima. Leve ao forno pré-aquecido a 200°C por 25 minutos até dourar.\nSirva: Deixe esfriar um pouco antes de servir e aproveite esse bolinho saudável e delicioso!",
+  "tips": "",
+  "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**"
+}
