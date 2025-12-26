@@ -117,7 +117,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-1.5 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span> 
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>
@@ -174,7 +173,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span>
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>
@@ -226,7 +224,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-1.5 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span>
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>
@@ -277,7 +274,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span>
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>
@@ -334,7 +330,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span>
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>
@@ -388,7 +383,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">●</span>
                                     <span>{renderMarkdownText(step)}</span>
                                 </p>
@@ -446,7 +440,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">●</span>
                                     <span>{renderMarkdownText(step)}</span>
                                 </p>
@@ -508,7 +501,6 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
                             {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
-                                    {/* Removido o i+1. para que a numeração venha da IA */}
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">●</span>
                                     <p>{renderMarkdownText(step)}</p>
                                 </div>

@@ -1,5 +1,62 @@
 import { TEMPLATES } from "@/lib/constants";
 import { ColumnRatioKey } from "@/lib/constants";
+import { z } from "zod"; // Importar Zod
+
+// Esquema Zod para validar a saída da IA para receitas
+export const recipeSchema = z.object({
+    title: z.string().min(1, "Título é obrigatório."),
+    category: z.string().optional(),
+    code: z.string().optional(),
+    yield: z.string().optional(),
+    nutrition: z.object({
+        cal: z.string().regex(/^\d+$/, "Calorias deve ser um número.").optional(),
+        prot: z.string().regex(/^\d+(\.\d+)?g?$/, "Proteínas deve ser um número.").optional(),
+        carb: z.string().regex(/^\d+(\.\d+)?g?$/, "Carboidratos deve ser um número.").optional(),
+        fat: z.string().regex(/^\d+(\.\d+)?g?$/, "Gorduras deve ser um número.").optional(),
+    }).optional(),
+    macroNote: z.string().optional(),
+    ingredientGroups: z.array(z.object({
+        title: z.string().optional(),
+        items: z.string().min(1, "Lista de ingredientes não pode ser vazia."),
+    })).min(1, "Pelo menos um grupo de ingredientes é obrigatório."),
+    prepSteps: z.string().min(1, "Modo de preparo é obrigatório."),
+    tips: z.string().optional(),
+    storage: z.string().optional(),
+    image: z.string().optional(),
+    videoLink: z.string().optional(),
+    layout: z.string().optional(),
+    fontSizes: z.object({
+        title: z.number().optional(),
+        ingredients: z.number().optional(),
+        prep: z.number().optional(),
+    }).optional(),
+    imageSize: z.number().optional(),
+    spacing: z.string().optional(),
+    videoDisplayStyle: z.string().optional(),
+    objectFit: z.string().optional(),
+    objectPosition: z.string().optional(),
+    imageZoom: z.number().optional(),
+    columnRatio: z.string().optional(),
+    tipPlacement: z.string().optional(),
+    storagePlacement: z.string().optional(),
+    nutritionDisplayStyle: z.string().optional(),
+    titleAlignment: z.string().nullable().optional(),
+}).partial(); // Usar .partial() para permitir que a IA não retorne todos os campos
+
+// Esquema Zod para validar a saída da IA para intro
+export const introSchema = z.object({
+    text: z.string().min(1, "O texto da introdução é obrigatório."),
+}).partial();
+
+// Esquema Zod para validar a saída da IA para shopping
+export const shoppingSchema = z.object({
+    hortifruti: z.string().optional(),
+    acougue: z.string().optional(),
+    laticinios: z.string().optional(),
+    padaria: z.string().optional(),
+    mercearia: z.string().optional(),
+}).partial();
+
 
 export const INITIAL_DATA = {
     [TEMPLATES.COVER]: { title: "Receitinhas", subtitle: "FIT", author: "@LU.MTSFIT", edition: "EDIÇÃO ESPECIAL" },

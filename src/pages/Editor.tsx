@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, LegendPageData } from '@/data/initialData';
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
 import * as idb from 'idb-keyval'; // Import idb-keyval
+import { toast } from 'sonner'; // Importar toast
 
 // Icons
 import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize } from '@/components/icons';
@@ -85,6 +86,7 @@ const Editor = () => {
                 }
             } catch (err) {
                 console.error("Erro ao carregar DB", err);
+                toast.error("Erro ao carregar dados salvos. Carregando dados padrão.");
                 setPages(PDF_LUIZA_DATA);
             }
         };
@@ -100,7 +102,7 @@ const Editor = () => {
                     setUnsavedChanges(true);
                 } catch (err) {
                     console.error("Erro ao salvar", err);
-                    alert("Atenção: Erro ao salvar dados. Verifique o espaço em disco.");
+                    toast.error("Erro ao salvar dados. Verifique o espaço em disco ou tente novamente.");
                 } finally {
                     setIsSaving(false);
                 }
@@ -129,6 +131,7 @@ const Editor = () => {
             setPages(JSON.parse(JSON.stringify(PDF_LUIZA_DATA))); 
             setSelectedId(PDF_LUIZA_DATA[0].id); 
             setUnsavedChanges(false);
+            toast.success("Dados restaurados para o padrão com sucesso!");
         } 
     };
 
@@ -137,6 +140,7 @@ const Editor = () => {
         const pageData = { id: newId, type, ...JSON.parse(JSON.stringify(INITIAL_DATA[type])) }; 
         setPages([...pages, pageData]); 
         setSelectedId(newId); 
+        toast.success(`Página de ${type} adicionada!`);
     };
 
     const updatePage = (newData: Partial<PageData>) => { 
@@ -151,6 +155,7 @@ const Editor = () => {
         setDragItem(null); 
         setDragOverItem(null);
         setPages(_pages);
+        toast.info("Páginas reordenadas.");
     };
 
     const exportProject = () => {
@@ -162,6 +167,7 @@ const Editor = () => {
         a.download = `ebook_luiza_projeto.json`; 
         a.click();
         setUnsavedChanges(false);
+        toast.success("Projeto exportado com sucesso!");
     };
 
     const importProject = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,12 +182,15 @@ const Editor = () => {
                     if(data.theme) setTheme(data.theme);
                     if (data.pages.length > 0) setSelectedId(data.pages[0].id); 
                     setUnsavedChanges(false); 
+                    toast.success("Projeto importado com sucesso!");
                 } else { // Legacy format support
                     setPages(data);
                     if (data.length > 0) setSelectedId(data[0].id); 
+                    toast.success("Projeto importado (formato antigo) com sucesso!");
                 }
             } catch (err) { 
-                alert("Erro ao importar."); 
+                console.error("Erro ao importar projeto:", err);
+                toast.error("Erro ao importar projeto. Verifique se o arquivo é válido."); 
             } 
         };
         reader.readAsText(file);
@@ -189,50 +198,124 @@ const Editor = () => {
 
     const handlePrint = async () => { 
         document.fonts.ready.then(() => {
-            alert("⚠️ DICA PARA PDF DIGITAL:\n1. Use Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF"); 
+            toast.info("⚠️ DICA PARA PDF DIGITAL:\n1. Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF", { duration: 8000 }); 
             window.print(); 
         });
     };
 
     const organizeRecipeWithAI = async () => {
-        if (!importText.trim()) return;
+        if (!importText.trim()) {
+            toast.info("Por favor, cole o texto da receita para organizar.");
+            return;
+        }
         setIsImporting(true);
         try {
-            // Prompt atualizado para garantir passos numerados e com quebras de linha
-            const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Para "prepSteps", use uma string com cada passo numerado e em uma nova linha. Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "1. Primeiro passo\\n2. Segundo passo", "tips": "...", "storage": "..." }. Sem markdown.`);
+            // Prompt atualizado para garantir passos sem numeração e permitir markdown em tips/storage
+            const prompt = `Organize esta receita em JSON estrito: "${importText}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser apenas números (sem unidades como 'g' ou 'kcal'). Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "NUMERIC_VALUE", "prot": "NUMERIC_VALUE", "carb": "NUMERIC_VALUE", "fat": "NUMERIC_VALUE" }, "ingredientGroups": [{ "title": "...", "items": "item 1\\nitem 2" }], "prepSteps": "Primeiro passo\\nSegundo passo", "tips": "Dica com **negrito**", "storage": "Armazenamento com **negrito**" }. Sem markdown para o JSON em si.`;
+            const text = await callGemini(prompt);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            const recipeData = JSON.parse(cleanJson);
+            
+            const parsedData = JSON.parse(cleanJson);
+            const validatedData = recipeSchema.parse(parsedData); // Validação Zod
+
             const newId = `p_${Date.now()}`;
-            const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...recipeData };
-            setPages([...pages, pageData]); setSelectedId(newId); setShowImporter(false); setImportText("");
-        } catch (err: any) { alert("Erro ao organizar: " + err.message); } finally { setIsImporting(false); }
+            const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...validatedData };
+            setPages([...pages, pageData]); 
+            setSelectedId(newId); 
+            setShowImporter(false); 
+            setImportText("");
+            toast.success("Receita organizada e adicionada com sucesso!");
+
+        } catch (err: any) { 
+            console.error("Erro ao organizar receita com IA:", err);
+            if (err.name === 'ZodError') {
+                toast.error("Erro de validação: A IA retornou um formato inesperado. Tente ajustar o texto ou o prompt. Detalhes: " + err.errors.map((e: any) => e.message).join(', '));
+            } else if (err instanceof SyntaxError) {
+                toast.error("Erro de formato JSON: A IA retornou um JSON inválido. Tente novamente.");
+            } else {
+                toast.error("Erro ao organizar receita: " + err.message); 
+            }
+        } finally { 
+            setIsImporting(false); 
+        }
     };
 
     const handleMagicSubmit = async () => {
-        if (!magicModal.prompt.trim()) return;
+        if (!magicModal.prompt.trim()) {
+            toast.info("Por favor, digite um prompt para a IA gerar o conteúdo.");
+            return;
+        }
         setIsMagicGenerating(true);
         try {
             let prompt = "";
-            if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps", use uma string com cada passo numerado e em uma nova linha. Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "1. Primeiro passo\\n2. Segundo passo". Sem markdown.`;
-            else if (magicModal.type === 'intro') prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Texto puro.`;
-            else if (magicModal.type === 'shopping') prompt = `Crie lista compras JSON para dieta: "${magicModal.prompt}". Chaves: hortifruti, acougue, laticinios, padaria, mercearia. Sem markdown.`;
+            let schemaToValidate;
+
+            if (magicModal.type === 'recipe') {
+                prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser apenas números (sem unidades como 'g' ou 'kcal'). Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "Primeiro passo\\nSegundo passo". Sem markdown para o JSON em si.`;
+                schemaToValidate = recipeSchema;
+            } else if (magicModal.type === 'intro') {
+                prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Permita **negrito** com markdown. Texto puro.`;
+                schemaToValidate = introSchema;
+            } else if (magicModal.type === 'shopping') {
+                prompt = `Crie lista compras JSON para dieta: "${magicModal.prompt}". Chaves: hortifruti, acougue, laticinios, padaria, mercearia. Sem markdown para o JSON em si.`;
+                schemaToValidate = shoppingSchema;
+            }
            
             const text = await callGemini(prompt);
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
             if (magicModal.type === 'recipe') {
+                const parsedData = JSON.parse(cleanText);
+                const validatedData = schemaToValidate.parse(parsedData); // Validação Zod
                 const newId = `p_${Date.now()}`;
-                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...JSON.parse(cleanText) as Partial<RecipePageData> }]);
+                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...validatedData as Partial<RecipePageData> }]);
                 setSelectedId(newId);
             } else if (magicModal.type === 'intro') {
-                updatePage({ text: cleanText });
+                const parsedData = { text: cleanText }; // Intro é texto puro, mas validamos se não está vazio
+                const validatedData = schemaToValidate.parse(parsedData);
+                updatePage(validatedData);
             }
             else if (magicModal.type === 'shopping') {
-                updatePage(JSON.parse(cleanText));
+                const parsedData = JSON.parse(cleanText);
+                const validatedData = schemaToValidate.parse(parsedData); // Validação Zod
+                updatePage(validatedData);
             }
            
             setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
-        } catch (err: any) { alert("Erro na IA: " + err.message); } finally { setIsMagicGenerating(false); }
+            toast.success("Conteúdo gerado com IA com sucesso!");
+
+        } catch (err: any) { 
+            console.error("Erro na IA:", err);
+            if (err.name === 'ZodError') {
+                toast.error("Erro de validação: A IA retornou um formato inesperado. Tente ajustar o prompt. Detalhes: " + err.errors.map((e: any) => e.message).join(', '));
+            } else if (err instanceof SyntaxError) {
+                toast.error("Erro de formato JSON: A IA retornou um JSON inválido. Tente novamente.");
+            } else {
+                toast.error("Erro ao gerar conteúdo com IA: " + err.message); 
+            }
+        } finally { 
+            setIsMagicGenerating(false); 
+        }
+    };
+
+    const openMagicModal = (type: 'recipe' | 'intro' | 'shopping') => {
+        let title = '';
+        let description = '';
+        let placeholder = '';
+        if (type === 'recipe') {
+            title = 'Receita Mágica com IA';
+            description = 'Descreva a receita que você deseja criar (ex: "Bolo de cenoura fit com cobertura de chocolate").';
+            placeholder = 'Ex: Torta de frango cremosa low carb';
+        } else if (type === 'intro') {
+            title = 'Escrever Introdução com IA';
+            description = 'Descreva o tema do seu e-book para a IA escrever uma introdução (ex: "E-book de receitas saudáveis para emagrecimento").';
+            placeholder = 'Ex: E-book de marmitas fitness para semana';
+        } else if (type === 'shopping') {
+            title = 'Gerar Lista de Compras com IA';
+            description = 'Descreva o tipo de dieta ou refeições para a IA gerar uma lista de compras (ex: "Dieta mediterrânea para 7 dias").';
+            placeholder = 'Ex: Lista de compras para dieta vegana';
+        }
+        setMagicModal({ isOpen: true, type, title, description, placeholder, prompt: '' });
     };
 
     const handlePageClick = (pageId: string) => {
@@ -265,7 +348,8 @@ const Editor = () => {
                 {showImporter && (
                     <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
                         <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
-                            <h3 className="text-xl font-serif font-bold text-navy mb-4 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
+                            <h3 className="text-xl font-serif font-bold text-navy mb-2 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
+                            <p className="text-sm text-navy/60 mb-4">Cole o texto de uma receita desorganizada aqui e a IA irá estruturá-la automaticamente para você.</p>
                             <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
                             <div className="flex justify-end gap-2">
                                 <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
