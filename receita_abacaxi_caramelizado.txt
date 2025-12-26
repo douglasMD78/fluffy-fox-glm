@@ -1,0 +1,22 @@
+{
+  "title": "ABACAXI CARAMELIZADO",
+  "category": "Doces e Sobremesas",
+  "code": "LT, S",
+  "yield": "1 porção (100g)",
+  "nutrition": {
+    "cal": "53",
+    "prot": "11g",
+    "carb": "14.1g",
+    "fat": "0.12g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 100g do abacaxi caramelizado.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "1 abacaxi maduro\n2 colheres de sopa de adoçante culinário (Stevia forno e fogão recomendado)\nCanela em pó a gosto"
+    }
+  ],
+  "prepSteps": "Prepare o abacaxi: Corte o abacaxi em rodelas e, em seguida, remova a casca como se estivesse descascando uma laranja. Esse método evita desperdícios e facilita o corte.\nCaramelize: Misture o adoçante com a canela em pó e passe as fatias de abacaxi nessa mistura dos dois lados. Você também pode simplesmente polvilhar o adoçante e a canela por cima das fatias.\nAsse na AirFryer: Disponha as rodelas na cesta da AirFryer e asse a 180°C por 10 a 12 minutos, virando na metade do tempo para caramelizar uniformemente.\nNo forno: Pré-aqueça o forno a 200°C, em seguida coloque as fatias de abacaxi em uma assadeira forrada com papel manteiga. Polvilhe a mistura de adoçante e canela e leve ao forno por 15 a 20 minutos, virando na metade do tempo.",
+  "tips": "",
+  "storage": "Geladeira: Pode ser armazenado por até **3 dias** em potes fechados."
+}
