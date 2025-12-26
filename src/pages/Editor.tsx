@@ -198,7 +198,8 @@ const Editor = () => {
         if (!importText.trim()) return;
         setIsImporting(true);
         try {
-            const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "...", "tips": "...", "storage": "..." }. Sem markdown.`);
+            // Prompt atualizado para garantir passos numerados e com quebras de linha
+            const text = await callGemini(`Organize esta receita em JSON estrito: "${importText}". Para "prepSteps", use uma string com cada passo numerado e em uma nova linha. Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "...", "prot": "...", "carb": "...", "fat": "..." }, "ingredientGroups": [{ "title": "...", "items": "..." }], "prepSteps": "1. Primeiro passo\\n2. Segundo passo", "tips": "...", "storage": "..." }. Sem markdown.`);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
             const recipeData = JSON.parse(cleanJson);
             const newId = `p_${Date.now()}`;
@@ -212,7 +213,7 @@ const Editor = () => {
         setIsMagicGenerating(true);
         try {
             let prompt = "";
-            if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Sem markdown.`;
+            if (magicModal.type === 'recipe') prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps", use uma string com cada passo numerado e em uma nova linha. Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "1. Primeiro passo\\n2. Segundo passo". Sem markdown.`;
             else if (magicModal.type === 'intro') prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Texto puro.`;
             else if (magicModal.type === 'shopping') prompt = `Crie lista compras JSON para dieta: "${magicModal.prompt}". Chaves: hortifruti, acougue, laticinios, padaria, mercearia. Sem markdown.`;
            
