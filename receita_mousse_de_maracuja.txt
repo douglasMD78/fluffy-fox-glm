@@ -9,7 +9,7 @@
     "carb": "17g",
     "fat": "5.4g"
   },
-  "nutritionInfoText": "Informações Nutricionais por Porção (120g)",
+  "macroNote": "Informações Nutricionais por Porção (120g)",
   "ingredientGroups": [
     {
       "title": "Ingredientes",
