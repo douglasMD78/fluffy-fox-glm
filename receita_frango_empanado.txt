@@ -1,0 +1,24 @@
+FRANGO EMPANADO
+Salgados e Refeições
+A, J
+4 porções
+
+Nutrição:
+cal: "202"
+prot: "25g"
+carb: "12g"
+fat: "5.6g"
+macroNote: "Essa tabela representa 100g do frango empanado, e essa receita rende aproximadamente 4 porções. 😉"
+
+ingredientGroups:
+title: "INGREDIENTES"
+items: "3 ovos\nFlocão de milho (para empanar)\n2 filés de frango cortados mais grossinhos\n1 pitada de sal\n1 colher de chá de páprica defumada\n1 pitada de pimenta-do-reino (ou lemon pepper)\n1 colher de sopa de azeite (para pincelar)"
+
+Modo de Preparo:
+Prepare os ingredientes: Bata os ovos em uma tigela até ficarem bem misturados. Em outra tigela, adicione o flocão de milho e tempere com sal, páprica e pimenta-do-reino.
+Empane o frango: Tempere os filés de frango, passe-os nos ovos batidos e, em seguida, no flocão de milho. Para obter uma casquinha crocante, repita esse processo mais uma vez.
+Asse na Airfryer: Pincele azeite em ambos os lados do frango para garantir crocância. Asse a 180°C por 12 minutos, vire os filés e asse por mais 12 minutos até dourar.
+Sirva: Esse frango combina perfeitamente com sanduíches, saladas ou até mesmo em uma versão saudável de frango à parmegiana.
+
+Dicas:
+Pode ser assado no **forno** também! Basta assar a 180°C por 25 minutos, virando na metade do tempo.
