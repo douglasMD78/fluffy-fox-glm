@@ -1,0 +1,22 @@
+{
+  "title": "BOLINHO DE BANANA",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "8 fatias",
+  "nutrition": {
+    "cal": "120",
+    "prot": "6g",
+    "carb": "5g",
+    "fat": "8g"
+  },
+  "macroNote": "Essa tabela representa 1 fatia do bolo, considerando que a receita rende 8 fatias no total.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 bananas maduras\n3 ovos (se preferir, pode usar 2 ovos)\n3 colheres de sopa de farinha de aveia\n1 colher de chá de fermento em pó\nCanela a gosto (ou substitua por 3 colheres de sopa de cacau em pó)\nUvas-passas (opcional)\nPedacinhos de chocolate 70% (opcional)"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Amasse as bananas. Adicione ovos, farinha de aveia e canela (ou cacau). Misture até ficar homogêneo. Acrescente o fermento e misture delicadamente.\nUnte a forma: Se não for de silicone, unte com óleo e polvilhe cacau para evitar que grude e dar mais sabor.\nAsse: Forno a 200°C por 25 minutos ou na airfryer até dourar. Faça o teste do palito.\nFinalize: Acrescente uvas-passas ou pedacinhos de chocolate 70% antes de assar, se quiser um toque especial",
+  "tips": "",
+  "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**"
+}
