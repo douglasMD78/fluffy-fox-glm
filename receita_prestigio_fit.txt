@@ -1,0 +1,41 @@
+{
+  "title": "PRESTÍGIO FIT (SEM WHEY)",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "1 potinho",
+  "nutrition": {
+    "cal": "19",
+    "prot": "8.5g",
+    "carb": "16.0g",
+    "fat": "9.0g"
+  },
+  "macroNote": "Tabela nutricional aproximada por potinho.",
+  "ingredientGroups": [
+    {
+      "title": "Base",
+      "items": "2 colheres de sopa de iogurte grego (ou natural)\n1 colher de sopa de leite em pó\n1 colher de sopa de coco ralado (seco ou fresco, sem açúcar)\nAdoçante a gosto (opcional se usar iogurte grego; recomendado se usar natural)"
+    },
+    {
+      "title": "Cobertura",
+      "items": "3 a 4 quadradinhos de chocolate amargo/meio amargo (aprox. 15-20g)\n1 colher de sopa de leite desnatado (ou iogurte) para o ganache"
+    }
+  ],
+  "prepSteps": "Prepare o creme: Em um potinho pequeno, misture o iogurte, o leite em pó e o coco ralado até formar um creme homogêneo e consistente. Adoce se achar necessário. Nivele o creme no fundo do pote.\n\nPrepare a cobertura: Derreta os quadradinhos de chocolate no micro-ondas (de 30 em 30 segundos para não queimar). Misture com o leite desnatado (ou iogurte) para criar um ganache cremoso que não endureça demais ao gelar.\n\nMonte: Despeje o chocolate derretido sobre o creme de coco.\n\nResfrie: Leve ao congelador por cerca de 30 minutos para firmar e ficar na textura ideal.",
+  "tips": "",
+  "storage": "Congelador: Ideal para consumo rápido após os 30 minutos de freezer.\nGeladeira: Se quiser guardar para mais tarde, mantenha na geladeira para não congelar completamente.",
+  "image": "",
+  "videoLink": "",
+  "layout": "2",
+  "fontSizes": { "title": 3, "ingredients": 2, "prep": 2 },
+  "imageSize": 3,
+  "spacing": "normal",
+  "videoDisplayStyle": "button",
+  "objectFit": "cover",
+  "objectPosition": "center",
+  "imageZoom": 100,
+  "columnRatio": "default",
+  "tipPlacement": "footer",
+  "storagePlacement": "footer",
+  "nutritionDisplayStyle": "default",
+  "titleAlignment": null
+}
