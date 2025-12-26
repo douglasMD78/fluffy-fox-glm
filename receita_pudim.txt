@@ -1,0 +1,26 @@
+{
+  "title": "PUDIM",
+  "category": "Doces e Sobremesas",
+  "code": "LT, S",
+  "yield": "100g do pudim fit",
+  "nutrition": {
+    "cal": "134",
+    "prot": "8.7g",
+    "carb": "6.2g",
+    "fat": "7.6g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 100g do pudim fit.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 ovos\n4 colheres de sopa de leite em pó\n100 ml de leite líquido\n2 colheres e meia de sopa de adoçante forno e fogão"
+    },
+    {
+      "title": "Para a calda",
+      "items": "2 colheres de sopa de adoçante (recomendo adoçante forno e fogão)\nUm pouco de água"
+    }
+  ],
+  "prepSteps": "Prepare a base do pudim: Bata os ovos até ficarem homogêneos. Acrescente o leite em pó e misture bem para dissolver completamente. Adicione o leite líquido e o adoçante, misturando até obter uma massa lisa.\nFaça a calda: Em uma panela, coloque o adoçante com um pouco de água e mexa em fogo baixo até caramelizar.\nMonte o pudim: Distribua a calda e a massa do pudim nos recipientes de sua preferência.\nAsse: Air Fryer: 160°C por 15 minutos em banho-maria. Micro-ondas: Aproximadamente 3 minutos. Forno: Assar em banho-maria até firmar.\nResfrie e sirva: Leve à geladeira por pelo menos 1 hora antes de consumir.",
+  "tips": "",
+  "storage": "Geladeira: Pode ser armazenado por até **3 dias** em potes fechados. Evite congelar, pois pode alterar a textura."
+}
