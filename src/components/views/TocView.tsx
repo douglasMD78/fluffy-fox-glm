@@ -12,22 +12,8 @@ interface TocViewProps {
 }
 
 export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
-    // Normaliza os tipos de TEMPLATES para comparação
-    const allowedTemplates = [
-        TEMPLATES.COVER, 
-        TEMPLATES.INTRO, 
-        TEMPLATES.TOC, 
-        TEMPLATES.LEGEND, 
-        TEMPLATES.RECIPE, 
-        TEMPLATES.SECTION, 
-        TEMPLATES.SHOPPING
-    ].map(t => t.toLowerCase().trim());
-
-    // Filtra as páginas, normalizando o tipo de cada página para garantir a correspondência
-    const items = pages.filter(p => {
-        const pageType = p.type?.toLowerCase().trim();
-        return allowedTemplates.includes(pageType);
-    });
+    // Agora inclui TODAS as páginas, exceto a própria página de sumário
+    const itemsToDisplay = pages.filter(p => p.id !== data.id);
 
     return (
         <div className="flex-1 flex flex-col py-10 px-8 font-sans"> {/* Aumentado o padding horizontal */}
@@ -36,20 +22,24 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
                 <div className="w-16 h-1.5 bg-accent mx-auto mt-3 rounded-full opacity-70"></div> {/* Divisor mais substancial */}
             </div>
             <div className="space-y-1 w-full"> {/* Ajustado o espaçamento entre os itens */}
-                {items.map((item) => { // Removido 'idx' e usando 'item.id' como key
+                {itemsToDisplay.map((item) => {
                 const isSection = item.type === TEMPLATES.SECTION;
                 const isRecipe = item.type === TEMPLATES.RECIPE;
                 const pageNum = pages.findIndex(p => p.id === item.id) + 1;
                 
                 // Determina o título a ser exibido, com fallback mais específico
-                const displayTitle = item.title || 
-                                     (item.type === TEMPLATES.COVER ? 'Capa' : 
-                                      item.type === TEMPLATES.INTRO ? 'Introdução' : 
-                                      item.type === TEMPLATES.TOC ? 'Sumário' : 
-                                      item.type === TEMPLATES.LEGEND ? 'Legendas' : 
-                                      item.type === TEMPLATES.SHOPPING ? 'Lista de Compras' : 
-                                      item.type === TEMPLATES.SECTION ? 'Seção' : 
-                                      'Sem Título');
+                let displayTitle = item.title;
+                if (!displayTitle) {
+                    switch (item.type) {
+                        case TEMPLATES.COVER: displayTitle = 'Capa'; break;
+                        case TEMPLATES.INTRO: displayTitle = 'Introdução'; break;
+                        case TEMPLATES.LEGEND: displayTitle = 'Legendas'; break;
+                        case TEMPLATES.SHOPPING: displayTitle = 'Lista de Compras'; break;
+                        case TEMPLATES.SECTION: displayTitle = 'Seção'; break;
+                        case TEMPLATES.RECIPE: displayTitle = 'Receita'; break;
+                        default: displayTitle = 'Página sem Título'; break; // Fallback genérico
+                    }
+                }
 
                 return (
                     <div key={item.id}> {/* Usando item.id como key */}
