@@ -1,0 +1,37 @@
+{
+  "title": "SALADA DE CHUCHU",
+  "category": "Saladas e Acompanhamentos",
+  "code": "LM, LT",
+  "yield": "Variável",
+  "nutrition": {
+    "cal": "19",
+    "prot": "",
+    "carb": "",
+    "fat": ""
+  },
+  "macroNote": "Tabela nutricional por 100g de chuchu. As calorias totais são irrisórias, sendo uma excelente opção de volume para saciedade.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 chuchus (descascados e cortados em tiras ou cubos)\n1 cebola pequena (picada bem miudinha)\n1 tomate (picado em cubinhos)\nSuco de 1 limão\nAzeite (um fio)\nVinagre (opcional, se quiser mais acidez)\nCheiro-verde: Cebolinha e Coentro picados a gosto (o coentro é opcional)\nTemperos: Sal e Pimenta do Reino a gosto"
+    }
+  ],
+  "prepSteps": "Cozimento do Chuchu: Descasque e corte os chuchus. Leve para cozinhar preferencialmente no vapor até ficarem macios (\"al dente\").\n\nPreparo do Vinagrete: Enquanto o chuchu cozinha, pique a cebola, o tomate e o cheiro-verde. Coloque em uma tigela e tempere com o limão, azeite, vinagre (se usar), sal e pimenta. Misture bem.\n\nMontagem: Com o chuchu já cozido (e frio ou morno), misture-o ao vinagrete preparado na tigela. Mexa para envolver todos os pedaços no tempero.\n\nFinalização: Pode ser servida imediatamente ou levada à geladeira para apurar o sabor.",
+  "tips": "O vapor preserva o sabor e evita que o chuchu fique encharcado (\"aguado\"). Se cozinhar na água, escorra muito bem.",
+  "storage": "Geladeira: Conserve em pote fechado na geladeira. O sabor costuma ficar ainda melhor no dia seguinte.\nValidade: Consumir em até 3 a 4 dias (devido ao tomate e cebola crus).",
+  "image": "",
+  "videoLink": "",
+  "layout": "2",
+  "fontSizes": { "title": 3, "ingredients": 2, "prep": 2 },
+  "imageSize": 3,
+  "spacing": "normal",
+  "videoDisplayStyle": "button",
+  "objectFit": "cover",
+  "objectPosition": "center",
+  "imageZoom": 100,
+  "columnRatio": "default",
+  "tipPlacement": "footer",
+  "storagePlacement": "footer",
+  "nutritionDisplayStyle": "default",
+  "titleAlignment": null
+}
