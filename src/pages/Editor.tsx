@@ -210,9 +210,8 @@ const Editor = () => {
         }
         setIsImporting(true);
         try {
-            // Prompt atualizado para garantir passos sem numeração e permitir markdown em tips/storage
-            // E AGORA: Valores nutricionais como strings, com 'g' para prot/carb/fat
-            const prompt = `Organize esta receita em JSON estrito: "${importText}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', apenas o número como string (ex: "110"). Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "STRING_NUMERIC_VALUE", "prot": "STRING_NUMERIC_VALUE_WITH_G", "carb": "STRING_NUMERIC_VALUE_WITH_G", "fat": "STRING_NUMERIC_VALUE_WITH_G" }, "ingredientGroups": [{ "title": "...", "items": "item 1\\nitem 2" }], "prepSteps": "Primeiro passo\\nSegundo passo", "tips": "Dica com **negrito**", "storage": "Armazenamento com **negrito**" }. Sem markdown para o JSON em si.`;
+            // Prompt atualizado para permitir valores decimais em calorias
+            const prompt = `Organize esta receita em JSON estrito: "${importText}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', inclua o número (inteiro ou decimal) como string (ex: "110" ou "67.8"). Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "STRING_NUMERIC_VALUE", "prot": "STRING_NUMERIC_VALUE_WITH_G", "carb": "STRING_NUMERIC_VALUE_WITH_G", "fat": "STRING_NUMERIC_VALUE_WITH_G" }, "ingredientGroups": [{ "title": "...", "items": "item 1\\nitem 2" }], "prepSteps": "Primeiro passo\\nSegundo passo", "tips": "Dica com **negrito**", "storage": "Armazenamento com **negrito**" }. Sem markdown para o JSON em si.`;
             const text = await callGemini(prompt);
             const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
             
@@ -252,8 +251,8 @@ const Editor = () => {
             let schemaToValidate;
 
             if (magicModal.type === 'recipe') {
-                // AGORA: Valores nutricionais como strings, com 'g' para prot/carb/fat
-                prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', apenas o número como string (ex: "110"). Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "Primeiro passo\\nSegundo passo". Sem markdown para o JSON em si.`;
+                // Prompt atualizado para permitir valores decimais em calorias
+                prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', inclua o número (inteiro ou decimal) como string (ex: "110" ou "67.8"). Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "Primeiro passo\\nSegundo passo". Sem markdown para o JSON em si.`;
                 schemaToValidate = recipeSchema;
             } else if (magicModal.type === 'intro') {
                 prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Permita **negrito** com markdown. Texto puro.`;

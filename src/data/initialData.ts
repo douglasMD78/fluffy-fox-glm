@@ -10,7 +10,7 @@ export const recipeSchema = z.object({
     code: z.string().optional(),
     yield: z.string().optional(),
     nutrition: z.object({
-        cal: z.string().regex(/^\d+$/, "Calorias deve ser um número.").optional(),
+        cal: z.string().regex(/^\d+(\.\d+)?$/, "Calorias deve ser um número.").optional(), // Alterado para permitir decimais
         prot: z.string().regex(/^\d+(\.\d+)?g?$/, "Proteínas deve ser um número.").optional(),
         carb: z.string().regex(/^\d+(\.\d+)?g?$/, "Carboidratos deve ser um número.").optional(),
         fat: z.string().regex(/^\d+(\.\d+)?g?$/, "Gorduras deve ser um número.").optional(),
