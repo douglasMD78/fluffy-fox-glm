@@ -1,0 +1,28 @@
+MINI PIZZA FIT
+Salgados e Refeições
+LT, J
+12 disquinhos
+
+Nutrição:
+cal: "30"
+prot: "1.5g"
+carb: "4g"
+fat: "0.8g"
+macroNote: "Essa tabela equivale a 1 disquinho. A receita rende 12 disquinhos de mini pizza, 😉"
+
+ingredientGroups:
+title: "INGREDIENTES"
+items: "90g de farinha de aveia\n80g de iogurte natural\nUma pitadinha de sal\nRecheio de sua preferência (sugestão: molho caseiro, queijo muçarela, frango desfiado e orégano)"
+
+Modo de Preparo:
+Prepare a massa: Misture a farinha de aveia, o iogurte natural e uma pitada de sal em uma tigela. Misture bem até obter uma massa que possa ser modelada com as mãos. Se a massa estiver seca, adicione mais um pouquinho de iogurte até atingir o ponto certo.
+Modele a massa: Trabalhe a massa até que fique lisa e uniforme. Abra a massa em uma superfície lisa e corte os disquinhos com um objeto circular (como um copo). Modele com as mãos para que fiquem bem fininhos, assim a massa ficará mais crocante.
+Pré-asse: Leve os disquinhos ao forno pré-aquecido a 180°C por 8 minutos.
+Recheie: Passe o molho caseiro sobre os disquinhos pré-assados. Adicione o queijo muçarela e o recheio de sua preferência (sugestão: frango desfiado). Finalize com orégano por cima.
+Asse novamente: Leve as mini pizzas ao forno a 200°C por 20 minutos, ou até o queijo derreter e a massa ficar crocante.
+
+Armazenamento:
+Geladeira: Pode ser armazenado por até **5 dias** em potes bem fechados.
+
+Dicas:
+Faça o molho em maior quantidade para usar em pizza fit, lasanha fit ou outros pratos durante a semana. "**Façam, que eu tenho certeza que vocês vão amar!**" 😉
