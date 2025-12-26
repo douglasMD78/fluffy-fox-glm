@@ -288,6 +288,48 @@ export const PDF_LUIZA_DATA = [
         nutritionDisplayStyle: 'default',
         titleAlignment: null,
     },
+    {
+        id: 'p_pudim_chia_frutas',
+        type: TEMPLATES.RECIPE,
+        title: "PUDIM DE CHIA COM GELATINA E FRUTAS",
+        category: "Bolos e Bolinhos",
+        code: "LT, S",
+        yield: "4 unidades",
+        nutrition: { cal: "165", prot: "8.5g", carb: "20.5g", fat: "4.6g" },
+        macroNote: "Tabela nutricional estimada por pote (considerando rendimento de 4 unidades e uso de iogurte desnatado).",
+        ingredientGroups: [
+            {
+                title: "Base",
+                items: "2 pacotes de gelatina diet (sabor morango)\nÁgua (conforme instrução da embalagem)"
+            },
+            {
+                title: "Creme de Chia",
+                items: "400 ml de iogurte natural\n4 colheres de sopa de chia\n4 colheres de sopa de aveia em flocos\nAdoçante a gosto (Sugestão: 5 a 6 dosadores de stevia)"
+            },
+            {
+                title: "Cobertura",
+                items: "Morangos picados\nKiwi picado\n(Ou frutas de sua preferência)"
+            }
+        ],
+        prepSteps: "Prepare a gelatina: Dissolva a gelatina diet conforme as instruções do fabricante. Distribua em potes de vidro e leve à geladeira até firmar completamente.\n\nPrepare o creme: Em uma tigela, misture o iogurte natural, a chia, a aveia e o adoçante. Mexa bem até integrar.\n\nMonte: Retire os potes da geladeira. Adicione uma camada generosa do creme de chia sobre a gelatina já firme.\n\nFinalize: Cubra com os pedaços de morango e kiwi.",
+        tips: "",
+        storage: "Geladeira: Mantenha os potes bem fechados na geladeira por até 3 a 4 dias.\nDica: Se for consumir depois de muitos dias, prefira colocar as frutas picadas apenas na hora de comer para que elas não soltem muita água ou oxidem.\nCongelamento: Não recomendado. A gelatina cristaliza e perde a textura gelatinosa ao descongelar, e o iogurte pode talhar ou separar o soro",
+        image: "",
+        videoLink: "",
+        layout: '2',
+        fontSizes: { title: 3, ingredients: 2, prep: 2 },
+        imageSize: 3,
+        spacing: 'normal',
+        videoDisplayStyle: 'button',
+        objectFit: 'cover',
+        objectPosition: 'center',
+        imageZoom: 100,
+        columnRatio: 'default' as ColumnRatioKey,
+        tipPlacement: 'footer',
+        storagePlacement: 'footer',
+        nutritionDisplayStyle: 'default',
+        titleAlignment: null,
+    },
      { 
         id: 'p_final', 
         type: TEMPLATES.INTRO, 
