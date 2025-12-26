@@ -1,0 +1,22 @@
+{
+  "title": "MOUSSE DE MARACUJÁ",
+  "category": "Doces e Sobremesas",
+  "code": "LT, S",
+  "yield": "Porções semanais",
+  "nutrition": {
+    "cal": "135",
+    "prot": "10.7g",
+    "carb": "17g",
+    "fat": "5.4g"
+  },
+  "nutritionInfoText": "Informações Nutricionais por Porção (120g)",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "400ml de iogurte natural (caseiro ou industrializado)\n2 polpas de maracujá (pode coar ou usar com sementes)\n4 colheres de sopa de leite em pó\n1 gelatina incolor hidratada\nAdoçante a gosto (usei estévia, cerca de 8 dosadores pequenos)"
+    }
+  ],
+  "prepSteps": "Prepare a base: No liquidificador, bata o iogurte, a polpa de maracujá, o leite em pó e o adoçante. Se preferir, coe o maracujá antes de bater.\nAdicione a gelatina: Hidrate a gelatina conforme as instruções da embalagem e adicione à mistura. Bata novamente até obter um creme homogêneo.\nDistribua: Coloque em um recipiente grande ou divida em potinhos individuais para porções semanais.\nGele: Leve à geladeira por pelo menos 1 hora ou ao congelador para firmar mais rápido.\nFinalize: Adicione um pouco de polpa de maracujá por cima para decorar.",
+  "tips": "",
+  "storage": "Geladeira: Até 5 dias.\nCongelador: Até 30 dias (recomenda-se descongelar na geladeira antes de consumir)."
+}
