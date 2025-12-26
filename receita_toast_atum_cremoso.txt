@@ -1,0 +1,37 @@
+{
+  "title": "TOAST DE ATUM CREMOSO",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "8 toasts",
+  "nutrition": {
+    "cal": "216",
+    "prot": "10.6g",
+    "carb": "19.8g",
+    "fat": "10.3g"
+  },
+  "macroNote": "Tabela nutricional por unidade (1 toast)😊",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "8 fatias de pão de forma\n2 latas de atum sólido (escorrido)\n1/2 cebola roxa picada\n1/2 tomate picado\nCebolinha picada a gosto (opcional)\n2 colheres de sopa (bem cheias) de requeijão cremoso light\n8 fatias de queijo mussarela\nSal a gosto"
+    }
+  ],
+  "prepSteps": "Prepare o recheio: Em um bowl, misture o atum, a cebola, o tomate, a cebolinha e o requeijão. Tempere com sal e mexa até obter um creme homogêneo.\n\nPrepare o pão: Pressione levemente o centro de cada fatia de pão com uma colher, criando uma pequena cavidade para acomodar o recheio sem vazar.\n\nMonte: Distribua o creme de atum sobre as fatias de pão e cubra cada um com uma fatia de queijo mussarela.\n\nAsse: Leve ao forno ou Air Fryer até o queijo derreter e gratinar (se for consumir na hora)",
+  "tips": "",
+  "storage": "Como embalar: Envolva cada toast (ainda cru/sem assar o queijo) individualmente em plástico filme, fechando bem.\nValidade: Pode ser mantido no congelador por até 3 meses.\nPara consumir: Retire do congelador e leve direto ao forno ou Air Fryer até aquecer e o queijo derreter.",
+  "image": "",
+  "videoLink": "",
+  "layout": "2",
+  "fontSizes": { "title": 3, "ingredients": 2, "prep": 2 },
+  "imageSize": 3,
+  "spacing": "normal",
+  "videoDisplayStyle": "button",
+  "objectFit": "cover",
+  "objectPosition": "center",
+  "imageZoom": 100,
+  "columnRatio": "default",
+  "tipPlacement": "footer",
+  "storagePlacement": "footer",
+  "nutritionDisplayStyle": "default",
+  "titleAlignment": null
+}
