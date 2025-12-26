@@ -62,7 +62,7 @@ export const shoppingSchema = z.object({
 export const INITIAL_DATA = {
     [TEMPLATES.COVER]: { title: "Receitinhas", subtitle: "FIT", author: "@LU.MTSFIT", edition: "EDIÇÃO ESPECIAL" },
     [TEMPLATES.INTRO]: { title: "Um Olá Especial", highlight: "para Você!", text: "Escreva aqui sua mensagem de boas-vindas..." },
-    [TEMPLATES.TOC]: { title: "SUMÁRIO" },
+    [TEMPLATES.TOC]: { title: "SUMÁRIO", tocPageNumber: 1 }, // Adicionado tocPageNumber
     [TEMPLATES.LEGEND]: { title: "Legendas", text: "Estas legendas foram criadas para facilitar a sua organização. Identifique rapidamente em qual refeição cada receita se encaixa melhor no seu dia a dia." },
     [TEMPLATES.SECTION]: { title: "NOME DA SEÇÃO", subtitle: "Subtítulo Manuscrito" },
     [TEMPLATES.SHOPPING]: { title: "Listinha de Compras", hortifruti: "", acougue: "", laticinios: "", padaria: "", mercearia: "" },
@@ -107,7 +107,8 @@ export const PDF_LUIZA_DATA = [
     { 
         id: 'p_toc', 
         type: TEMPLATES.TOC, 
-        title: "SUMÁRIO" 
+        title: "SUMÁRIO",
+        tocPageNumber: 1 // Adicionado tocPageNumber
     },
     {
         id: 'p_legend',
@@ -519,5 +520,7 @@ export type IntroPageData = typeof INITIAL_DATA[TEMPLATES.INTRO];
 export type CoverPageData = typeof INITIAL_DATA[TEMPLATES.COVER];
 export type SectionPageData = typeof INITIAL_DATA[TEMPLATES.SECTION];
 export type ShoppingPageData = typeof INITIAL_DATA[TEMPLATES.SHOPPING];
-export type TocPageData = typeof INITIAL_DATA[TEMPLATES.TOC];
+export type TocPageData = typeof INITIAL_DATA[TEMPLATES.TOC] & {
+    tocPageNumber?: number; // Explicitamente adicionado ao tipo
+};
 export type LegendPageData = typeof INITIAL_DATA[TEMPLATES.LEGEND];

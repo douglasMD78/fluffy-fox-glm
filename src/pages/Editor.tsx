@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, TocPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
@@ -34,6 +34,7 @@ import { ThemeStyles } from '@/components/ThemeStyles';
 // Utils
 import { getPageBackgroundColor } from '@/utils/pageStyles';
 
+const MAX_TOC_ITEMS_PER_PAGE = 15; // Deve ser consistente com TocView.tsx
 
 const Editor = () => {
     const [pages, setPages] = useState<PageData[]>([]);
@@ -58,6 +59,61 @@ const Editor = () => {
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     
     const DB_KEY = 'luiza_studio_db_v1';
+
+    // Memoiza as páginas de conteúdo (não-sumário) para otimizar o useEffect do sumário
+    const contentPages = React.useMemo(() => pages.filter(p => p.type !== TEMPLATES.TOC), [pages]);
+
+    // Efeito para gerenciar a paginação do sumário
+    useEffect(() => {
+        const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
+        const totalItemsForToc = contentPages.length;
+        const requiredTocPagesCount = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
+
+        let newTocPages: PageData[] = [];
+        for (let i = 0; i < requiredTocPagesCount; i++) {
+            const tocPageNumber = i + 1;
+            const existingTocPage = existingTocPages.find(p => (p as TocPageData).tocPageNumber === tocPageNumber);
+            
+            if (existingTocPage) {
+                newTocPages.push({ ...existingTocPage, tocPageNumber });
+            } else {
+                const newId = `p_toc_${Date.now()}_${tocPageNumber}`;
+                newTocPages.push({ id: newId, type: TEMPLATES.TOC, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])), tocPageNumber });
+            }
+        }
+
+        // Compara as páginas de sumário geradas com as existentes para evitar loop infinito
+        const currentTocPageIdsAndNumbers = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+        const newTocPageIdsAndNumbers = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+
+        if (currentTocPageIdsAndNumbers !== newTocPageIdsAndNumbers || existingTocPages.length !== newTocPages.length) {
+            let finalPages: PageData[] = [];
+            let tocInsertIndex = -1;
+
+            // Encontra a posição da primeira página de sumário existente ou onde ela deveria ser inserida
+            const firstExistingTocIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
+            if (firstExistingTocIndex !== -1) {
+                tocInsertIndex = firstExistingTocIndex;
+            } else {
+                // Tenta inserir após a introdução ou capa
+                tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
+                if (tocInsertIndex === -1) tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
+                if (tocInsertIndex !== -1) tocInsertIndex++; // Inserir APÓS a página encontrada
+                else tocInsertIndex = 0; // Padrão: no início
+            }
+
+            const pagesWithoutOldTocs = pages.filter(p => p.type !== TEMPLATES.TOC);
+            
+            finalPages = [
+                ...pagesWithoutOldTocs.slice(0, tocInsertIndex),
+                ...newTocPages,
+                ...pagesWithoutOldTocs.slice(tocInsertIndex)
+            ];
+
+            setPages(finalPages);
+        }
+    }, [contentPages, pages]); // Depende de contentPages (para mudanças de conteúdo) e pages (para contexto completo)
+
 
     useEffect(() => {
         const initDB = async () => {
@@ -483,7 +539,7 @@ const Editor = () => {
                             {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                             {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
                             
-                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} onRecipeClick={handlePageClick} />}
+                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p as TocPageData} onRecipeClick={handlePageClick} />}
                             {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />} {/* Corrigido: Asserção de tipo */}
                             {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />} {/* Corrigido: Asserção de tipo */}
                             {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
