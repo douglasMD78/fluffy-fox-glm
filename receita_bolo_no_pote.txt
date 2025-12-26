@@ -1,0 +1,26 @@
+{
+  "title": "BOLO NO POTE",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "1 potinho",
+  "nutrition": {
+    "cal": "81",
+    "prot": "5.5g",
+    "carb": "9.8g",
+    "fat": "4.3g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 1 potinho",
+  "ingredientGroups": [
+    {
+      "title": "Para o bolo",
+      "items": "2 ovos (ou 3 pequenos)\n3 colheres de sopa de farinha de aveia\n2 colheres de sopa de cacau em pó\n5 colheres de sopa de leite\n5 a 6 colheres de sopa de adoçante culinário\n1 colher de sopa de fermento em pó"
+    },
+    {
+      "title": "Para a cobertura",
+      "items": "2 colheres de sopa de leite em pó\n2 colheres de sopa de cacau em pó\n2 colheres de sopa de adoçante culinário\nÁgua (adicionar até atingir a textura desejada)"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Em uma tigela, misture os ovos, a farinha de aveia, o cacau em pó e o leite. Adicione o adoçante e misture bem. Por último, acrescente o fermento e misture delicadamente.\nAsse o bolo: Despeje a massa em um recipiente que possa ir ao forno ou Air Fryer. Caso não use forma de silicone, unte e enfarinhe para evitar que grude. Forno: Asse até dourar, verificando com um palito. Air fryer: asse a 160°C por aproximadamente 10 a 12 minutos.\nPrepare a cobertura: Misture o leite em pó, o cacau e o adoçante. Adicione água aos poucos até obter uma consistência líquida. Leve ao fogo baixo, mexendo sempre, até engrossar na textura desejada.\nMonte o bolo: Esfarele o bolo com um garfo, distribua nos potinhos e cubra com a calda.",
+  "tips": "",
+  "storage": "Geladeira: Armazene por até **7 dias** na parte mais fria.\nCongelamento: Não recomendado devido à mudança de textura."
+}
