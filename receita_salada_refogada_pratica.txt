@@ -1,0 +1,32 @@
+{
+  "title": "SALADA REFOGADA PRÁTICA",
+  "category": "Acompanhamentos",
+  "code": "LM, LT",
+  "yield": "Variável",
+  "nutrition": {},
+  "macroNote": "Tabela nutricional variável conforme a quantidade servida, mas é uma opção de baixíssima caloria e rica em nutrientes.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "6 folhas de couve (sem o talo central)\n2 cenouras (cortadas em tiras finas)\n1/4 de repolho (cortado em tiras finas)\n1 fio de azeite\nCebola picada a gosto\nAlho (fresco ou granulado) a gosto\nTemperos: Sal e Chimichurri a gosto"
+    }
+  ],
+  "prepSteps": "Preparação da Couve: Retire o talo central das folhas de couve para evitar o amargor. Enrole as folhas fazendo um \"charutinho\" e corte em tiras finas.\n\nPreparação da Cenoura: Utilize um descascador ou faca para cortar as cenouras em tiras longas e finas (estilo julienne ou espaguete).\n\nPreparação do Repolho: Fatie o repolho bem fininho.\n\nRefoga: Em uma frigideira grande ou panela, aqueça o azeite e refogue a cebola e o alho até dourarem levemente.\n\nSequência de Cozimento:\n1. Adicione o repolho primeiro e deixe refogar até começar a murchar.\n2. Acrescente a cenoura e deixe cozinhar por cerca de 3 a 4 minutos (ela deve ficar macia, mas ainda firme).\n3. Por último, coloque a couve, pois ela cozinha muito rápido. Mexa apenas para misturar e murchar levemente.\n\nTempere: Finalize com sal e chimichurri (ou temperos de sua preferência) e desligue o fogo.",
+  "tips": "",
+  "storage": "Pode ser guardada na geladeira em pote fechado e consumida ao longo da semana.",
+  "image": "",
+  "videoLink": "",
+  "layout": "2",
+  "fontSizes": { "title": 3, "ingredients": 2, "prep": 2 },
+  "imageSize": 3,
+  "spacing": "normal",
+  "videoDisplayStyle": "button",
+  "objectFit": "cover",
+  "objectPosition": "center",
+  "imageZoom": 100,
+  "columnRatio": "default",
+  "tipPlacement": "footer",
+  "storagePlacement": "footer",
+  "nutritionDisplayStyle": "hidden",
+  "titleAlignment": null
+}
