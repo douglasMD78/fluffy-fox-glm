@@ -1,7 +1,7 @@
 import { TEMPLATES } from "@/lib/constants";
 import { ColumnRatioKey } from "@/lib/constants";
 import { z } from "zod"; // Importar Zod
-import { HAMBURGUER_FIT_RECIPE } from "./recipes/hamburguer-fit"; // Nova importação
+// import { HAMBURGUER_FIT_RECIPE } from "./recipes/hamburguer-fit"; // Removendo importação
 
 // Esquema Zod para validar a saída da IA para receitas
 export const recipeSchema = z.object({
@@ -148,7 +148,7 @@ export const PDF_LUIZA_DATA = [
         nutritionDisplayStyle: 'default',
         titleAlignment: null,
     },
-    HAMBURGUER_FIT_RECIPE, // Adicionando a nova receita aqui
+    // HAMBURGUER_FIT_RECIPE, // Removendo a nova receita aqui
      { 
         id: 'p_final', 
         type: TEMPLATES.INTRO, 
