@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { ImageIcon, Sparkles, Package, PlayCircle } from '@/components/icons';
@@ -113,7 +115,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-1 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-1.5 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
@@ -169,7 +171,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
@@ -220,7 +222,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-1 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-1.5 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
@@ -270,7 +272,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
@@ -326,7 +328,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                      <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-1 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
@@ -379,7 +381,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
                                     <span>{renderMarkdownText(step)}</span>
@@ -436,7 +438,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-1 pr-0.5 text-navy/90 mb-2 leading-snug`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <p key={i} className="flex gap-1 break-inside-avoid">
                                     <span className="font-black text-accent shrink-0 text-[9px] font-hand pt-0.5">{i+1}.</span>
                                     <span>{renderMarkdownText(step)}</span>
@@ -497,7 +499,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                     <div className="flex flex-col min-h-0">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Modo de Preparo</h3>
                         <div className={`space-y-2 overflow-y-auto custom-scrollbar pr-1 text-navy/90 mb-2 leading-relaxed`} style={{ fontSize: `${fs.prep}px` }}>
-                            {data.prepSteps.split('\n').filter(l => l.trim()).map((step, i) => (
+                            {String(data.prepSteps || '').split('\n').filter(l => l.trim()).map((step, i) => (
                                 <div key={i} className="flex gap-2">
                                     <span className="font-black text-accent shrink-0 text-[10px] font-hand pt-0.5">{i+1}.</span>
                                     <p>{renderMarkdownText(step)}</p>
