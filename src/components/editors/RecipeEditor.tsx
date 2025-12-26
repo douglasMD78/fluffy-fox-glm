@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RecipePageData } from '@/data/initialData';
 import { compressImage } from '@/utils/image';
-import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain, AlignLeft } from '@/components/icons'; // Importar AlignLeft para alinhamento
+import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain, AlignLeft } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 
@@ -16,7 +16,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
 
     useEffect(() => {
         const parsePosition = (pos: string) => {
-            if (!pos) return { x: 50, y: 50 }; // Default to center
+            if (!pos) return { x: 50, y: 50 };
 
             const keywordMap: { [key: string]: { x: number, y: number } } = {
                 'center': { x: 50, y: 50 },
@@ -34,13 +34,12 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 return keywordMap[pos];
             }
 
-            // Try to parse as "X% Y%"
             const parts = pos.split(' ').map(p => parseInt(p.replace('%', '')));
             if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
                 return { x: parts[0], y: parts[1] };
             }
 
-            return { x: 50, y: 50 }; // Fallback
+            return { x: 50, y: 50 };
         };
 
         const { x, y } = parsePosition(activePage.objectPosition || 'center');
@@ -59,7 +58,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ fontSizes: { ...currentSizes, [type]: numVal } });
     };
 
-     const changeImageSize = (delta: number) => {
+    const changeImageSize = (delta: number) => {
         const currentSize = activePage.imageSize || 3;
         const newValue = Math.max(1, Math.min(5, currentSize + delta));
         updatePage({ imageSize: newValue });
@@ -67,7 +66,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
 
     const changeImageZoom = (delta: number) => {
         const currentZoom = activePage.imageZoom || 100;
-        const newZoom = Math.max(50, Math.min(200, currentZoom + delta)); // Limites de 50% a 200%
+        const newZoom = Math.max(50, Math.min(200, currentZoom + delta));
         updatePage({ imageZoom: newZoom });
     };
 
@@ -94,14 +93,12 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         updatePage({ objectPosition: `${newX}% ${newY}%` });
     };
 
-    // Atualizado para incluir todos os layouts de duas colunas
     const isTwoColumnLayout = ['2', '3', '4', '5', '6', '7', '8', '9'].includes(activePage.layout);
-    const isSideImage = ['2', '4', '7', '8'].includes(activePage.layout); // Layouts com imagem lateral
+    const isSideImage = ['2', '4', '7', '8'].includes(activePage.layout);
 
     return (
         <div className="space-y-5">
         
-        {/* Layout & Spacing Controls */}
         <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2 bg-rose-50 p-3 rounded-xl border border-rose-100 col-span-2">
                  <label className="text-[10px] font-black text-accent uppercase tracking-widest flex items-center gap-2"><Columns size={12}/> Estilo</label>
@@ -144,15 +141,14 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 )}
             </div>
             
-            {/* Font Size Manual Inputs */}
             <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
                 <label className="text-[10px] font-black text-navy/40 uppercase tracking-widest flex items-center gap-2"><Type size={12}/> Tamanho Fonte (px)</label>
-                {(['title', 'ingredients', 'prep'] as const).map(type => ( {/* Adicionado 'as const' para tipar corretamente */}
+                {(['title', 'ingredients', 'prep'] as const).map(type => (
                     <div key={type} className="flex items-center justify-between">
                         <span className="text-[10px] font-bold text-navy/60 uppercase w-20">{type === 'title' ? 'Título' : type === 'ingredients' ? 'Ingred.' : 'Preparo'}</span>
                         <input 
                             type="number" 
-                            value={(activePage.fontSizes && activePage.fontSizes[type]) || FONT_SIZES[type][2]} // Default to level 2 if not set
+                            value={(activePage.fontSizes && activePage.fontSizes[type]) || FONT_SIZES[type][2]}
                             onChange={(e) => changeFontSize(type, e.target.value)}
                             className="w-16 h-8 bg-gray-50 border border-gray-200 rounded-lg text-center text-xs font-mono font-bold text-navy focus:outline-none focus:border-accent"
                         />
@@ -170,12 +166,10 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
-        {/* Controles de Imagem (object-fit, object-position, zoom, e agora tamanho da moldura) */}
         {activePage.image && (
             <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
                 <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><ImageIcon size={12}/> Ajuste da Imagem</label>
                 
-                {/* Object Fit */}
                 <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold text-navy/60 uppercase">Encaixe</span>
                     <div className="flex bg-gray-50 rounded-lg p-0.5 border border-gray-100">
@@ -194,8 +188,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </div>
                 </div>
 
-                {/* Object Position */}
-                {activePage.objectFit === 'cover' && ( // Apenas mostra se objectFit for 'cover'
+                {activePage.objectFit === 'cover' && (
                     <div className="space-y-2">
                         <span className="text-[10px] font-bold text-navy/60 uppercase block">Posição (%)</span>
                         <div className="grid grid-cols-2 gap-2">
@@ -223,7 +216,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </div>
                 )}
 
-                {/* Image Zoom */}
                 <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold text-navy/60 uppercase">Zoom (%)</span>
                     <div className="flex items-center gap-2">
@@ -239,7 +231,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </div>
                 </div>
 
-                {/* Tamanho da Moldura da Imagem (apenas para layouts com imagem lateral) */}
                 {isSideImage && (
                     <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-2">
                         <span className="text-[10px] font-bold text-navy/60 uppercase w-20">Tam. Moldura</span>
@@ -261,7 +252,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
              </div>
         </div>
 
-        {/* Novo controle para o estilo do vídeo */}
         <div className="space-y-2">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Estilo do Link do Vídeo</label>
             <div className="flex gap-2 bg-white border border-gray-200 p-2 rounded-xl">
@@ -280,7 +270,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
-        {/* Controle de Alinhamento do Título */}
         <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><AlignLeft size={12}/> Alinhamento do Título</label>
             <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
@@ -294,7 +283,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     </button>
                 ))}
                 <button 
-                    onClick={() => updatePage({ titleAlignment: null })} // Opção para remover o alinhamento explícito
+                    onClick={() => updatePage({ titleAlignment: null })}
                     className={`px-3 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${activePage.titleAlignment === null ? 'bg-accent text-white shadow-sm' : 'text-navy/40 hover:bg-gray-100'}`}
                 >
                     Padrão
@@ -324,7 +313,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         newG[gIdx].items = value; 
                         updatePage({ingredientGroups: newG});
                     }} 
-                    className="!p-2 !pr-8" // Ajuste de padding para o botão
+                    className="!p-2 !pr-8"
                     accentColor="accent"
                 />
             </div>
@@ -340,7 +329,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             />
         </div>
         
-        {/* Controles de Posição para Dica e Armazenamento */}
         <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Sparkles size={12}/> Posição da Dica</label>
             <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
@@ -393,7 +381,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             />
         </div>
 
-        {/* Controles de Estilo de Nutrição */}
         <div className="space-y-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest flex items-center gap-2"><Brain size={12}/> Estilo da Nutrição</label>
             <div className="flex gap-2 bg-gray-50 rounded-lg p-0.5 border border-gray-100">
