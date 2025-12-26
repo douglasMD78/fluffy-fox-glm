@@ -1,0 +1,37 @@
+{
+  "title": "SORVETE DE MANGA FIT (2 INGREDIENTES)",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "1 porção",
+  "nutrition": {
+    "cal": "410",
+    "prot": "13.2g",
+    "carb": "67.7g",
+    "fat": "12.2g"
+  },
+  "macroNote": "Tabela nutricional referente à receita completa (1 manga grande + leite em pó integral).",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "Manga picada e congelada (quantidade a gosto, sugestão: 1 a 2 mangas grandes)\n4 colheres de sopa de leite em pó (ou Whey Protein sabor baunilha/neutro)"
+    }
+  ],
+  "prepSteps": "Congelamento: Descasque e corte a manga (tipos Tommy ou Palmer são melhores por terem menos fiapos) em cubos. Leve ao congelador por aproximadamente 6 horas ou até que esteja bem dura.\n\nProcessamento: Coloque a manga congelada em um recipiente resistente. Adicione o leite em pó (ou Whey Protein) por cima.\n\nBata: Utilize um Mixer para processar a fruta com o pó. Pressione o mixer contra a fruta aos poucos até obter uma textura cremosa e homogênea.\n\nCuidado: Evite usar liquidificador comum sem água, pois a manga congelada é muito dura e pode danificar o aparelho. O mixer é o mais indicado.\n\nSirva: O resultado é imediato, um creme espesso estilo sorvete de massa.",
+  "tips": "Proteína Extra: Substitua o leite em pó por Whey Protein para transformar esse sorvete em um pós-treino refrescante e proteico.",
+  "storage": "Congelador: Pode ser armazenado no congelador em pote fechado. Se endurecer muito, retire alguns minutos antes de consumir para voltar à cremosidade.",
+  "image": "",
+  "videoLink": "",
+  "layout": "2",
+  "fontSizes": { "title": 3, "ingredients": 2, "prep": 2 },
+  "imageSize": 3,
+  "spacing": "normal",
+  "videoDisplayStyle": "button",
+  "objectFit": "cover",
+  "objectPosition": "center",
+  "imageZoom": 100,
+  "columnRatio": "default",
+  "tipPlacement": "footer",
+  "storagePlacement": "footer",
+  "nutritionDisplayStyle": "default",
+  "titleAlignment": null
+}
