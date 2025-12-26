@@ -186,6 +186,40 @@ export const PDF_LUIZA_DATA = [
         nutritionDisplayStyle: 'default',
         titleAlignment: null,
     },
+    {
+        id: 'p_iogurte_geleia_morango',
+        type: TEMPLATES.RECIPE,
+        title: "IOGURTE COM GELEIA DE MORANGO",
+        category: "Bolos e Bolinhos",
+        code: "LM, LT",
+        yield: "1 copo",
+        nutrition: { cal: "359", prot: "11.4g", carb: "54.8g", fat: "13.0g" },
+        macroNote: "Tabela nutricional aproximada por porção (1 copo), calculada com leite integral e mel😊",
+        ingredientGroups: [
+            {
+                title: "Ingredientes",
+                items: "4 unidades de ameixa seca (sem caroço)\n1 colher de sopa de chia\n200 ml de água, leite sem lactose ou leite vegetal\n1 colher de sopa de linhaça (dourada ou marrom)\n1 fatia grande de mamão formosa (ou 1/2 mamão papaya bem maduro)\n1 colher de sopa de psyllium (ou mix de fibras)\nAdoçante stevia ou mel a gosto"
+            }
+        ],
+        prepSteps: "Hidrate: Em recipientes separados, coloque as ameixas e a chia de molho em um pouco de água por 10 a 15 minutos. Isso é essencial para liberar a mucilagem da chia e ativar as fibras da ameixa.\n\nNão descarte a água: A água onde a ameixa ficou de molho contém sorbitol (laxante natural) e deve ser usada na receita. A chia formará um \"gel\" que também será usado integralmente.\n\nBata tudo: No liquidificador, coloque os 200ml de leite, a linhaça, o mamão, as ameixas com a água do molho, o gel de chia, o psyllium e o adoçante.\n\nTriture bem: Bata até que a mistura fique homogênea e com uma cor mais escura, garantindo que todas as sementes e fibras foram bem processadas.",
+        tips: "Protocolo: Consumir \"dia sim, dia não\" para auxiliar na regulação do trânsito intestinal.\nDica: Se desejar reduzir as calorias, substitua o leite integral por água ou leite desnatado e use adoçante em vez de mel",
+        storage: "", // No specific storage mentioned in the image
+        image: "", // Placeholder for image
+        videoLink: "", // No video link provided in the image
+        layout: '2',
+        fontSizes: { title: 3, ingredients: 2, prep: 2 },
+        imageSize: 3,
+        spacing: 'normal',
+        videoDisplayStyle: 'button',
+        objectFit: 'cover',
+        objectPosition: 'center',
+        imageZoom: 100,
+        columnRatio: 'default' as ColumnRatioKey,
+        tipPlacement: 'footer',
+        storagePlacement: 'footer',
+        nutritionDisplayStyle: 'default',
+        titleAlignment: null,
+    },
      { 
         id: 'p_final', 
         type: TEMPLATES.INTRO, 
