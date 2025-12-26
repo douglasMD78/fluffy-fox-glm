@@ -1,0 +1,22 @@
+{
+  "title": "BOLINHO DE CHOCOLATE",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "6 bolinhos",
+  "nutrition": {
+    "cal": "120",
+    "prot": "6g",
+    "carb": "10g",
+    "fat": "5g"
+  },
+  "macroNote": "Essa tabela representa 1 bolinho, e essa receita rende aproximadamente 6 bolinhos.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 ovos\n2 colheres de sopa de cacau em pó\n3 colheres de sopa de farinha de aveia\n2 colheres de sopa de xilitol (ou outro adoçante de sua preferência)\n4 colheres de sopa de leite líquido\n1 colher de café de fermento em pó\nChocolate 70% (opcional, para recheio ou cobertura)"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Em uma tigela, misture os ovos, cacau em pó, farinha de aveia, xilitol e leite até obter uma massa homogênea. Adicione o fermento e misture delicadamente.\nPrepare as forminhas: Use uma forma de silicone ou outro recipiente que possa ir ao forno. Se não for de silicone, unte para evitar que grude.\nAdicione o chocolate: Coloque pedacinhos de chocolate 70% no meio da massa, se desejar.\nAsse: Leve ao forno pré-aquecido a 200°C por 25 minutos. Na air fryer, asse na mesma temperatura até dourar.",
+  "tips": "Para um toque especial, finalize com uma cobertura de pasta de amendoim ou do brigadeiro fit.\nAjuste o adoçante conforme seu paladar.",
+  "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**."
+}
