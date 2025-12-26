@@ -1,0 +1,22 @@
+{
+  "title": "PIPOCA DOCE",
+  "category": "Doces e Sobremesas",
+  "code": "LT, S",
+  "yield": "1 porção",
+  "nutrition": {
+    "cal": "170",
+    "prot": "5g",
+    "carb": "30g",
+    "fat": "3g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 1 porção de pipoca.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "30g de milho de pipoca\n1 pitada de sal\n2 colheres de sopa de leite em pó\n1 colher de sopa de cacau em pó\nAdoçante culinário a gosto"
+    }
+  ],
+  "prepSteps": "Prepare a pipoca normalmente na pipoqueira ou em uma panela com tampa, sem óleo ou com uma pequena quantidade de óleo de coco para evitar que grude. Enquanto isso, em uma tigela, misture o leite em pó, o cacau e o adoçante. Assim que a pipoca estiver pronta, ainda quente, despeje a mistura por cima e mexa bem para que a calda se distribua de maneira uniforme.",
+  "tips": "",
+  "storage": "Deve ser consumida imediatamente para manter a crocância.\nSe precisar armazenar, guarde em um pote hermético por até **2 dias**."
+}
