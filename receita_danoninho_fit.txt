@@ -1,0 +1,22 @@
+{
+  "title": "DANONINHO FIT",
+  "category": "Doces e Sobremesas",
+  "code": "LM, LT, S",
+  "yield": "1 porção",
+  "nutrition": {
+    "cal": "95",
+    "prot": "6g",
+    "carb": "10g",
+    "fat": "3g"
+  },
+  "macroNote": "Informações nutricionais por porção (serve 2)",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "1 pote de iogurte natural (caseiro ou pronto)\n½ pacote de suco Clight sabor morango (ou gelatina diet)\n2 colheres de sopa de leite em pó\nMorangos picados a gosto"
+    }
+  ],
+  "prepSteps": "Misture os ingredientes: Em um bowl, adicione o iogurte, o suco Clight (ou gelatina), o leite em pó e os morangos. Misture tudo até ficar homogêneo.\nAjuste a consistência: A mistura vai ficar um pouco líquida no início, mas não se preocupe!\nLeve à geladeira: Deixe descansar por pelo menos 1 hora. Após esse tempo, o creme vai ficar bem mais firme e consistente.",
+  "tips": "",
+  "storage": "Geladeira: Até **2 dias** em pote fechado.\nFreezer: Não recomendado (pode perder a textura cremosa)."
+}
