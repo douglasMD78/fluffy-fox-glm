@@ -1,0 +1,22 @@
+{
+  "title": "PÃO DE MEL",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "6 unidades",
+  "nutrition": {
+    "cal": "138",
+    "prot": "5.6g",
+    "carb": "16.3g",
+    "fat": "5.8g"
+  },
+  "macroNote": "Tabela Nutricional por Pão de Mel. Essa receita rende 6 unidades",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "3 ovos\n3 colheres de sopa de farinha de aveia\n3 colheres de sopa de cacau em pó\n2 colheres de sopa de iogurte natural\n1 colher de sopa de mel (se quiser pode ser 2)\nCanela a gosto\n1 colher de sopa de fermento em pó"
+    }
+  ],
+  "prepSteps": "Prepare a massa: Em uma tigela, bata os ovos até ficarem aerados. Adicione a farinha de aveia, o cacau em pó, o iogurte natural, o mel e a canela. Misture bem até obter uma massa homogênea. Acrescente o fermento e misture delicadamente.\nAsse: Distribua a massa em forminhas de cupcake ou no recipiente de sua preferência. Leve ao forno pré-aquecido a 200°C por 15 minutos. Se seu forno for muito potente, fique de olho, pois assa rapidamente.\nRecheie: Depois que os bolinhos esfriarem, corte ao meio e recheie com meia colher de sopa de doce de leite em cada unidade.\nCobertura: Derreta uma barrinha de chocolate 70% em banho-maria. Mergulhe os bolinhos no chocolate derretido ou espalhe a cobertura por cima.",
+  "tips": "",
+  "storage": ""
+}
