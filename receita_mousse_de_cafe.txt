@@ -1,0 +1,22 @@
+{
+  "title": "MOUSSE DE CAFÉ",
+  "category": "Doces e Sobremesas",
+  "code": "LM, LT, S",
+  "yield": "1 mousse",
+  "nutrition": {
+    "cal": "147",
+    "prot": "18g",
+    "carb": "12g",
+    "fat": "2g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 1 mousse",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "60ml de café forte\n180ml de iogurte natural ou grego\nGelatina incolor já hidratada\nAdoçante a gosto"
+    }
+  ],
+  "prepSteps": "Dissolva a gelatina incolor conforme as instruções da embalagem. Em seguida, misture todos os ingredientes em um recipiente até formar um creme homogêneo.\nPara um resultado mais aerado, bata a mistura com um mixer ou liquidificador.\nDespeje em potinhos individuais e leve ao congelador por pelo menos 2 horas ou até firmar. O café precisa estar mais forte para intensificar o sabor e equilibrar a doçura do mousse.",
+  "tips": "",
+  "storage": "Mantenha o flan na geladeira por até **5 dias** em potinhos bem fechados. Se congelado, ele pode durar até **15 dias**."
+}
