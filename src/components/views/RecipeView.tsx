@@ -53,7 +53,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
     };
 
     const imageStyle: React.CSSProperties = {
-        objectFit: data.objectFit || 'cover',
+        objectFit: (data.objectFit || 'cover') as React.CSSProperties['objectFit'], // Corrigido: Asserção de tipo
         objectPosition: data.objectPosition || 'center',
         transform: `scale(${ (data.imageZoom || 100) / 100 })`,
         transformOrigin: 'center center'

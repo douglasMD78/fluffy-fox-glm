@@ -147,7 +147,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             {/* Font Size Manual Inputs */}
             <div className="space-y-2 bg-white p-3 rounded-xl border border-gray-100 col-span-2">
                 <label className="text-[10px] font-black text-navy/40 uppercase tracking-widest flex items-center gap-2"><Type size={12}/> Tamanho Fonte (px)</label>
-                {['title', 'ingredients', 'prep'].map(type => (
+                {(['title', 'ingredients', 'prep'] as const).map(type => ( {/* Adicionado 'as const' para tipar corretamente */}
                     <div key={type} className="flex items-center justify-between">
                         <span className="text-[10px] font-bold text-navy/60 uppercase w-20">{type === 'title' ? 'Título' : type === 'ingredients' ? 'Ingred.' : 'Preparo'}</span>
                         <input 
@@ -302,7 +302,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
             </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-4 gap-2">
             <div><label className="text-[10px] font-bold text-navy/40 uppercase">Categoria</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.category} onChange={e => updatePage({category: e.target.value})} /></div>
             <div><label className="text-[10px] font-bold text-navy/40 uppercase">Tags (Códigos: CM, A, J...)</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: CM, A, J" value={activePage.code} onChange={e => updatePage({code: e.target.value})} /></div>
             <div><label className="text-[10px] font-bold text-navy/40 uppercase">Rendimento</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.yield} onChange={e => updatePage({yield: e.target.value})} /></div>

@@ -2,7 +2,7 @@ import html2pdf from 'html2pdf.js';
 
 export const generatePdf = async (element: HTMLElement, filename: string = 'document.pdf') => {
     const opt = {
-        margin: [0, 0, 0, 0], // Top, Left, Bottom, Right
+        margin: [0, 0, 0, 0] as [number, number, number, number], // Top, Left, Bottom, Right - Corrigido para tipo específico
         filename: filename,
         image: { type: 'jpeg', quality: 0.9 }, // Ajustado de 0.98 para 0.9
         html2canvas: { 

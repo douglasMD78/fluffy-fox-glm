@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
@@ -144,7 +144,7 @@ const Editor = () => {
     };
 
     const updatePage = (newData: Partial<PageData>) => { 
-        setPages(pages.map(p => p.id === selectedId ? { ...p, ...newData } : p)); 
+        setPages(pages.map(p => p.id === selectedId ? { ...p, ...newData } as PageData : p)); // Corrigido: Asserção de tipo para PageData
     };
    
     const handleSort = () => {
@@ -452,10 +452,10 @@ const Editor = () => {
                             )}
 
                             {activePage.type === TEMPLATES.RECIPE && <RecipeEditor activePage={activePage as RecipePageData} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />}
-                            {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage} updatePage={updatePage} />}
-                            {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />}
+                            {activePage.type === TEMPLATES.COVER && <CoverEditor activePage={activePage as CoverPageData} updatePage={updatePage} />} {/* Corrigido: Asserção de tipo */}
+                            {activePage.type === TEMPLATES.INTRO && <IntroEditor activePage={activePage as IntroPageData} updatePage={updatePage} onAiRequest={() => openMagicModal('intro')} />} {/* Corrigido: Asserção de tipo */}
+                            {activePage.type === TEMPLATES.SECTION && <SectionEditor activePage={activePage as SectionPageData} updatePage={updatePage} />} {/* Corrigido: Asserção de tipo */}
+                            {activePage.type === TEMPLATES.SHOPPING && <ShoppingEditor activePage={activePage as ShoppingPageData} updatePage={updatePage} onAiRequest={() => openMagicModal('shopping')} />} {/* Corrigido: Asserção de tipo */}
                             {activePage.type === TEMPLATES.LEGEND && <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />}
                         </div>
                     </div>
@@ -476,15 +476,15 @@ const Editor = () => {
                         <div className="a4-page-texture"></div>
                         {/* Wrapper "Safe Print Area" */}
                         <div className="z-10 relative h-full flex flex-col">
-                            {p.type === TEMPLATES.COVER && <CoverView data={p} />}
-                            {p.type === TEMPLATES.SECTION && <SectionView data={p} />}
+                            {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />} {/* Corrigido: Asserção de tipo */}
+                            {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} />} {/* Corrigido: Asserção de tipo */}
                             
                             {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                             {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
                             
                             {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p} onRecipeClick={handlePageClick} />}
-                            {p.type === TEMPLATES.INTRO && <IntroView data={p} />}
-                            {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p} />}
+                            {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />} {/* Corrigido: Asserção de tipo */}
+                            {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />} {/* Corrigido: Asserção de tipo */}
                             {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
                             
                             <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
