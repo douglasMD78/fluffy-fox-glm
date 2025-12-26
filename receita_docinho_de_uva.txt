@@ -1,0 +1,22 @@
+{
+  "title": "DOCINHO DE UVA",
+  "category": "Doces e Sobremesas",
+  "code": "LM, LT, S",
+  "yield": "1 docinho de uva",
+  "nutrition": {
+    "cal": "181",
+    "prot": "11g",
+    "carb": "27.2g",
+    "fat": "5.4g"
+  },
+  "macroNote": "Os valores da tabela correspondem a 1 docinho de uva",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "2 colheres de sopa de leite em pó\n3 colheres de sopa de iogurte natural\n80g de uva\nCalda de cacau ou chocolate 70% derretido"
+    }
+  ],
+  "prepSteps": "Misture o leite em pó com o iogurte natural até formar um creme homogêneo. Se preferir uma consistência mais líquida, adicione 1 colher de sopa de leite ou água.\nAcrescente as frutas escolhidas e finalize com a calda de cacau ou chocolate derretido. Sirva gelado.",
+  "tips": "",
+  "storage": "Conserve na geladeira em um pote fechado por até 2 dias.\nNão é recomendado congelar, pois pode alterar a textura do creme."
+}
