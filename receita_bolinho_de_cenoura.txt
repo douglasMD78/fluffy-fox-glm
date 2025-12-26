@@ -1,0 +1,26 @@
+{
+  "title": "BOLINHO DE CENOURA",
+  "category": "Bolos e Bolinhos",
+  "code": "LM, LT",
+  "yield": "5 unidades",
+  "nutrition": {
+    "cal": "109.2",
+    "prot": "4.6g",
+    "carb": "10.6g",
+    "fat": "5.5g"
+  },
+  "macroNote": "Tabela nutricional por bolinho. Essa receita rende 5 unidades",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "1 cenoura média\n2 ovos\n2 colheres de sopa de adoçante natural\n3 colheres de sopa de farinha de aveia\n1 colher de sobremesa de fermento"
+    },
+    {
+      "title": "Para cobertura",
+      "items": "4 quadradinhos de chocolate 70%\n1 colher de sopa de leite em pó\nÁgua (quantidade suficiente para dar cremosidade)"
+    }
+  ],
+  "prepSteps": "Prepare a massa: No liquidificador, bata a cenoura, os ovos e o adoçante até obter uma mistura homogênea. Transfira para uma tigela, acrescente a farinha de aveia e misture bem. Por último, adicione o fermento e mexa delicadamente.\nAsse: Distribua a massa em forminhas de cupcake ou no recipiente de sua preferência. Leve ao forno pré-aquecido a 200°C por 25 minutos.\nPrepare a cobertura: Derreta os quadradinhos de chocolate 70% em banho-maria. Acrescente o leite em pó e adicione água aos poucos, mexendo até obter uma consistência cremosa.\nSirva: Deixe esfriar um pouco antes de servir e aproveite esse bolinho saudável e delicioso!",
+  "tips": "",
+  "storage": ""
+}
