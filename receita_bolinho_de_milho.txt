@@ -1,0 +1,22 @@
+{
+  "title": "BOLINHO DE MILHO",
+  "category": "Bolos e Bolinhos",
+  "code": "LT, S",
+  "yield": "10 fatias",
+  "nutrition": {
+    "cal": "178",
+    "prot": "36g",
+    "carb": "21g",
+    "fat": "9g"
+  },
+  "macroNote": "Os valores da tabela correspondem a uma fatia considerando que o bolo foi dividido em 10.",
+  "ingredientGroups": [
+    {
+      "title": "Ingredientes",
+      "items": "1 xícara de milho verde\n1 ½ xícara de flocão de milho\n3 ovos\n5 colheres de sopa de adoçante culinário\n3 colheres de sopa de óleo de coco ou azeite\n200ml de leite de coco\n1 tampinha de fermento"
+    }
+  ],
+  "prepSteps": "Misture os ingredientes: Em uma tigela, bata os ovos, adicione o milho, o flocão, o adoçante, o óleo de coco e o leite de coco. Misture bem até obter uma massa homogênea.\nAdicione o fermento: Acrescente o fermento e misture delicadamente.\nAsse: Despeje a massa em forminhas ou uma assadeira untada e leve ao forno pré-aquecido a 180°C por 25 minutos. Faça o teste do palito.\nSirva: Espere esfriar e aproveite!",
+  "tips": "",
+  "storage": "Geladeira: até 5 dias em pote hermético.\nCongelador: até 1 mês."
+}
