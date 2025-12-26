@@ -148,7 +148,44 @@ export const PDF_LUIZA_DATA = [
         nutritionDisplayStyle: 'default',
         titleAlignment: null,
     },
-    // HAMBURGUER_FIT_RECIPE, // Removendo a nova receita aqui
+    {
+        id: 'p_shake_laxativo',
+        type: TEMPLATES.RECIPE,
+        title: "SHAKE LAXATIVO",
+        category: "Bolos e Bolinhos",
+        code: "LM, LT",
+        yield: "8 potinhos",
+        nutrition: { cal: "216", prot: "10.6g", carb: "19.8g", fat: "10.3g" },
+        macroNote: "Os valores da tabela correspondem a 1 potinho😊",
+        ingredientGroups: [
+            {
+                title: "Para o iogurte:",
+                items: "2 litros de leite integral\n1 pote de iogurte natural (como \"isca\")\n4 colheres de sopa de leite em pó (opcional, para consistência)"
+            },
+            {
+                title: "Para a geleia:",
+                items: "500g de morangos congelados\n1/2 limão espremido (suco)\n6 colheres de sopa de adoçante culinário (sugestão: Forno e Fogão)"
+            }
+        ],
+        prepSteps: "Prepare o iogurte: Aqueça o leite até atingir 40°C (morno ao toque). Dissolva o leite em pó nesta etapa para garantir cremosidade. Adicione o iogurte natural e misture bem. Cubra o recipiente com plástico filme e um pano de prato. Deixe descansar em um local abafado e sem corrente de ar (como dentro do forno desligado) até firmar.\n\nPrepare a geleia: Em uma panela, coloque os morangos, o suco de limão e o adoçante. Leve ao fogo médio. Não adicione água, deixe o morango soltar o próprio líquido.\n\nDê o ponto: Mexa e amasse levemente os morangos conforme amolecem, mantendo pedaços para textura. Cozinhe até obter uma calda grossa e brilhante.\n\nMonte: Distribua a geleia no fundo de 8 potes e complete com o iogurte firme.",
+        tips: "", // No specific tips mentioned in the image
+        storage: "**Geladeira:** Mantenha refrigerado e consuma em até 7 dias.\n**Congelamento:** Não recomendado (o iogurte pode talhar ao descongelar)",
+        image: "", // Placeholder for image
+        videoLink: "", // No video link provided in the image
+        layout: '2',
+        fontSizes: { title: 3, ingredients: 2, prep: 2 },
+        imageSize: 3,
+        spacing: 'normal',
+        videoDisplayStyle: 'button',
+        objectFit: 'cover',
+        objectPosition: 'center',
+        imageZoom: 100,
+        columnRatio: 'default' as ColumnRatioKey,
+        tipPlacement: 'footer',
+        storagePlacement: 'footer',
+        nutritionDisplayStyle: 'default',
+        titleAlignment: null,
+    },
      { 
         id: 'p_final', 
         type: TEMPLATES.INTRO, 
