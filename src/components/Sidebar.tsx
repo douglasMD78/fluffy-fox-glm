@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TEMPLATES } from '@/lib/constants';
-import { PageData, TocPageData } from '@/data/initialData';
+import { PageData } from '@/data/initialData';
 
 // Icons
 import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize } from '@/components/icons';
@@ -96,7 +96,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="grid grid-cols-4 gap-1 mb-4">
                     <button onClick={() => onAddPage(TEMPLATES.COVER)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capa"><Layout size={14}/></button>
                     <button onClick={() => onAddPage(TEMPLATES.SECTION)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Capítulo"><Settings size={14}/></button>
-                    <button onClick={() => onAddPage(TEMPLATES.TOC)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Sumário"><List size={14}/></button>
                     <button onClick={() => onAddPage(TEMPLATES.INTRO)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Intro"><AlignLeft size={14}/></button>
                     <button onClick={() => onAddPage(TEMPLATES.LEGEND)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Legendas"><BookOpen size={14}/></button>
                     <button onClick={() => onAddPage(TEMPLATES.SHOPPING)} className="bg-surface hover:bg-gray-100 py-2 rounded-lg flex items-center justify-center text-navy/60" title="Compras"><Package size={14}/></button>

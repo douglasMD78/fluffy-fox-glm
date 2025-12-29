@@ -2,7 +2,6 @@ import { TEMPLATES } from "@/lib/constants";
 import { ColumnRatioKey } from "@/lib/constants";
 import { z } from "zod";
 import originalJson from "./todas-as-receitas-original.json";
-import { TOC_CATEGORIES, normalizeCategory } from "@/lib/toc-categories";
 
 // Esquema Zod para validar a saída da IA para receitas
 export const recipeSchema = z
@@ -92,11 +91,6 @@ export const INITIAL_DATA = {
     title: "Um Olá Especial",
     highlight: "para Você!",
     text: "Escreva aqui sua mensagem de boas-vindas...",
-  },
-  [TEMPLATES.TOC]: { 
-    title: "SUMÁRIO", 
-    tocPageNumber: 1,
-    numberingStyle: 'absolute' // 'absolute' (array index) ou 'editorial' (exclui capa/intro/TOC)
   },
   [TEMPLATES.LEGEND]: {
     title: "Legendas",
@@ -285,24 +279,19 @@ export const PDF_LUIZA_DATA = (() => {
     waffleSalgado.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
   }
 
-  // Páginas especiais e sumário
+  // Páginas especiais sem TOC
   const specialPages = originalData.filter(
     (p) => p.type === TEMPLATES.COVER || p.type === TEMPLATES.INTRO || p.type === TEMPLATES.LEGEND
   );
-  const tocPages = originalData.filter((p) => p.type === TEMPLATES.TOC);
 
   // Construir nova ordem com seções conforme USER_CATEGORIZED_RECIPES
   const titleMap = new Map<string, AnyPage>();
   recipePages.forEach((r) => titleMap.set(r.title.toUpperCase(), r));
 
-  const normalizedCategorySet = new Set(TOC_CATEGORIES.map(normalizeCategory));
-
   const newRecipeOrder: AnyPage[] = [];
   USER_CATEGORIZED_RECIPES.forEach((itemTitle) => {
-    const normalized = normalizeCategory(itemTitle);
-
-    // SEÇÃO somente se o item está na lista oficial de categorias
-    if (normalizedCategorySet.has(normalized)) {
+    // Se é uma seção conhecida
+    if (TOC_CATEGORIES.includes(itemTitle)) {
       newRecipeOrder.push({
         id: `p_section_${itemTitle.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}`,
         type: TEMPLATES.SECTION,
@@ -317,13 +306,12 @@ export const PDF_LUIZA_DATA = (() => {
     if (r) newRecipeOrder.push(r);
   });
 
-  // Remontar PDF
+  // Remontar PDF sem TOC
   const newPdf: AnyPage[] = [];
   const cover = specialPages.find((p) => p.type === TEMPLATES.COVER);
   if (cover) newPdf.push(cover);
   const introStart = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
   if (introStart) newPdf.push(introStart);
-  if (tocPages.length) newPdf.push(...tocPages);
   const legend = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
   if (legend) newPdf.push(legend);
   newPdf.push(...newRecipeOrder);
@@ -340,8 +328,4 @@ export type IntroPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.INTRO];
 export type CoverPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.COVER];
 export type SectionPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SECTION];
 export type ShoppingPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SHOPPING];
-export type TocPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.TOC] & {
-  tocPageNumber?: number;
-  numberingStyle?: 'absolute' | 'editorial';
-};
 export type LegendPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.LEGEND];

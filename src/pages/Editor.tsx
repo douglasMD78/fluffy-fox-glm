@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, TocPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
@@ -17,7 +17,6 @@ import { GlobalSettingsEditor } from '@/components/editors/GlobalSettingsEditor'
 import { CoverView } from '@/components/views/CoverView';
 import { SectionView } from '@/components/views/SectionView';
 import { RecipeView } from '@/components/views/RecipeView';
-import { TocView } from '@/components/views/TocView';
 import { IntroView } from '@/components/views/IntroView';
 import { ShoppingView } from '@/components/views/ShoppingView';
 import { LegendView } from '@/components/views/LegendView';
@@ -158,7 +157,6 @@ const Editor = () => {
                             {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                             {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
                             
-                            {p.type === TEMPLATES.TOC && <TocView pages={pages} data={p as TocPageData} onRecipeClick={handlePageClick} />}
                             {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />}
                             {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />}
                             {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}

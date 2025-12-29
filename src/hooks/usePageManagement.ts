@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
-import { TEMPLATES, MAX_TOC_PAGES } from '@/lib/constants';
-import { PageData, INITIAL_DATA, TocPageData } from '@/data/initialData';
+import { TEMPLATES } from '@/lib/constants';
+import { PageData, INITIAL_DATA } from '@/data/initialData';
 
 interface UsePageManagementProps {
     initialPages?: PageData[];
@@ -13,46 +13,6 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     const [selectedId, setSelectedId] = useState<string | null>(props?.initialSelectedId || null);
     const [dragItem, setDragItem] = useState<number | null>(null);
     const [dragOverItem, setDragOverItem] = useState<number | null>(null);
-
-    const contentPages = useMemo(() => pages.filter(p => p.type === TEMPLATES.RECIPE), [pages]);
-
-    // Gerenciar TOC - simplificado
-    useEffect(() => {
-        const existingTocs = pages.filter(p => p.type === TEMPLATES.TOC);
-        const hasRecipes = contentPages.length > 0;
-        
-        // Se não tem receitas, remover TOCs
-        if (!hasRecipes && existingTocs.length > 0) {
-            setPages(pages.filter(p => p.type !== TEMPLATES.TOC));
-            return;
-        }
-        
-        // Se tem receitas e não tem TOCs, criar 2 páginas
-        if (hasRecipes && existingTocs.length === 0) {
-            const newTocs: PageData[] = [];
-            for (let i = 1; i <= 2; i++) {
-                newTocs.push({
-                    id: `toc-${i}`,
-                    type: TEMPLATES.TOC,
-                    ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])),
-                    tocPageNumber: i
-                });
-            }
-            
-            // Inserir após intro/cover
-            let insertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
-            if (insertIndex !== -1) insertIndex++;
-            else {
-                insertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
-                if (insertIndex !== -1) insertIndex++;
-                else insertIndex = 0;
-            }
-            
-            const newPages = [...pages];
-            newPages.splice(insertIndex, 0, ...newTocs);
-            setPages(newPages);
-        }
-    }, [contentPages.length]);
 
     const addPage = (type: TEMPLATES) => { 
         const newId = `p_${Date.now()}`; 
