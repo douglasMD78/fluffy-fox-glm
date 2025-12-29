@@ -1,5 +1,4 @@
 import { GlobalWorkerOptions, getDocument, version as pdfjsVersion } from "pdfjs-dist";
-import type { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
 
 // Configurar o worker do pdf.js a partir do CDN compatível com a versão instalada
 const workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`;
@@ -12,7 +11,7 @@ GlobalWorkerOptions.workerSrc = workerSrc;
 export async function extractPdfText(input: File | ArrayBuffer) {
   const data = input instanceof File ? await input.arrayBuffer() : input;
   const loadingTask = getDocument({ data });
-  const pdf: PDFDocumentProxy = await loadingTask.promise;
+  const pdf: any = await loadingTask.promise;
 
   const pagesText: string[] = [];
 
