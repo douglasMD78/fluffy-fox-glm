@@ -58,6 +58,10 @@ const Editor = () => {
     
     const DB_KEY = 'luiza_studio_db_v1';
 
+    const updatePage = (newData: Partial<PageData>) => { 
+        setPages(pages.map(p => p.id === selectedId ? { ...p, ...newData } as PageData : p)); // Corrigido: Asserção de tipo para PageData
+    };
+
     // Usar o hook useAiFeatures
     const {
         showImporter,
@@ -212,10 +216,6 @@ const Editor = () => {
         setSelectedId(newId); 
         toast.success(`Página de ${type} adicionada!`);
     };
-
-    const updatePage = (newData: Partial<PageData>) => { 
-        setPages(pages.map(p => p.id === selectedId ? { ...p, ...newData } as PageData : p)); // Corrigido: Asserção de tipo para PageData
-    };
    
     const handleDragStart = (index: number) => setDragItem(index);
     const handleDragEnter = (index: number) => setDragOverItem(index);
@@ -281,6 +281,14 @@ const Editor = () => {
             setPages(pages.filter(p => p.id !== selectedId));
             setSelectedId(null);
             toast.success("Página excluída com sucesso!");
+        }
+    };
+
+    const handlePageClick = (pageId: string) => {
+        setSelectedId(pageId);
+        const previewElement = document.getElementById(`preview-${pageId}`);
+        if (previewElement) {
+            previewElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
