@@ -8,10 +8,22 @@ export const TOC_CATEGORIES = [
 
 export const OTHER_CATEGORY = "OUTRAS RECEITAS";
 
-// Normalização básica para casar variações de grafia (E ↔ &, espaços, maiúsculas)
+// Normalização robusta para casar variações de grafia (E ↔ &, espaços, maiúsculas, pontuação, diacríticos)
 export const normalizeCategory = (s: string | undefined | null) => {
-  return String(s || "")
+  if (!s) return "";
+  
+  return String(s)
     .trim()
     .toUpperCase()
-    .replace(/\s+E\s+/g, " & ");
+    // Normalizar diacríticos (acentos, til, cedilha)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacríticos
+    // Substituir variantes de "E" e "&"
+    .replace(/\bE\b/g, '&')
+    .replace(/\s+E\s+/g, ' & ')
+    // Remover pontuações (vírgulas, pontos, vírgulas)
+    .replace(/[,\.;:]/g, '')
+    // Remover espaços extras e hífens
+    .replace(/[\s\-]+/g, ' ')
+    .trim();
 };

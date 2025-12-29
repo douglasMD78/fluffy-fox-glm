@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TEMPLATES } from '@/lib/constants';
-import { PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData } from '@/data/initialData';
+import { PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, TocPageData } from '@/data/initialData';
 
 // Icons
 import { Trash2 } from '@/components/icons';
@@ -14,6 +14,7 @@ import { IntroEditor } from '@/components/editors/IntroEditor';
 import { SectionEditor } from '@/components/editors/SectionEditor';
 import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
 import { LegendEditor } from '@/components/editors/LegendEditor';
+import { TocEditor } from '@/components/editors/TocEditor';
 
 interface EditorPanelProps {
     activePage: PageData | undefined;
@@ -46,11 +47,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({ activePage, updatePage
             case TEMPLATES.LEGEND:
                 return <LegendEditor activePage={activePage as LegendPageData} updatePage={updatePage} />;
             case TEMPLATES.TOC:
-                return (
-                    <div className="p-4 text-center text-navy/60">
-                        <p className="text-sm">O sumário é gerado automaticamente e não possui opções de edição direta.</p>
-                    </div>
-                );
+                return <TocEditor data={activePage as TocPageData} onUpdate={updatePage} />;
             default:
                 return (
                     <div className="p-4 text-center text-navy/60">

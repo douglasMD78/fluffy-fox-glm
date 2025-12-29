@@ -12,6 +12,24 @@ interface TocViewProps {
 }
 
 export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
+  // Performance: criar mapa de índices uma vez
+  const indexMap = React.useMemo(() => {
+    const map = new Map<string, number>();
+    pages.forEach((p, i) => map.set(p.id, i));
+    return map;
+  }, [pages]);
+
+  // Performance: cache de categoria normalizada
+  const normalizedCategoryCache = React.useMemo(() => {
+    const cache = new Map<string, string>();
+    pages.forEach(p => {
+      if (p.type === TEMPLATES.RECIPE && (p as any).category) {
+        cache.set(p.id, normalizeCategory((p as any).category));
+      }
+    });
+    return cache;
+  }, [pages]);
+
   // Somente receitas entram no TOC de categorias
   const recipePages = pages.filter(p => p.type === TEMPLATES.RECIPE);
 
@@ -23,7 +41,10 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
 
   normalizedCats.forEach((catNorm, idx) => {
     const label = TOC_CATEGORIES[idx];
-    const recipesInCat = recipePages.filter(r => normalizeCategory((r as any).category) === catNorm);
+    const recipesInCat = recipePages.filter(r => {
+      const cachedCat = normalizedCategoryCache.get(r.id);
+      return cachedCat === catNorm;
+    });
     if (recipesInCat.length > 0) {
       blocks.push({ header: label, recipes: recipesInCat });
       recipesInCat.forEach(r => assigned.add(r.id));
@@ -35,8 +56,8 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
     blocks.push({ header: OTHER_CATEGORY, recipes: others });
   }
 
-  // NOVO: ordenar blocos e receitas pelo índice real no array de páginas (ordem de leitura)
-  const pageIndexOf = (id: string) => pages.findIndex(p => p.id === id);
+  // Ordenar blocos e receitas pelo índice real no array de páginas (ordem de leitura)
+  const pageIndexOf = (id: string) => indexMap.get(id) ?? -1;
   const sortedBlocks: CategoryBlock[] = blocks
     .map(b => ({
       header: b.header,
@@ -49,27 +70,43 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
   // Quantidade de páginas de TOC existentes (máx. 2)
   const totalTocPages = pages.filter(p => p.type === TEMPLATES.TOC).length || 1;
 
-  // Calcular "linhas" por bloco (1 cabeçalho + N receitas) e distribuir blocos entre as duas páginas
-  const blockLines = (b: CategoryBlock) => 1 + b.recipes.length;
-  const totalLines = sortedBlocks.reduce((sum, b) => sum + blockLines(b), 0);
-  const targetPerPage = Math.ceil(totalLines / totalTocPages);
-
-  const pagesBlocks: CategoryBlock[][] = Array.from({ length: totalTocPages }, () => []);
-  const pageLines: number[] = Array.from({ length: totalTocPages }, () => 0);
-
-  sortedBlocks.forEach((b) => {
-    for (let pIdx = 0; pIdx < totalTocPages; pIdx++) {
-      const fits = pageLines[pIdx] + blockLines(b) <= targetPerPage || pagesBlocks[pIdx].length === 0;
-      if (fits) {
-        pagesBlocks[pIdx].push(b);
-        pageLines[pIdx] += blockLines(b);
-        return;
+  // Algoritmo melhorado de distribuição de blocos (balanceamento para 2 páginas)
+  const distributeBlocks = (blocks: CategoryBlock[], totalPages: number): CategoryBlock[][] => {
+    if (totalPages <= 1) return [blocks];
+    
+    const totalLines = blocks.reduce((sum, b) => sum + 1 + b.recipes.length, 0);
+    const targetLines = Math.ceil(totalLines / totalPages);
+    
+    // Tentar todas as combinações para 2 páginas (pequeno backtracking)
+    let bestDistribution: CategoryBlock[][] = [];
+    let minDiff = Infinity;
+    
+    // Gerar todos os pontos de corte possíveis
+    for (let i = 0; i <= blocks.length; i++) {
+      const page1 = blocks.slice(0, i);
+      const page2 = blocks.slice(i);
+      
+      if (page1.length > 0 && page2.length > 0) {
+        const lines1 = page1.reduce((sum, b) => sum + 1 + b.recipes.length, 0);
+        const lines2 = page2.reduce((sum, b) => sum + 1 + b.recipes.length, 0);
+        const diff = Math.abs(lines1 - lines2);
+        
+        if (diff < minDiff) {
+          minDiff = diff;
+          bestDistribution = [page1, page2];
+        }
       }
     }
-    const last = totalTocPages - 1;
-    pagesBlocks[last].push(b);
-    pageLines[last] += blockLines(b);
-  });
+    
+    // Se não encontrou distribuição balanceada, usar fallback
+    if (bestDistribution.length === 0) {
+      return [blocks];
+    }
+    
+    return bestDistribution;
+  };
+
+  const pagesBlocks = distributeBlocks(sortedBlocks, totalTocPages);
 
   const currentPageNumber = data.tocPageNumber || 1;
   const currentBlocks = pagesBlocks[Math.min(currentPageNumber - 1, totalTocPages - 1)] || [];
@@ -77,10 +114,26 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
   const displayTitle = data.title || "SUMÁRIO";
   const finalTitle = currentPageNumber > 1 ? `${displayTitle} (Continuação)` : displayTitle;
 
-  // Numeração que bate com o rodapé (posição real no array de páginas)
+  // Numeração configurável
   const getActualPageNumber = (item: PageData) => {
-    const idx = pages.findIndex(p => p.id === item.id);
-    if (idx === -1) return null;
+    const idx = indexMap.get(item.id);
+    if (idx === undefined) return null;
+    
+    const numberingStyle = data.numberingStyle || 'absolute';
+    
+    if (numberingStyle === 'editorial') {
+      // Contar apenas páginas de conteúdo (excluindo capa, intro, TOC, legend)
+      let editorialNumber = 0;
+      for (let i = 0; i <= idx; i++) {
+        const pageType = pages[i]?.type;
+        if (pageType === TEMPLATES.RECIPE || pageType === TEMPLATES.SECTION || pageType === TEMPLATES.SHOPPING) {
+          editorialNumber++;
+        }
+      }
+      return String(editorialNumber).padStart(2, '0');
+    }
+    
+    // Numeração absoluta (padrão)
     return String(idx + 1).padStart(2, '0');
   };
 
@@ -94,9 +147,17 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
       </div>
 
       {/* Duas colunas por página, blocos não quebram */}
-      <div className="columns-1 md:columns-2 gap-6">
+      <div className="columns-1 md:columns-2 gap-6 print:columns-2">
         {currentBlocks.map((block, idx) => (
-          <div key={`${block.header}-${idx}`} style={{ breakInside: 'avoid' }} className="mb-3">
+          <div 
+            key={`${block.header}-${idx}`} 
+            style={{ 
+              breakInside: 'avoid',
+              pageBreakInside: 'avoid',
+              columnBreakInside: 'avoid'
+            }} 
+            className="mb-3 print:mb-4"
+          >
             {/* Cabeçalho da categoria */}
             <div
               className="flex items-baseline justify-between py-1 px-2 rounded hover:bg-surface transition-colors cursor-pointer"
@@ -123,7 +184,11 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
                   >
                     <span className="text-navy/90 text-[12px]">{title}</span>
                     <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[2px]"></div>
-                    {pageNum && <span className="text-navy/70 font-medium text-[10px]">{pageNum}</span>}
+                    {pageNum ? (
+                      <span className="text-navy/70 font-medium text-[10px]">{pageNum}</span>
+                    ) : (
+                      <span className="text-navy/30 font-medium text-[10px]">--</span>
+                    )}
                   </li>
                 );
               })}

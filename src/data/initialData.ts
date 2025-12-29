@@ -93,7 +93,11 @@ export const INITIAL_DATA = {
     highlight: "para Você!",
     text: "Escreva aqui sua mensagem de boas-vindas...",
   },
-  [TEMPLATES.TOC]: { title: "SUMÁRIO", tocPageNumber: 1 },
+  [TEMPLATES.TOC]: { 
+    title: "SUMÁRIO", 
+    tocPageNumber: 1,
+    numberingStyle: 'absolute' // 'absolute' (array index) ou 'editorial' (exclui capa/intro/TOC)
+  },
   [TEMPLATES.LEGEND]: {
     title: "Legendas",
     text:
@@ -338,5 +342,6 @@ export type SectionPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SECTION];
 export type ShoppingPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SHOPPING];
 export type TocPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.TOC] & {
   tocPageNumber?: number;
+  numberingStyle?: 'absolute' | 'editorial';
 };
 export type LegendPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.LEGEND];
