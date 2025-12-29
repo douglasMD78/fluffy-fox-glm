@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants'; // Importando MAX_TOC_ITEMS_PER_PAGE
+import { MAX_TOC_PAGES } from '@/lib/constants';
 import { PageData, INITIAL_DATA, PDF_LUIZA_DATA, TocPageData } from '@/data/initialData';
 
 // Removido: const MAX_TOC_ITEMS_PER_PAGE = 15;
@@ -23,7 +24,8 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     useEffect(() => {
         const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
         const totalItemsForToc = contentPages.length;
-        const requiredTocPagesCount = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
+        const requiredByItems = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
+        const requiredTocPagesCount = Math.min(MAX_TOC_PAGES, requiredByItems); // Limitar em no máximo 2
 
         let newTocPages: PageData[] = [];
         for (let i = 0; i < requiredTocPagesCount; i++) {

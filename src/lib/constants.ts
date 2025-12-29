@@ -9,6 +9,7 @@ export enum TEMPLATES {
 }
 
 export const MAX_TOC_ITEMS_PER_PAGE = 15; // Movido para cá
+export const MAX_TOC_PAGES = 2; // NOVO: Limite máximo de páginas de sumário (para enxugar em até duas páginas)
 
 export const TAG_DEFS = [
     { code: 'CM', label: 'Café da Manhã', color: 'bg-tag-cm', text: 'text-white' },
