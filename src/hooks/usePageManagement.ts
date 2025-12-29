@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants'; // Importando MAX_TOC_ITEMS_PER_PAGE
-import { MAX_TOC_PAGES } from '@/lib/constants';
 import { PageData, INITIAL_DATA, PDF_LUIZA_DATA, TocPageData } from '@/data/initialData';
 
 // Removido: const MAX_TOC_ITEMS_PER_PAGE = 15;
@@ -23,14 +22,15 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     // Efeito para gerenciar a paginação do sumário
     useEffect(() => {
         const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
-        const totalItemsForToc = contentPages.length; // apenas seções e receitas
+        const totalItemsForToc = contentPages.length;
         const requiredByItems = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
-        const requiredTocPagesCount = Math.min(MAX_TOC_PAGES, requiredByItems);
+        const requiredTocPagesCount = requiredByItems;
 
         let newTocPages: PageData[] = [];
         for (let i = 0; i < requiredTocPagesCount; i++) {
             const tocPageNumber = i + 1;
             const existingTocPage = existingTocPages.find(p => (p as TocPageData).tocPageNumber === tocPageNumber);
+            
             if (existingTocPage) {
                 newTocPages.push({ ...existingTocPage, tocPageNumber });
             } else {
@@ -39,12 +39,17 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
             }
         }
 
-        const currentTocMeta = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
-        const newTocMeta = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+        const currentTocPageIdsAndNumbers = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+        const newTocPageIdsAndNumbers = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
 
-        if (currentTocMeta !== newTocMeta || existingTocPages.length !== newTocPages.length) {
-            let tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
-            if (tocInsertIndex === -1) {
+        if (currentTocPageIdsAndNumbers !== newTocPageIdsAndNumbers || existingTocPages.length !== newTocPages.length) {
+            let finalPages: PageData[] = [];
+            let tocInsertIndex = -1;
+
+            const firstExistingTocIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
+            if (firstExistingTocIndex !== -1) {
+                tocInsertIndex = firstExistingTocIndex;
+            } else {
                 tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
                 if (tocInsertIndex === -1) tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
                 if (tocInsertIndex !== -1) tocInsertIndex++;
@@ -52,11 +57,13 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
             }
 
             const pagesWithoutOldTocs = pages.filter(p => p.type !== TEMPLATES.TOC);
-            const finalPages: PageData[] = [
+            
+            finalPages = [
                 ...pagesWithoutOldTocs.slice(0, tocInsertIndex),
                 ...newTocPages,
-                ...pagesWithoutOldTocs.slice(tocInsertIndex),
+                ...pagesWithoutOldTocs.slice(tocInsertIndex)
             ];
+
             setPages(finalPages);
         }
     }, [contentPages, pages]); // Depende de contentPages (para mudanças de conteúdo) e pages (para contexto completo)
