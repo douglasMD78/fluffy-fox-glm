@@ -31,17 +31,17 @@ import { getPageBackgroundColor } from '@/utils/pageStyles';
 // Components
 import { Sidebar } from '@/components/Sidebar'; // Importar o novo componente Sidebar
 import { EditorPanel } from '@/components/EditorPanel'; // Importar o novo componente EditorPanel
+import { ImporterModal } from '@/components/modals/ImporterModal'; // Importar ImporterModal
+import { MagicModal } from '@/components/modals/MagicModal'; // Importar MagicModal
+
+// Hooks
+import { useAiFeatures } from '@/hooks/useAiFeatures'; // Importar useAiFeatures
 
 const MAX_TOC_ITEMS_PER_PAGE = 15; // Deve ser consistente com TocView.tsx
 
 const Editor = () => {
     const [pages, setPages] = useState<PageData[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
-    const [showImporter, setShowImporter] = useState(false);
-    const [importText, setImportText] = useState("");
-    const [isImporting, setIsImporting] = useState(false);
-    const [magicModal, setMagicModal] = useState({ isOpen: false, type: 'recipe', title: '', description: '', placeholder: '', prompt: '' });
-    const [isMagicGenerating, setIsMagicGenerating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     
     // Theme State
@@ -57,6 +57,22 @@ const Editor = () => {
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     
     const DB_KEY = 'luiza_studio_db_v1';
+
+    // Usar o hook useAiFeatures
+    const {
+        showImporter,
+        setShowImporter,
+        importText,
+        setImportText,
+        isImporting,
+        organizeRecipeWithAI,
+        magicModal,
+        setMagicModal,
+        isMagicGenerating,
+        handleMagicSubmit,
+        openMagicModal,
+    } = useAiFeatures({ pages, setPages, updatePage, setSelectedId });
+
 
     // Memoiza as páginas de conteúdo (não-sumário) para otimizar o useEffect do sumário
     const contentPages = React.useMemo(() => pages.filter(p => p.type !== TEMPLATES.TOC), [pages]);
@@ -260,130 +276,6 @@ const Editor = () => {
         });
     };
 
-    const organizeRecipeWithAI = async () => {
-        if (!importText.trim()) {
-            toast.info("Por favor, cole o texto da receita para organizar.");
-            return;
-        }
-        setIsImporting(true);
-        try {
-            // Prompt atualizado para permitir valores decimais em calorias
-            const prompt = `Organize esta receita em JSON estrito: "${importText}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', inclua o número (inteiro ou decimal) como string (ex: "110" ou "67.8"). Formato: { "title": "...", "category": "...", "yield": "...", "nutrition": { "cal": "STRING_NUMERIC_VALUE", "prot": "STRING_NUMERIC_VALUE_WITH_G", "carb": "STRING_NUMERIC_VALUE_WITH_G", "fat": "STRING_NUMERIC_VALUE_WITH_G" }, "ingredientGroups": [{ "title": "...", "items": "item 1\\nitem 2" }], "prepSteps": "Primeiro passo\\nSegundo passo", "tips": "Dica com **negrito**", "storage": "Armazenamento com **negrito**" }. Sem markdown para o JSON em si.`;
-            const text = await callGemini(prompt);
-            const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            
-            const parsedData = JSON.parse(cleanJson);
-            const validatedData = recipeSchema.parse(parsedData); // Validação Zod
-
-            const newId = `p_${Date.now()}`;
-            const pageData = { id: newId, type: TEMPLATES.RECIPE, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.RECIPE])), ...validatedData };
-            setPages([...pages, pageData]); 
-            setSelectedId(newId); 
-            setShowImporter(false); 
-            setImportText("");
-            toast.success("Receita organizada e adicionada com sucesso!");
-
-        } catch (err: any) { 
-            console.error("Erro ao organizar receita com IA:", err);
-            if (err.name === 'ZodError') {
-                toast.error("Erro de validação: A IA retornou um formato inesperado. Tente ajustar o texto ou o prompt. Detalhes: " + err.errors.map((e: any) => e.message).join(', '));
-            } else if (err instanceof SyntaxError) {
-                toast.error("Erro de formato JSON: A IA retornou um JSON inválido. Tente novamente.");
-            } else {
-                toast.error("Erro ao organizar receita: " + err.message); 
-            }
-        } finally { 
-            setIsImporting(false); 
-        }
-    };
-
-    const handleMagicSubmit = async () => {
-        if (!magicModal.prompt.trim()) {
-            toast.info("Por favor, digite um prompt para a IA gerar o conteúdo.");
-            return;
-        }
-        setIsMagicGenerating(true);
-        try {
-            let prompt = "";
-            let schemaToValidate;
-
-            if (magicModal.type === 'recipe') {
-                // Prompt atualizado para permitir valores decimais em calorias
-                prompt = `Crie receita JSON para: "${magicModal.prompt}". Para "prepSteps" e "ingredientGroups.items", use uma string com cada item/passo em uma nova linha (sem numeração ou marcadores). Para "tips" e "storage", permita **negrito** com markdown. Valores nutricionais (cal, prot, carb, fat) devem ser **strings**. Para 'prot', 'carb', 'fat', inclua 'g' no final (ex: "5g"). Para 'cal', inclua o número (inteiro ou decimal) como string (ex: "110" ou "67.8"). Chaves: title, category, yield, nutrition, ingredientGroups, prepSteps, tips, storage. Formato de prepSteps: "Primeiro passo\\nSegundo passo". Sem markdown para o JSON em si.`;
-                schemaToValidate = recipeSchema;
-            } else if (magicModal.type === 'intro') {
-                prompt = `Escreva intro curta para ebook sobre: "${magicModal.prompt}". Permita **negrito** com markdown. Texto puro.`;
-                schemaToValidate = introSchema;
-            } else if (magicModal.type === 'shopping') {
-                prompt = `Crie lista compras JSON para dieta: "${magicModal.prompt}". Chaves: hortifruti, acougue, laticinios, padaria, mercearia. Sem markdown para o JSON em si.`;
-                schemaToValidate = shoppingSchema;
-            }
-           
-            const text = await callGemini(prompt);
-            const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-
-            if (magicModal.type === 'recipe') {
-                const parsedData = JSON.parse(cleanText);
-                const validatedData = schemaToValidate.parse(parsedData); // Validação Zod
-                const newId = `p_${Date.now()}`;
-                setPages([...pages, { id: newId, type: TEMPLATES.RECIPE, ...INITIAL_DATA[TEMPLATES.RECIPE], ...validatedData as Partial<RecipePageData> }]);
-                setSelectedId(newId);
-            } else if (magicModal.type === 'intro') {
-                const parsedData = { text: cleanText }; // Intro é texto puro, mas validamos se não está vazio
-                const validatedData = schemaToValidate.parse(parsedData);
-                updatePage(validatedData);
-            }
-            else if (magicModal.type === 'shopping') {
-                const parsedData = JSON.parse(cleanText);
-                const validatedData = schemaToValidate.parse(parsedData); // Validação Zod
-                updatePage(validatedData);
-            }
-           
-            setMagicModal({ ...magicModal, isOpen: false, prompt: '' });
-            toast.success("Conteúdo gerado com IA com sucesso!");
-
-        } catch (err: any) { 
-            console.error("Erro na IA:", err);
-            if (err.name === 'ZodError') {
-                toast.error("Erro de validação: A IA retornou um formato inesperado. Tente ajustar o prompt. Detalhes: " + err.errors.map((e: any) => e.message).join(', '));
-            } else if (err instanceof SyntaxError) {
-                toast.error("Erro de formato JSON: A IA retornou um JSON inválido. Tente novamente.");
-            } else {
-                toast.error("Erro ao gerar conteúdo com IA: " + err.message); 
-            }
-        } finally { 
-            setIsMagicGenerating(false); 
-        }
-    };
-
-    const openMagicModal = (type: 'recipe' | 'intro' | 'shopping') => {
-        let title = '';
-        let description = '';
-        let placeholder = '';
-        if (type === 'recipe') {
-            title = 'Receita Mágica com IA';
-            description = 'Descreva a receita que você deseja criar (ex: "Bolo de cenoura fit com cobertura de chocolate").';
-            placeholder = 'Ex: Torta de frango cremosa low carb';
-        } else if (type === 'intro') {
-            title = 'Escrever Introdução com IA';
-            description = 'Descreva o tema do seu e-book para a IA escrever uma introdução (ex: "E-book de receitas saudáveis para emagrecimento").';
-            placeholder = 'Ex: E-book de marmitas fitness para semana';
-        } else if (type === 'shopping') {
-            title = 'Gerar Lista de Compras com IA';
-            description = 'Descreva o tipo de dieta ou refeições para a IA gerar uma lista de compras (ex: "Dieta mediterrânea para 7 dias").';
-            placeholder = 'Ex: Lista de compras para dieta vegana';
-        }
-        setMagicModal({ isOpen: true, type, title, description, placeholder, prompt: '' });
-    };
-
-    const handlePageClick = (pageId: string) => {
-        setSelectedId(pageId);
-        const previewElement = document.getElementById(`preview-${pageId}`);
-        if (previewElement) {
-            previewElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    };
-
     const handleDeletePage = () => {
         if (selectedId && confirm("Tem certeza que deseja excluir esta página?")) {
             setPages(pages.filter(p => p.id !== selectedId));
@@ -411,37 +303,21 @@ const Editor = () => {
                     />
                 )}
 
-                {showImporter && (
-                    <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
-                        <div className="bg-white p-6 rounded-[2rem] w-full max-w-lg shadow-2xl border border-white">
-                            <h3 className="text-xl font-serif font-bold text-navy mb-2 flex items-center gap-2"><FileUp className="text-accent"/> Importação Inteligente</h3>
-                            <p className="text-sm text-navy/60 mb-4">Cole o texto de uma receita desorganizada aqui e a IA irá estruturá-la automaticamente para você.</p>
-                            <textarea className="w-full h-64 bg-surface border border-gray-100 rounded-xl p-4 text-xs font-mono mb-4 focus:ring-1 focus:ring-accent focus:outline-none text-navy" value={importText} onChange={e => setImportText(e.target.value)} placeholder="Cole o texto bagunçado da receita aqui..."/>
-                            <div className="flex justify-end gap-2">
-                                <button onClick={() => setShowImporter(false)} className="px-4 py-2 text-xs font-bold uppercase hover:bg-gray-100 rounded-xl text-navy/60">Cancelar</button>
-                                <button onClick={organizeRecipeWithAI} disabled={isImporting || !importText.trim()} className="px-4 py-2 bg-gradient-to-r from-accent to-rose-500 text-white rounded-xl text-xs font-black uppercase flex items-center gap-2 shadow-lg shadow-accent/30">
-                                    {isImporting ? <RefreshCw className="animate-spin" size={12}/> : <Brain size={12}/>} {isImporting ? "Organizando..." : "Organizar com IA"}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                {magicModal.isOpen && (
-                    <div className="fixed inset-0 z-50 bg-navy/20 backdrop-blur-sm flex items-center justify-center p-4 modal-overlay">
-                        <div className="bg-white p-8 rounded-[2.5rem] w-full max-w-lg shadow-glass border border-white relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent via-pastel to-orange-300"></div>
-                            <h3 className="text-2xl font-serif italic mb-2 flex items-center gap-2 text-navy"><Sparkles className="text-accent animate-pulse"/> {magicModal.title}</h3>
-                            <p className="text-sm text-navy/60 mb-6">{magicModal.description}</p>
-                            <textarea className="w-full h-32 bg-surface border border-gray-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-accent/20 outline-none text-navy" placeholder={magicModal.placeholder} value={magicModal.prompt} onChange={e => setMagicModal({...magicModal, prompt: e.target.value})} disabled={isMagicGenerating}/>
-                            <div className="flex justify-end gap-3 pt-4">
-                                <button onClick={() => setMagicModal({...magicModal, isOpen: false})} className="px-5 py-3 text-xs font-bold uppercase hover:bg-surface rounded-xl text-navy/60 transition-colors">Cancelar</button>
-                                <button onClick={handleMagicSubmit} disabled={isMagicGenerating || !magicModal.prompt.trim()} className="px-6 py-3 rounded-xl text-xs font-black uppercase flex items-center gap-2 bg-gradient-to-r from-accent to-rose-500 text-white shadow-lg shadow-accent/30 hover:scale-105 transition-transform">
-                                    {isMagicGenerating ? <><RefreshCw className="animate-spin" size={14}/> Criando...</> : <><MagicStick size={14}/> ✨ Criar</>}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                <ImporterModal
+                    showImporter={showImporter}
+                    setShowImporter={setShowImporter}
+                    importText={importText}
+                    setImportText={setImportText}
+                    isImporting={isImporting}
+                    organizeRecipeWithAI={organizeRecipeWithAI}
+                />
+
+                <MagicModal
+                    magicModal={magicModal}
+                    setMagicModal={setMagicModal}
+                    isMagicGenerating={isMagicGenerating}
+                    handleMagicSubmit={handleMagicSubmit}
+                />
 
                 {/* SIDEBAR */}
                 <Sidebar
