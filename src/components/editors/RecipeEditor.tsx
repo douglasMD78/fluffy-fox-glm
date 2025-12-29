@@ -435,5 +435,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 </div>
             ))}
         </div>
+        </div>
     );
 };
