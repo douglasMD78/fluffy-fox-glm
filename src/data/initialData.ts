@@ -137,7 +137,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 batatas médias\n1 colher de sopa de azeite\nSal, páprica e alecrim a gosto"
       }
     ],
-    "prepSteps": "1. Lave bem as batatas e corte-as em palitos ou cubos (com casca).\n2. Em um recipiente, misture as batatas com o azeite, sal, páprica e alecrim.\n3. Leve à airfryer pré-aquecida a 200°C por cerca de 20-25 minutos, mexendo na metade do tempo, ou até ficarem douradas e crocantes."
+    "prepSteps": "1. Lave bem as batatas e corte-as em palitos ou cubos (com casca).\n2. Em um recipiente, misture as batatas com o azeite, sal, páprica e alecrim.\n3. Leve à airfryer pré-aquecida a 200°C por cerca de 20-25 minutos, mexendo na metade do tempo, ou até ficarem douradas e crocantes.",
+    "tips": "",
+    "storage": "Geladeira: Armazene em pote hermético por até **2 dias** para manter a crocância. Para reaquecer, leve novamente à AirFryer por **5 minutos a 200°C**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200041_recipe_caldo_abobora_frango",
@@ -159,7 +180,28 @@ export const PDF_LUIZA_DATA = [
         "items": "300g de abóbora picada\n100g de frango desfiado\n1/2 cebola picada\n1 dente de alho picado\nCaldo de legumes caseiro ou água\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Cozinhe a abóbora em água ou caldo de legumes até ficar macia. Bata no liquidificador até virar um creme.\n2. Em outra panela, refogue a cebola e o alho, adicione o frango desfiado e tempere a gosto.\n3. Misture o creme de abóbora ao frango. Se necessário, adicione mais caldo/água para ajustar a consistência.\n4. Cozinhe por alguns minutos, finalize com cheiro verde e sirva."
+    "prepSteps": "1. Cozinhe a abóbora em água ou caldo de legumes até ficar macia. Bata no liquidificador até virar um creme.\n2. Em outra panela, refogue a cebola e o alho, adicione o frango desfiado e tempere a gosto.\n3. Misture o creme de abóbora ao frango. Se necessário, adicione mais caldo/água para ajustar a consistência.\n4. Cozinhe por alguns minutos, finalize com cheiro verde e sirva.",
+    "tips": "",
+    "storage": "**Geladeira:** até 6 dias em pote fechado.\n**Congelador:** até 3 meses.",
+    "image": "",
+    "videoLink": "",
+    "layout": "7",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200044_recipe_caldo_fraldinha",
@@ -181,7 +223,28 @@ export const PDF_LUIZA_DATA = [
         "items": "200g de fraldinha em cubos\n1/2 cebola picada\n1 dente de alho picado\n1 tomate picado\nCaldo de carne caseiro ou água\nLegumes picados a gosto (cenoura, batata, abobrinha)\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Em uma panela de pressão, doure a fraldinha em um fio de azeite. Adicione a cebola, alho e tomate, refogue.\n2. Cubra com caldo de carne/água, tempere com sal e pimenta. Cozinhe na pressão por cerca de 20-25 minutos após pegar pressão.\n3. Desligue o fogo, espere a pressão sair, abra a panela e adicione os legumes picados. Cozinhe até os legumes ficarem macios.\n4. Finalize com cheiro verde e sirva."
+    "prepSteps": "1. Em uma panela de pressão, doure a fraldinha em um fio de azeite. Adicione a cebola, alho e tomate, refogue.\n2. Cubra com caldo de carne/água, tempere com sal e pimenta. Cozinhe na pressão por cerca de 20-25 minutos após pegar pressão.\n3. Desligue o fogo, espere a pressão sair, abra a panela e adicione os legumes picados. Cozinhe até os legumes ficarem macios.\n4. Finalize com cheiro verde e sirva.",
+    "tips": "",
+    "storage": "Geladeira: até **6 dias** em pote fechado.\nCongelador: até **3 meses**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200042_recipe_caldo_legumes",
@@ -203,7 +266,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 cebola grande\n2 cenouras\n2 talos de aipo\n2 folhas de louro\nGrãos de pimenta do reino\n1,5 litros de água"
       }
     ],
-    "prepSteps": "1. Lave e pique grosseiramente todos os legumes.\n2. Em uma panela grande, coloque os legumes, as folhas de louro, os grãos de pimenta e a água.\n3. Leve ao fogo alto até ferver, depois reduza o fogo e cozinhe por cerca de 30-40 minutos.\n4. Coe o caldo, descarte os sólidos e utilize em suas receitas."
+    "prepSteps": "1. Lave e pique grosseiramente todos os legumes.\n2. Em uma panela grande, coloque os legumes, as folhas de louro, os grãos de pimenta e a água.\n3. Leve ao fogo alto até ferver, depois reduza o fogo e cozinhe por cerca de 30-40 minutos.\n4. Coe o caldo, descarte os sólidos e utilize em suas receitas.",
+    "tips": "",
+    "storage": "Geladeira: até **6 dias** em pote fechado.\nCongelador: até **3 meses**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200050_recipe_cebola_roxa_conserva",
@@ -225,7 +309,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 cebola roxa grande fatiada finamente\n1/2 xícara de vinagre de maçã\n1/2 xícara de água\n1 colher de chá de sal\n1 colher de chá de açúcar (opcional)\nGrãos de pimenta do reino e louro a gosto"
       }
     ],
-    "prepSteps": "1. Em um pote de vidro esterilizado, coloque as fatias de cebola roxa.\n2. Em uma panela, misture o vinagre, água, sal, açúcar (se usar), pimenta e louro. Leve ao fogo até ferver.\n3. Despeje a mistura quente sobre as cebolas no pote, cobrindo completamente.\n4. Tampe o pote e deixe esfriar em temperatura ambiente. Leve à geladeira por pelo menos 2 horas antes de consumir.\n5. Dura até 2 semanas na geladeira."
+    "prepSteps": "1. Em um pote de vidro esterilizado, coloque as fatias de cebola roxa.\n2. Em uma panela, misture o vinagre, água, sal, açúcar (se usar), pimenta e louro. Leve ao fogo até ferver.\n3. Despeje a mistura quente sobre as cebolas no pote, cobrindo completamente.\n4. Tampe o pote e deixe esfriar em temperatura ambiente. Leve à geladeira por pelo menos 2 horas antes de consumir.\n5. Dura até 2 semanas na geladeira.",
+    "tips": "",
+    "storage": "**Pote**: Utilize potes herméticos (bem vedados) e limpos.\n**Validade**: Conservar na geladeira por até 15 dias.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200054_recipe_requeijao_cremoso",
@@ -247,7 +352,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 litro de leite integral\n4 colheres de sopa de vinagre branco ou suco de limão\n1 colher de sopa de manteiga ou azeite\nSal a gosto"
       }
     ],
-    "prepSteps": "1. Aqueça o leite em uma panela até quase ferver. Desligue o fogo e adicione o vinagre/limão. Mexa delicadamente e deixe talhar por 10 minutos.\n2. Coe o leite talhado em uma peneira forrada com um pano de prato limpo, espremendo bem para retirar todo o soro.\n3. Transfira a massa para um liquidificador, adicione a manteiga/azeite e o sal. Bata até obter um creme liso e homogêneo.\n4. Leve à geladeira por pelo menos 2 horas antes de consumir. Dura até 5 dias na geladeira."
+    "prepSteps": "1. Aqueça o leite em uma panela até quase ferver. Desligue o fogo e adicione o vinagre/limão. Mexa delicadamente e deixe talhar por 10 minutos.\n2. Coe o leite talhado em uma peneira forrada com um pano de prato limpo, espremendo bem para retirar todo o soro.\n3. Transfira a massa para um liquidificador, adicione a manteiga/azeite e o sal. Bata até obter um creme liso e homogêneo.\n4. Leve à geladeira por pelo menos 2 horas antes de consumir. Dura até 5 dias na geladeira.",
+    "tips": "",
+    "storage": "O requeijão pode ser guardado na geladeira por até **7 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "prep-heavy",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": "center"
   },
   {
     "id": "p_1722457200048_recipe_salada_molho_ervas",
@@ -273,7 +399,28 @@ export const PDF_LUIZA_DATA = [
         "items": "3 colheres de sopa de azeite\n2 colheres de sopa de vinagre balsâmico\nErvas finas desidratadas a gosto (orégano, manjericão, alecrim)\nSal e pimenta do reino a gosto"
       }
     ],
-    "prepSteps": "1. Lave e seque as folhas. Monte a salada com os vegetais.\n2. Em um recipiente pequeno, misture todos os ingredientes do molho até ficar homogêneo.\n3. Regue a salada com o molho e sirva."
+    "prepSteps": "1. Lave e seque as folhas. Monte a salada com os vegetais.\n2. Em um recipiente pequeno, misture todos os ingredientes do molho até ficar homogêneo.\n3. Regue a salada com o molho e sirva.",
+    "tips": "Os ingredientes devem estar **bem secos**, sem excesso de água, para garantir a conservação.\nOs valores nutricionais correspondem a 100g de salada + 25g de molho.",
+    "storage": "Salada montada: Até **6 dias** em pote hermético na geladeira.\nMolho: Até **5 dias** refrigerado.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200047_recipe_salada_molho_mostarda_mel",
@@ -299,7 +446,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 colheres de sopa de mostarda dijon\n1 colher de sopa de mel\n2 colheres de sopa de azeite\n1 colher de sopa de vinagre de maçã\nSal e pimenta do reino a gosto"
       }
     ],
-    "prepSteps": "1. Lave e seque as folhas verdes. Monte a salada com os vegetais e o frango (se usar).\n2. Em um recipiente pequeno, misture todos os ingredientes do molho até ficar homogêneo.\n3. Regue a salada com o molho e sirva."
+    "prepSteps": "1. Lave e seque as folhas verdes. Monte a salada com os vegetais e o frango (se usar).\n2. Em um recipiente pequeno, misture todos os ingredientes do molho até ficar homogêneo.\n3. Regue a salada com o molho e sirva.",
+    "tips": "**Importante:** Os ingredientes devem estar bem secos, sem excesso de água.",
+    "storage": "Geladeira: Até **6 dias** em pote hermético.\nMolho: Até **5 dias** refrigerado.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200052_recipe_salada_de_chuchu",
@@ -321,7 +489,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 chuchu médio cozido e picado\n1/4 cebola roxa picada\nCheiro verde a gosto\nMolho: azeite, vinagre, sal e pimenta do reino"
       }
     ],
-    "prepSteps": "1. Cozinhe o chuchu até ficar macio, escorra e pique em cubos.\n2. Em um recipiente, misture o chuchu picado, a cebola roxa e o cheiro verde.\n3. Prepare o molho misturando azeite, vinagre, sal e pimenta do reino.\n4. Regue a salada com o molho e misture bem.\n5. Sirva fria."
+    "prepSteps": "1. Cozinhe o chuchu até ficar macio, escorra e pique em cubos.\n2. Em um recipiente, misture o chuchu picado, a cebola roxa e o cheiro verde.\n3. Prepare o molho misturando azeite, vinagre, sal e pimenta do reino.\n4. Regue a salada com o molho e misture bem.\n5. Sirva fria.",
+    "tips": "O vapor preserva o sabor e evita que o chuchu fique encharcado (\"aguado\"). Se cozinhar na água, escorra **muito bem**.",
+    "storage": "**Geladeira**: Conserve em pote fechado na geladeira. O sabor costuma ficar ainda melhor no dia seguinte.\n**Validade**: Consumir em até 3 a 4 dias (devido ao tomate e cebola crus).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200046_recipe_salada_grao_bico",
@@ -343,7 +532,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de grão de bico cozido\n1/2 pepino picado\n1/2 tomate picado\n1/4 cebola roxa picada\nCheiro verde a gosto\nMolho: azeite, limão, sal e pimenta do reino"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o grão de bico cozido, pepino, tomate, cebola roxa e cheiro verde.\n2. Prepare o molho misturando azeite, suco de limão, sal e pimenta do reino.\n3. Regue a salada com o molho e misture bem.\n4. Sirva fria."
+    "prepSteps": "1. Em um recipiente, misture o grão de bico cozido, pepino, tomate, cebola roxa e cheiro verde.\n2. Prepare o molho misturando azeite, suco de limão, sal e pimenta do reino.\n3. Regue a salada com o molho e misture bem.\n4. Sirva fria.",
+    "tips": "Essa salada fica ainda mais gostosa depois de algumas horas na **geladeira**, pois os temperos se intensificam!",
+    "storage": "Geladeira: Até 3 dias em pote **hermético**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200051_recipe_salada_refogada_pratica",
@@ -365,7 +575,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 maço de couve ou espinafre picado\n1 dente de alho picado\n1/4 cebola picada\n1 colher de sopa de azeite\nSal e pimenta do reino a gosto"
       }
     ],
-    "prepSteps": "1. Em uma frigideira, aqueça o azeite e refogue a cebola e o alho.\n2. Adicione a couve/espinafre picado e refogue até murchar.\n3. Tempere com sal e pimenta do reino.\n4. Sirva quente como acompanhamento."
+    "prepSteps": "1. Em uma frigideira, aqueça o azeite e refogue a cebola e o alho.\n2. Adicione a couve/espinafre picado e refogue até murchar.\n3. Tempere com sal e pimenta do reino.\n4. Sirva quente como acompanhamento.",
+    "tips": "",
+    "storage": "Pode ser guardada na geladeira em pote fechado e consumida ao longo da semana.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_section_bolos_doces_sobremesas",
@@ -393,7 +624,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 rodelas de abacaxi\nCanela em pó a gosto\nGotas de adoçante ou mel (opcional)"
       }
     ],
-    "prepSteps": "1. Descasque o abacaxi e corte em rodelas grossas.\n2. Polvilhe canela em pó e, se desejar, adicione algumas gotas de adoçante ou um fio de mel.\n3. Leve à airfryer pré-aquecida a 180°C por cerca de 10-15 minutos, virando na metade do tempo, ou até caramelizar e dourar."
+    "prepSteps": "1. Descasque o abacaxi e corte em rodelas grossas.\n2. Polvilhe canela em pó e, se desejar, adicione algumas gotas de adoçante ou um fio de mel.\n3. Leve à airfryer pré-aquecida a 180°C por cerca de 10-15 minutos, virando na metade do tempo, ou até caramelizar e dourar.",
+    "tips": "",
+    "storage": "Geladeira: Pode ser armazenado por até **3 dias** em potes fechados.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200070_recipe_bolinho_de_banana",
@@ -415,7 +667,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n1 banana madura amassada\n3 colheres de sopa de farinha de aveia\n1/4 xícara de leite (ou bebida vegetal)\nCanela a gosto\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, banana amassada, farinha de aveia, leite e canela até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, banana amassada, farinha de aveia, leite e canela até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "",
+    "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200071_recipe_bolinho_de_cenoura",
@@ -437,7 +710,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n1/4 xícara de cenoura ralada\n3 colheres de sopa de farinha de aveia\n1/4 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, cenoura ralada, farinha de aveia, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, cenoura ralada, farinha de aveia, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200067_recipe_bolinho_de_chocolate",
@@ -459,7 +753,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de aveia\n2 colheres de sopa de cacau em pó 100%\n1/4 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "Para um toque especial, finalize com uma cobertura de pasta de amendoim ou do **brigadeiro fit**.\nAjuste o adoçante conforme seu paladar.",
+    "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200068_recipe_bolinho_de_chocolate_ii",
@@ -481,7 +796,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de aveia\n2 colheres de sopa de cacau em pó 100%\n1/4 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "",
+    "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200069_recipe_bolinho_de_coco",
@@ -503,7 +839,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de aveia\n2 colheres de sopa de coco ralado sem açúcar\n1/4 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, coco ralado, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, coco ralado, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "",
+    "storage": "Geladeira: Conserve o bolo em um recipiente fechado por até **5 dias**.\nEvite armazenar a cobertura separada por muito tempo, pois pode alterar a textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200075_recipe_bolinho_de_microondas",
@@ -525,7 +882,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n2 colheres de sopa de farinha de aveia\n2 colheres de sopa de leite (ou bebida vegetal)\n1 colher de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em uma caneca ou forminha de silicone, misture o ovo, farinha de aveia, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou até assar.\n4. Sirva puro ou com coberturas e recheios a gosto (frutas, iogurte, pasta de amendoim)."
+    "prepSteps": "1. Em uma caneca ou forminha de silicone, misture o ovo, farinha de aveia, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou até assar.\n4. Sirva puro ou com coberturas e recheios a gosto (frutas, iogurte, pasta de amendoim).",
+    "tips": "",
+    "storage": "**Consumo imediato**: A textura é melhor na hora.\n**Geladeira**: Pode armazenar por até 1 dia, mas pode perder a maciez.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200074_recipe_bolinho_de_milho",
@@ -547,7 +925,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de milho\n1/4 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de adoçante culinário\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de milho, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente."
+    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de milho, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em duas forminhas de silicone ou canecas untadas.\n4. Leve ao micro-ondas por cerca de 1-2 minutos (dependendo da potência) ou ao forno pré-aquecido a 180°C por 15-20 minutos.\n5. Sirva quente.",
+    "tips": "",
+    "storage": "**Geladeira**: até 5 dias em pote hermético.\n**Congelador**: até 1 mês.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200073_recipe_bolo_no_pote",
@@ -573,7 +972,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1/2 xícara de iogurte natural\nFrutas picadas a gosto"
       }
     ],
-    "prepSteps": "1. **Bolo:** Misture o ovo, farinha, cacau, adoçante e leite. Adicione o fermento. Despeje em uma caneca e leve ao micro-ondas por 1-2 minutos. Deixe esfriar e esfarele.\n2. **Montagem:** Em potes, intercale camadas de bolo esfarelado, iogurte natural e frutas picadas.\n3. Leve à geladeira por pelo menos 1 hora antes de servir."
+    "prepSteps": "1. **Bolo:** Misture o ovo, farinha, cacau, adoçante e leite. Adicione o fermento. Despeje em uma caneca e leve ao micro-ondas por 1-2 minutos. Deixe esfriar e esfarele.\n2. **Montagem:** Em potes, intercale camadas de bolo esfarelado, iogurte natural e frutas picadas.\n3. Leve à geladeira por pelo menos 1 hora antes de servir.",
+    "tips": "",
+    "storage": "Geladeira: Armazene por até **7 dias** na parte mais fria.\nCongelamento: Não recomendado devido à mudança de textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200055_recipe_brigadeiro",
@@ -595,7 +1015,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de leite em pó desnatado\n1/2 xícara de água quente\n2 colheres de sopa de cacau em pó 100%\nGotas de adoçante a gosto\nGranulado diet ou coco ralado para decorar (opcional)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o leite em pó, a água quente e o cacau em pó até obter uma massa homogênea.\n2. Adicione as gotas de adoçante e misture bem.\n3. Leve ao micro-ondas por 30 segundos, mexa e repita até atingir a consistência desejada (cerca de 1-2 minutos no total).\n4. Deixe esfriar, enrole os brigadeiros e passe no granulado/coco ralado (se usar)."
+    "prepSteps": "1. Em um recipiente, misture o leite em pó, a água quente e o cacau em pó até obter uma massa homogênea.\n2. Adicione as gotas de adoçante e misture bem.\n3. Leve ao micro-ondas por 30 segundos, mexa e repita até atingir a consistência desejada (cerca de 1-2 minutos no total).\n4. Deixe esfriar, enrole os brigadeiros e passe no granulado/coco ralado (se usar).",
+    "tips": "Se quiser usar como cobertura para bolos, panquecas ou outras sobremesas, retire do fogo antes de **engrossar muito**. Assim, o brigadeiro fit ficará mais cremoso e fácil de espalhar!",
+    "storage": "Geladeira: Armazene em um recipiente fechado por até **3 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200056_recipe_brigadeiro_de_cafe",
@@ -617,7 +1058,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de leite em pó desnatado\n1/2 xícara de café forte e quente\n2 colheres de sopa de cacau em pó 100%\nGotas de adoçante a gosto\nCafé solúvel para decorar (opcional)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o leite em pó, o café quente e o cacau em pó até obter uma massa homogênea.\n2. Adicione as gotas de adoçante e misture bem.\n3. Leve ao micro-ondas por 30 segundos, mexa e repita até atingir a consistência desejada (cerca de 1-2 minutos no total).\n4. Deixe esfriar, enrole os brigadeiros e passe no café solúvel (se usar)."
+    "prepSteps": "1. Em um recipiente, misture o leite em pó, o café quente e o cacau em pó até obter uma massa homogênea.\n2. Adicione as gotas de adoçante e misture bem.\n3. Leve ao micro-ondas por 30 segundos, mexa e repita até atingir a consistência desejada (cerca de 1-2 minutos no total).\n4. Deixe esfriar, enrole os brigadeiros e passe no café solúvel (se usar).",
+    "tips": "Para garantir que o ponto seja atingido corretamente, mantenha o fogo **baixo** e mexa sem parar.",
+    "storage": "Armazene os brigadeiros em um recipiente fechado na geladeira por até **5 dias**.\nPara um consumo posterior, eles podem ser congelados por até **30 dias**, devendo ser descongelados na geladeira antes de consumir.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200066_recipe_danoninho_fit",
@@ -639,7 +1101,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de iogurte natural integral\n1/2 xícara de morangos congelados\nGotas de adoçante a gosto"
       }
     ],
-    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma consistência cremosa e homogênea.\n2. Despeje em potinhos individuais e leve à geladeira por pelo menos 30 minutos antes de servir."
+    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma consistência cremosa e homogênea.\n2. Despeje em potinhos individuais e leve à geladeira por pelo menos 30 minutos antes de servir.",
+    "tips": "",
+    "storage": "Geladeira: Até **2 dias** em pote fechado.\nFreezer: Não recomendado (pode perder a textura cremosa).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200063_recipe_docinho_de_uva",
@@ -661,7 +1144,28 @@ export const PDF_LUIZA_DATA = [
         "items": "8 uvas grandes sem sementes\n1/2 xícara de leite em pó desnatado\n2 colheres de sopa de água\nGotas de adoçante a gosto\nCoco ralado sem açúcar para decorar (opcional)"
       }
     ],
-    "prepSteps": "1. Lave e seque bem as uvas.\n2. Em um recipiente, misture o leite em pó com a água e as gotas de adoçante até formar uma pasta.\n3. Envolva cada uva com uma porção da pasta, modelando um docinho.\n4. Se desejar, passe no coco ralado sem açúcar.\n5. Leve à geladeira por pelo menos 30 minutos antes de servir."
+    "prepSteps": "1. Lave e seque bem as uvas.\n2. Em um recipiente, misture o leite em pó com a água e as gotas de adoçante até formar uma pasta.\n3. Envolva cada uva com uma porção da pasta, modelando um docinho.\n4. Se desejar, passe no coco ralado sem açúcar.\n5. Leve à geladeira por pelo menos 30 minutos antes de servir.",
+    "tips": "",
+    "storage": "Conserve na geladeira em um pote fechado por até 2 dias.\n**Não é recomendado congelar**, pois pode alterar a textura do creme.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200058_recipe_flan_de_chocolate",
@@ -683,7 +1187,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de leite (ou bebida vegetal)\n2 colheres de sopa de cacau em pó 100%\n1 colher de sopa de amido de milho\nGotas de adoçante a gosto"
       }
     ],
-    "prepSteps": "1. Em uma panela, misture o leite, cacau em pó e amido de milho até dissolver bem.\n2. Leve ao fogo médio, mexendo sempre, até engrossar.\n3. Adicione as gotas de adoçante e misture.\n4. Despeje em potinhos individuais e leve à geladeira por pelo menos 2 horas antes de servir."
+    "prepSteps": "1. Em uma panela, misture o leite, cacau em pó e amido de milho até dissolver bem.\n2. Leve ao fogo médio, mexendo sempre, até engrossar.\n3. Adicione as gotas de adoçante e misture.\n4. Despeje em potinhos individuais e leve à geladeira por pelo menos 2 horas antes de servir.",
+    "tips": "",
+    "storage": "Geladeira: **Até 5 dias**\nCongelador: **Não recomendado**, pois pode alterar a textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200061_recipe_mousse_de_cafe",
@@ -705,7 +1230,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de iogurte natural integral\n2 colheres de sopa de café solúvel (dissolvido em um pouco de água quente)\nGotas de adoçante a gosto\nCacau em pó para decorar (opcional)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o iogurte natural com o café dissolvido e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva com cacau em pó (se usar)."
+    "prepSteps": "1. Em um recipiente, misture o iogurte natural com o café dissolvido e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva com cacau em pó (se usar).",
+    "tips": "",
+    "storage": "Mantenha o flan na geladeira por até **5 dias** em potinhos bem fechados. Se congelado, ele pode durar até **15 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200059_recipe_mousse_de_chocolate",
@@ -727,7 +1273,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de iogurte natural integral\n2 colheres de sopa de cacau em pó 100%\nGotas de adoçante a gosto\nRaspas de chocolate amargo para decorar (opcional)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o iogurte natural com o cacau em pó e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva com raspas de chocolate amargo (se usar)."
+    "prepSteps": "1. Em um recipiente, misture o iogurte natural com o cacau em pó e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva com raspas de chocolate amargo (se usar).",
+    "tips": "Para um mousse mais proteico, utilize **whey protein** ou **cacau em pó** no lugar do achocolatado. Certifique-se de que o chocolate derretido não esteja muito quente para não talhar o iogurte.",
+    "storage": "Geladeira: Até **5 dias**. Congelador: Até **30 dias**, mas a textura pode ser ligeiramente comprometida ao descongelar.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200060_recipe_mousse_de_maracuja",
@@ -749,7 +1316,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de iogurte natural integral\nPolpa de 1 maracujá\nGotas de adoçante a gosto"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o iogurte natural com a polpa do maracujá e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva."
+    "prepSteps": "1. Em um recipiente, misture o iogurte natural com a polpa do maracujá e as gotas de adoçante até ficar homogêneo.\n2. Leve à geladeira por pelo menos 1 hora para firmar.\n3. Sirva.",
+    "tips": "",
+    "storage": "**Geladeira**: Até 5 dias.\n**Congelador**: Até 30 dias (recomenda-se descongelar na geladeira antes de consumir).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200057_recipe_muffin_de_chocolate",
@@ -771,7 +1359,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n1/2 xícara de farinha de aveia\n1/4 xícara de cacau em pó 100%\n1/2 xícara de leite (ou bebida vegetal)\n1/4 xícara de adoçante culinário\n1 colher de chá de fermento em pó\nGotas de chocolate amargo (opcional)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Distribua a massa em forminhas de muffin (untadas ou com forminhas de papel).\n4. Se usar, adicione gotas de chocolate por cima.\n5. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até assar e dourar."
+    "prepSteps": "1. Em um recipiente, misture o ovo, farinha de aveia, cacau, leite e adoçante até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Distribua a massa em forminhas de muffin (untadas ou com forminhas de papel).\n4. Se usar, adicione gotas de chocolate por cima.\n5. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até assar e dourar.",
+    "tips": "",
+    "storage": "Pode ser armazenado em um recipiente fechado na geladeira por até **3 dias**.\nPara manter a textura mais úmida, aqueça no micro-ondas por **10 segundos** antes de consumir.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200064_recipe_pipoca_doce",
@@ -793,7 +1402,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1/2 xícara de milho para pipoca\n1 colher de sopa de óleo de coco\n2 colheres de sopa de adoçante culinário ou xilitol\n1 colher de sopa de cacau em pó 100% (opcional)"
       }
     ],
-    "prepSteps": "1. Em uma panela grande, aqueça o óleo de coco. Adicione o milho e tampe.\n2. Mexa a panela ocasionalmente até que todos os grãos estourem.\n3. Em outra panela, misture o adoçante e o cacau (se usar). Leve ao fogo baixo até derreter um pouco.\n4. Despeje a pipoca na panela com o adoçante derretido e misture rapidamente para cobrir todas as pipocas.\n5. Espalhe em uma assadeira para esfriar e não grudar."
+    "prepSteps": "1. Em uma panela grande, aqueça o óleo de coco. Adicione o milho e tampe.\n2. Mexa a panela ocasionalmente até que todos os grãos estourem.\n3. Em outra panela, misture o adoçante e o cacau (se usar). Leve ao fogo baixo até derreter um pouco.\n4. Despeje a pipoca na panela com o adoçante derretido e misture rapidamente para cobrir todas as pipocas.\n5. Espalhe em uma assadeira para esfriar e não grudar.",
+    "tips": "",
+    "storage": "Deve ser consumida imediatamente para manter a crocância.\nSe precisar armazenar, guarde em um pote hermético por até **2 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_new_prestigio_fit",
@@ -819,7 +1449,28 @@ export const PDF_LUIZA_DATA = [
         "items": "100g de chocolate amargo (70% cacau ou mais)\n2 colheres de sopa de leite de coco"
       }
     ],
-    "prepSteps": "1. **Recheio:** Em uma panela, misture o coco ralado, leite de coco e adoçante. Leve ao fogo baixo, mexendo sempre, até desgrudar do fundo da panela. Deixe esfriar e modele pequenas barrinhas ou bolinhas.\n2. **Cobertura:** Derreta o chocolate amargo em banho-maria ou micro-ondas. Adicione o leite de coco e misture até ficar homogêneo.\n3. Banhe as barrinhas de coco no chocolate derretido. Leve à geladeira até o chocolate endurecer."
+    "prepSteps": "1. **Recheio:** Em uma panela, misture o coco ralado, leite de coco e adoçante. Leve ao fogo baixo, mexendo sempre, até desgrudar do fundo da panela. Deixe esfriar e modele pequenas barrinhas ou bolinhas.\n2. **Cobertura:** Derreta o chocolate amargo em banho-maria ou micro-ondas. Adicione o leite de coco e misture até ficar homogêneo.\n3. Banhe as barrinhas de coco no chocolate derretido. Leve à geladeira até o chocolate endurecer.",
+    "tips": "",
+    "storage": "**Congelador**: Ideal para consumo rápido após os 30 minutos de freezer.\n**Geladeira**: Se quiser guardar para mais tarde, mantenha na geladeira para não congelar completamente.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200062_recipe_pudim",
@@ -841,7 +1492,28 @@ export const PDF_LUIZA_DATA = [
         "items": "3 claras de ovo\n1/2 xícara de leite (ou bebida vegetal)\nGotas de adoçante a gosto\nEssência de baunilha a gosto"
       }
     ],
-    "prepSteps": "1. Em um recipiente, bata as claras em neve.\n2. Em outra tigela, misture o leite, adoçante e essência de baunilha.\n3. Incorpore delicadamente as claras em neve à mistura de leite.\n4. Despeje em forminhas individuais (untadas com um pouco de óleo de coco, se necessário).\n5. Cozinhe em banho-maria no forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até firmar.\n6. Leve à geladeira para esfriar antes de servir."
+    "prepSteps": "1. Em um recipiente, bata as claras em neve.\n2. Em outra tigela, misture o leite, adoçante e essência de baunilha.\n3. Incorpore delicadamente as claras em neve à mistura de leite.\n4. Despeje em forminhas individuais (untadas com um pouco de óleo de coco, se necessário).\n5. Cozinhe em banho-maria no forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até firmar.\n6. Leve à geladeira para esfriar antes de servir.",
+    "tips": "",
+    "storage": "Geladeira: Pode ser armazenado por até **3 dias** em potes fechados. Evite congelar, pois pode alterar a textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200022_recipe_pudim_chia_frutas",
@@ -863,7 +1535,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 colheres de sopa de chia\n1 xícara de leite (ou bebida vegetal)\nFrutas picadas a gosto\nMel ou adoçante a gosto"
       }
     ],
-    "prepSteps": "1. Em um pote com tampa, misture a chia com o leite e o mel/adoçante.\n2. Leve à geladeira por pelo menos 4 horas ou durante a noite.\n3. No momento de servir, adicione as frutas picadas."
+    "prepSteps": "1. Em um pote com tampa, misture a chia com o leite e o mel/adoçante.\n2. Leve à geladeira por pelo menos 4 horas ou durante a noite.\n3. No momento de servir, adicione as frutas picadas.",
+    "tips": "",
+    "storage": "Geladeira: Mantenha os potes bem fechados na geladeira por até **3 a 4 dias**.\nDica: Se for consumir depois de muitos dias, prefira colocar as frutas picadas apenas na hora de comer para que elas não soltem muita água ou oxidem.\nCongelamento: **Não recomendado**. A gelatina cristaliza e perde a textura gelatinosa ao descongelar, e o iogurte pode talhar ou separar o soro",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200072_recipe_pao_de_mel",
@@ -885,7 +1578,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n1/4 xícara de mel\n1/4 xícara de leite (ou bebida vegetal)\n1/2 xícara de farinha de trigo integral\n1 colher de sopa de cacau em pó 100%\n1 colher de chá de especiarias (canela, cravo, gengibre)\n1 colher de chá de fermento em pó"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o ovo, mel, leite, farinha, cacau e especiarias até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em forminhas de pão de mel (untadas e enfarinhadas).\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até assar.\n5. Se desejar, cubra com chocolate amargo derretido."
+    "prepSteps": "1. Em um recipiente, misture o ovo, mel, leite, farinha, cacau e especiarias até ficar homogêneo.\n2. Adicione o fermento em pó e misture delicadamente.\n3. Despeje a massa em forminhas de pão de mel (untadas e enfarinhadas).\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até assar.\n5. Se desejar, cubra com chocolate amargo derretido.",
+    "tips": "",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200023_recipe_sorvete_manga_fit",
@@ -907,7 +1621,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 manga madura congelada em cubos\n1/4 xícara de água ou leite de coco (opcional)"
       }
     ],
-    "prepSteps": "1. Bata a manga congelada no processador ou liquidificador até obter uma consistência cremosa.\n2. Se necessário, adicione um pouco de água ou leite de coco para ajudar a bater.\n3. Sirva imediatamente ou leve ao freezer por mais alguns minutos para firmar."
+    "prepSteps": "1. Bata a manga congelada no processador ou liquidificador até obter uma consistência cremosa.\n2. Se necessário, adicione um pouco de água ou leite de coco para ajudar a bater.\n3. Sirva imediatamente ou leve ao freezer por mais alguns minutos para firmar.",
+    "tips": "**Proteína Extra**: Substitua o leite em pó por Whey Protein para transformar esse sorvete em um pós-treino refrescante e proteico.",
+    "storage": "**Congelador**: Pode ser armazenado no congelador em pote fechado. Se endurecer muito, retire alguns minutos antes de consumir para voltar à cremosidade.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_section_cafe_da_manha_lanches_rapidos",
@@ -935,7 +1670,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n2 colheres de sopa de goma de tapioca\nSal a gosto\nRecheio a gosto (queijo, frango desfiado, legumes)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, bata o ovo com a goma de tapioca e o sal.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até firmar e dourar dos dois lados.\n4. Recheie a gosto e dobre ao meio."
+    "prepSteps": "1. Em um recipiente, bata o ovo com a goma de tapioca e o sal.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até firmar e dourar dos dois lados.\n4. Recheie a gosto e dobre ao meio.",
+    "tips": "Informações nutricionais para uma crepioca.",
+    "storage": "Geladeira: Até **1 dia**, em pote fechado (sem recheio).\nCongelamento: Não recomendado — melhor sempre fazer na hora para manter a textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_new_crepioca_doce",
@@ -957,7 +1713,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n2 colheres de sopa de goma de tapioca\n1/2 banana amassada\nCanela a gosto\nRecheio a gosto (pasta de amendoim, mel, frutas)"
       }
     ],
-    "prepSteps": "1. Em um recipiente, bata o ovo com a goma de tapioca, banana amassada e canela.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até firmar e dourar dos dois lados.\n4. Recheie a gosto e dobre ao meio."
+    "prepSteps": "1. Em um recipiente, bata o ovo com a goma de tapioca, banana amassada e canela.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até firmar e dourar dos dois lados.\n4. Recheie a gosto e dobre ao meio.",
+    "tips": "O segredo da crosta crocante é começar com a frigideira fria e deixar o queijo dourar bem antes de virar. Use uma boa frigideira antiaderente para não precisar adicionar óleo.",
+    "storage": "Consumo imediato: A textura é melhor na hora.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200015_recipe_overnight_oats",
@@ -979,7 +1756,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1/2 xícara de aveia em flocos\n1 xícara de leite (ou bebida vegetal)\n1 colher de sopa de chia\nFrutas picadas a gosto (banana, morango, mirtilo)\nMel ou adoçante a gosto"
       }
     ],
-    "prepSteps": "1. Em um pote com tampa, misture a aveia, o leite e a chia.\n2. Leve à geladeira por pelo menos 4 horas ou durante a noite.\n3. No momento de servir, adicione as frutas picadas e o mel/adoçante."
+    "prepSteps": "1. Em um pote com tampa, misture a aveia, o leite e a chia.\n2. Leve à geladeira por pelo menos 4 horas ou durante a noite.\n3. No momento de servir, adicione as frutas picadas e o mel/adoçante.",
+    "tips": "Esses valores são para a base do Overnight Oats. Caso adicione frutas, os valores podem variar conforme a escolha.",
+    "storage": "Geladeira: Pode ser armazenado por até **7 dias** em potes bem fechados.\nEvite congelar: A textura pode ser alterada devido à presença do iogurte e das frutas.",
+    "image": "",
+    "videoLink": "",
+    "layout": "4",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "prep-heavy",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200014_recipe_panqueca",
@@ -1001,7 +1799,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n2 colheres de sopa de aveia\n1/4 xícara de leite (ou bebida vegetal)\n1 colher de chá de fermento em pó\nCanela a gosto"
       }
     ],
-    "prepSteps": "1. Bata todos os ingredientes no liquidificador ou com um garfo até ficar homogêneo.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até dourar dos dois lados.\n4. Sirva com frutas, mel ou pasta de amendoim."
+    "prepSteps": "1. Bata todos os ingredientes no liquidificador ou com um garfo até ficar homogêneo.\n2. Aqueça uma frigideira antiaderente e despeje a massa.\n3. Cozinhe em fogo baixo até dourar dos dois lados.\n4. Sirva com frutas, mel ou pasta de amendoim.",
+    "tips": "Faça o molho em maior quantidade para usar em pizza fit, lasanha fit ou outros pratos durante a semana. Armazene no congelador.",
+    "storage": "Geladeira: Pode ser armazenado por até **5 dias** em potes bem fechados.\nEvite congelar: A textura pode ser alterada.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "prep-heavy",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200027_recipe_pao_com_carne_moida",
@@ -1023,7 +1842,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 pães franceses integrais\n200g de carne moída magra\n1/2 cebola picada\n1 dente de alho picado\nMolho de tomate a gosto\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Refogue a cebola e o alho em um fio de azeite.\n2. Adicione a carne moída e cozinhe até dourar.\n3. Acrescente o molho de tomate, sal, pimenta e cheiro verde. Cozinhe por mais alguns minutos.\n4. Abra os pães, recheie com a carne moída e sirva."
+    "prepSteps": "1. Refogue a cebola e o alho em um fio de azeite.\n2. Adicione a carne moída e cozinhe até dourar.\n3. Acrescente o molho de tomate, sal, pimenta e cheiro verde. Cozinhe por mais alguns minutos.\n4. Abra os pães, recheie com a carne moída e sirva.",
+    "tips": "",
+    "storage": "Geladeira: Até 2 dias, com os ingredientes armazenados separadamente.\nFreezer: **Não recomendado** para o pão francês (pode perder a textura ao descongelar).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200028_recipe_sanduiche_natural",
@@ -1045,7 +1885,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 fatias de pão integral\n100g de frango desfiado ou atum\n1 colher de sopa de maionese light ou iogurte natural\nAlface, tomate e cenoura ralada a gosto\nSal e pimenta do reino a gosto"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o frango/atum com a maionese/iogurte, sal e pimenta.\n2. Monte o sanduíche com as fatias de pão, a pasta, alface, tomate e cenoura.\n3. Sirva."
+    "prepSteps": "1. Em um recipiente, misture o frango/atum com a maionese/iogurte, sal e pimenta.\n2. Monte o sanduíche com as fatias de pão, a pasta, alface, tomate e cenoura.\n3. Sirva.",
+    "tips": "",
+    "storage": "No congelador por até **3 meses**.\nNa geladeira por até **6 dias** (se preocupar em manter na parte mais fria possível).\nPara congelar não pode colocar a salada.\nPara descongelar, deixar descongelando na geladeira inicialmente e retira da geladeira alguns minutinhos antes de comer (eu não esquento).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200020_recipe_toast_atum_cremoso",
@@ -1067,7 +1928,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 fatias de pão integral\n1 lata de atum light (escorrido)\n1 colher de sopa de cream cheese light ou requeijão light\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o atum escorrido com o cream cheese/requeijão, sal, pimenta e cheiro verde.\n2. Torre as fatias de pão.\n3. Espalhe a pasta de atum sobre o pão torrado e sirva."
+    "prepSteps": "1. Em um recipiente, misture o atum escorrido com o cream cheese/requeijão, sal, pimenta e cheiro verde.\n2. Torre as fatias de pão.\n3. Espalhe a pasta de atum sobre o pão torrado e sirva.",
+    "tips": "",
+    "storage": "**Como embalar**: Envolva cada toast (ainda cru/sem assar o queijo) individualmente em plástico filme, fechando bem.\n**Validade**: Pode ser mantido no congelador por até 3 meses.\n**Para consumir**: Retire do congelador e leve direto ao forno ou Air Fryer até aquecer e o queijo derreter.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200016_recipe_waffle_doce",
@@ -1089,7 +1971,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de aveia\n1/4 xícara de leite (ou bebida vegetal)\n1 colher de chá de fermento em pó\nGotas de adoçante ou mel a gosto"
       }
     ],
-    "prepSteps": "1. Misture todos os ingredientes até obter uma massa homogênea.\n2. Aqueça a máquina de waffle e despeje a massa.\n3. Cozinhe até dourar.\n4. Sirva com frutas e iogurte."
+    "prepSteps": "1. Misture todos os ingredientes até obter uma massa homogênea.\n2. Aqueça a máquina de waffle e despeje a massa.\n3. Cozinhe até dourar.\n4. Sirva com frutas e iogurte.",
+    "tips": "Os valores da tabela correspondem a **1 waffle**. 😉",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "9",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "prep-heavy",
+    "tipPlacement": "hidden",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200017_recipe_waffle_salgado",
@@ -1111,7 +2014,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo\n3 colheres de sopa de farinha de aveia\n1/4 xícara de leite (ou bebida vegetal)\nSal e pimenta do reino a gosto\nQueijo cottage ou frango desfiado para rechear"
       }
     ],
-    "prepSteps": "1. Misture o ovo, a farinha de aveia, o leite, sal e pimenta.\n2. Despeje na máquina de waffle aquecida e cozinhe até dourar.\n3. Recheie com queijo cottage, frango desfiado ou outros recheios salgados de sua preferência."
+    "prepSteps": "1. Misture o ovo, a farinha de aveia, o leite, sal e pimenta.\n2. Despeje na máquina de waffle aquecida e cozinhe até dourar.\n3. Recheie com queijo cottage, frango desfiado ou outros recheios salgados de sua preferência.",
+    "tips": "Não encha demais a máquina de waffle, pois a massa **incha** ao assar.",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_section_salgados_e_refeicoes",
@@ -1143,7 +2067,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de arroz integral cozido"
       }
     ],
-    "prepSteps": "1. **Fraldinha:** Refogue a cebola e o alho, adicione a fraldinha desfiada, molho de tomate, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n2. Sirva a fraldinha desfiada sobre o arroz integral cozido."
+    "prepSteps": "1. **Fraldinha:** Refogue a cebola e o alho, adicione a fraldinha desfiada, molho de tomate, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n2. Sirva a fraldinha desfiada sobre o arroz integral cozido.",
+    "tips": "",
+    "storage": "Geladeira: Armazene em **potes herméticos** por até **5 dias**.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200043_recipe_coxinha_fit",
@@ -1173,7 +2118,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 ovo batido\nFarinha de rosca integral ou farelo de aveia"
       }
     ],
-    "prepSteps": "1. **Massa:** Misture a batata doce amassada com a farinha de aveia e o sal até formar uma massa homogênea.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado e tempere a gosto.\n3. Abra pequenas porções da massa na palma da mão, recheie com o frango e modele as coxinhas.\n4. Passe as coxinhas no ovo batido e depois na farinha de rosca/farelo de aveia.\n5. Leve ao forno pré-aquecido a 180°C por cerca de 25-30 minutos, ou até dourar."
+    "prepSteps": "1. **Massa:** Misture a batata doce amassada com a farinha de aveia e o sal até formar uma massa homogênea.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado e tempere a gosto.\n3. Abra pequenas porções da massa na palma da mão, recheie com o frango e modele as coxinhas.\n4. Passe as coxinhas no ovo batido e depois na farinha de rosca/farelo de aveia.\n5. Leve ao forno pré-aquecido a 180°C por cerca de 25-30 minutos, ou até dourar.",
+    "tips": "LT, J (PETISCO/ENTRADA)",
+    "storage": "Geladeira: Até **3 dias** em pote bem fechado.\nCongelador: Até **30 dias**, já assadas ou ainda cruas (recomendo congelar sem queijo para melhor textura).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200037_recipe_croquete_frango",
@@ -1195,7 +2161,28 @@ export const PDF_LUIZA_DATA = [
         "items": "200g de frango cozido e desfiado\n2 colheres de sopa de requeijão light\n1/4 xícara de farinha de aveia\nSal, pimenta do reino e cheiro verde a gosto\nFarinha de rosca integral para empanar\nAzeite para untar"
       }
     ],
-    "prepSteps": "1. Em um recipiente, misture o frango desfiado com o requeijão light, farinha de aveia, sal, pimenta e cheiro verde até formar uma massa homogênea.\n2. Modele os croquetes e passe-os na farinha de rosca integral.\n3. Unte uma assadeira com azeite e disponha os croquetes.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, virando na metade do tempo, ou até dourar."
+    "prepSteps": "1. Em um recipiente, misture o frango desfiado com o requeijão light, farinha de aveia, sal, pimenta e cheiro verde até formar uma massa homogênea.\n2. Modele os croquetes e passe-os na farinha de rosca integral.\n3. Unte uma assadeira com azeite e disponha os croquetes.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, virando na metade do tempo, ou até dourar.",
+    "tips": "Para deixar o croquete ainda mais **douradinho e crocante**, pincele uma camada fina de azeite ou gema de ovo batida por cima antes de levar ao forno ou airfryer.",
+    "storage": "**Geladeira**: até 4 dias em pote hermético.\n**Congelador**: até 1 mês (pode congelar cru ou assado).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200033_recipe_frango_com_creme_de_batata",
@@ -1221,7 +2208,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 batatas médias cozidas e amassadas\n1/4 xícara de leite (ou bebida vegetal)\n1 colher de sopa de requeijão light (opcional)\nSal e noz-moscada a gosto"
       }
     ],
-    "prepSteps": "1. **Frango:** Refogue a cebola e o alho, adicione o frango e cozinhe até dourar. Acrescente o molho de tomate, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n2. **Creme de Batata:** Misture as batatas amassadas com o leite, requeijão (se usar), sal e noz-moscada até obter um creme homogêneo.\n3. Em um refratário, coloque o frango e cubra com o creme de batata.\n4. Leve ao forno para gratinar por cerca de 15 minutos."
+    "prepSteps": "1. **Frango:** Refogue a cebola e o alho, adicione o frango e cozinhe até dourar. Acrescente o molho de tomate, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n2. **Creme de Batata:** Misture as batatas amassadas com o leite, requeijão (se usar), sal e noz-moscada até obter um creme homogêneo.\n3. Em um refratário, coloque o frango e cubra com o creme de batata.\n4. Leve ao forno para gratinar por cerca de 15 minutos.",
+    "tips": "Para deixar o creme mais saboroso, substitua parte da água do cozimento por **leite**.\nPara uma versão mais fit, use requeijão **caseiro ou iogurte natural** no creme de batata.",
+    "storage": "Pode ser armazenado na geladeira por até **3 dias** em recipiente hermético.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200034_recipe_frango_cremoso_brocolis",
@@ -1243,7 +2251,28 @@ export const PDF_LUIZA_DATA = [
         "items": "200g de peito de frango em cubos\n1 xícara de brócolis cozido\n1/2 cebola picada\n1 dente de alho picado\n1/2 xícara de creme de leite light ou iogurte natural\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Refogue a cebola e o alho em um fio de azeite.\n2. Adicione o frango em cubos e cozinhe até dourar.\n3. Acrescente o brócolis cozido e o creme de leite light/iogurte natural.\n4. Tempere com sal, pimenta do reino e cheiro verde. Cozinhe por alguns minutos até o molho encorpar.\n5. Sirva com arroz integral ou batata doce."
+    "prepSteps": "1. Refogue a cebola e o alho em um fio de azeite.\n2. Adicione o frango em cubos e cozinhe até dourar.\n3. Acrescente o brócolis cozido e o creme de leite light/iogurte natural.\n4. Tempere com sal, pimenta do reino e cheiro verde. Cozinhe por alguns minutos até o molho encorpar.\n5. Sirva com arroz integral ou batata doce.",
+    "tips": "Para um toque extra, adicione queijo por cima e leve à **Air Fryer** ou ao **forno** para gratinar.",
+    "storage": "Geladeira: Pode ser armazenado por até **3 dias** em potes fechados.\nCongelador: Até **30 dias**, porém a textura do creme pode ser levemente alterada após o descongelamento.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": "center"
   },
   {
     "id": "p_1722457200032_recipe_frango_empanado",
@@ -1265,7 +2294,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 filés de frango\n1 ovo batido\n1 xícara de farinha de rosca integral ou farelo de aveia\nTemperos a gosto (sal, pimenta, páprica)\nAzeite para untar"
       }
     ],
-    "prepSteps": "1. Tempere os filés de frango com sal, pimenta e páprica.\n2. Passe cada filé no ovo batido e depois na farinha de rosca/farelo de aveia, cobrindo bem.\n3. Unte uma assadeira com azeite e disponha os filés.\n4. Leve ao forno pré-aquecido a 200°C por cerca de 20-25 minutos, virando na metade do tempo, ou até dourar e cozinhar por completo."
+    "prepSteps": "1. Tempere os filés de frango com sal, pimenta e páprica.\n2. Passe cada filé no ovo batido e depois na farinha de rosca/farelo de aveia, cobrindo bem.\n3. Unte uma assadeira com azeite e disponha os filés.\n4. Leve ao forno pré-aquecido a 200°C por cerca de 20-25 minutos, virando na metade do tempo, ou até dourar e cozinhar por completo.",
+    "tips": "Pode ser assado no **forno** também! Basta assar a 180°C por 25 minutos, virando na metade do tempo.",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200036_recipe_hamburguer_fit",
@@ -1291,7 +2341,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 pães de hambúrguer integrais\nAlface, tomate, cebola roxa a gosto\nQueijo muçarela light (opcional)\nMolhos light a gosto"
       }
     ],
-    "prepSteps": "1. **Hambúrguer:** Misture a carne moída com a cebola, alho, sal, pimenta e cheiro verde. Modele 2 hambúrgueres.\n2. Grelhe os hambúrgueres em uma frigideira antiaderente ou chapa até o ponto desejado.\n3. Se for usar queijo, coloque sobre o hambúrguer nos últimos minutos para derreter.\n4. Monte o hambúrguer com o pão, alface, tomate, cebola e molhos light."
+    "prepSteps": "1. **Hambúrguer:** Misture a carne moída com a cebola, alho, sal, pimenta e cheiro verde. Modele 2 hambúrgueres.\n2. Grelhe os hambúrgueres em uma frigideira antiaderente ou chapa até o ponto desejado.\n3. Se for usar queijo, coloque sobre o hambúrguer nos últimos minutos para derreter.\n4. Monte o hambúrguer com o pão, alface, tomate, cebola e molhos light.",
+    "tips": "Informações Nutricionais considerando a **Montagem de um Hambúrguer Completo** (um blend de 150g de carne, pão e complementos)",
+    "storage": "**Geladeira**: Até 3 dias em recipiente fechado.\n**Congelador**: Até 3 meses, embalados individualmente em plástico filme ou saquinhos próprios.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200038_recipe_macarrao_cremoso_brocolis",
@@ -1313,7 +2384,28 @@ export const PDF_LUIZA_DATA = [
         "items": "150g de macarrão integral\n1 xícara de brócolis cozido\n1/2 cebola picada\n1 dente de alho picado\n1/2 xícara de creme de leite light ou iogurte natural\nQueijo parmesão light ralado a gosto\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. Cozinhe o macarrão integral conforme as instruções da embalagem.\n2. Em outra panela, refogue a cebola e o alho em um fio de azeite.\n3. Adicione o brócolis cozido e o creme de leite light/iogurte natural. Tempere com sal e pimenta.\n4. Misture o molho ao macarrão cozido.\n5. Finalize com queijo parmesão light ralado e cheiro verde."
+    "prepSteps": "1. Cozinhe o macarrão integral conforme as instruções da embalagem.\n2. Em outra panela, refogue a cebola e o alho em um fio de azeite.\n3. Adicione o brócolis cozido e o creme de leite light/iogurte natural. Tempere com sal e pimenta.\n4. Misture o molho ao macarrão cozido.\n5. Finalize com queijo parmesão light ralado e cheiro verde.",
+    "tips": "Para deixar o croquete ainda mais **douradinho e crocante**, pincele uma camada fina de azeite ou gema de ovo batida por cima antes de levar ao forno ou airfryer.",
+    "storage": "Geladeira: Armazene por até **7 dias** na parte mais fria.\nCongelamento: **Não recomendado** devido à mudança de textura.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200029_recipe_mini_pizza_fit",
@@ -1335,7 +2427,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 pães sírios integrais ou tortilhas\nMolho de tomate\nQueijo muçarela light\nRecheio a gosto (frango desfiado, legumes, peito de peru)\nOrégano a gosto"
       }
     ],
-    "prepSteps": "1. Espalhe o molho de tomate sobre os pães/tortilhas.\n2. Cubra com queijo muçarela light e o recheio de sua preferência.\n3. Leve ao forno pré-aquecido a 180°C por cerca de 10-15 minutos, ou até o queijo derreter e dourar.\n4. Salpique orégano e sirva."
+    "prepSteps": "1. Espalhe o molho de tomate sobre os pães/tortilhas.\n2. Cubra com queijo muçarela light e o recheio de sua preferência.\n3. Leve ao forno pré-aquecido a 180°C por cerca de 10-15 minutos, ou até o queijo derreter e dourar.\n4. Salpique orégano e sirva.",
+    "tips": "Faça o molho em maior quantidade para usar em pizza fit, lasanha fit ou outros pratos durante a semana. \"**Façam, que eu tenho certeza que vocês vão amar!**\" 😉",
+    "storage": "Geladeira: Pode ser armazenado por até **5 dias** em potes bem fechados.",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "prep-heavy",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200040_recipe_pastelzinho_fit",
@@ -1361,7 +2474,28 @@ export const PDF_LUIZA_DATA = [
         "items": "150g de carne moída magra ou frango desfiado\n1/4 cebola picada\n1 dente de alho picado\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. **Massa:** Misture a farinha, azeite e sal. Adicione água morna aos poucos até formar uma massa homogênea. Abra a massa com um rolo e corte em círculos.\n2. **Recheio:** Refogue a cebola e o alho, adicione a carne/frango e cozinhe. Tempere a gosto.\n3. Recheie os círculos de massa, feche bem as bordas com um garfo.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20 minutos, ou até dourar."
+    "prepSteps": "1. **Massa:** Misture a farinha, azeite e sal. Adicione água morna aos poucos até formar uma massa homogênea. Abra a massa com um rolo e corte em círculos.\n2. **Recheio:** Refogue a cebola e o alho, adicione a carne/frango e cozinhe. Tempere a gosto.\n3. Recheie os círculos de massa, feche bem as bordas com um garfo.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20 minutos, ou até dourar.",
+    "tips": "",
+    "storage": "Geladeira: Até 3 dias em pote hermético, preferencialmente sem recheio de queijo (para evitar umidade excessiva).\nCongelador: Até 30 dias, montados e crus (**melhor textura ao assar na hora**).",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200035_recipe_tiras_carne_creme_batata",
@@ -1387,7 +2521,28 @@ export const PDF_LUIZA_DATA = [
         "items": "2 batatas médias cozidas e amassadas\n1/4 xícara de leite (ou bebida vegetal)\n1 colher de sopa de requeijão light (opcional)\nSal e noz-moscada a gosto"
       }
     ],
-    "prepSteps": "1. **Carne:** Refogue a cebola e o alho, adicione as tiras de carne e cozinhe até dourar. Acrescente o molho inglês/shoyu, sal e pimenta. Cozinhe por alguns minutos.\n2. **Creme de Batata:** Misture as batatas amassadas com o leite, requeijão (se usar), sal e noz-moscada até obter um creme homogêneo.\n3. Em um refratário, coloque a carne e cubra com o creme de batata.\n4. Leve ao forno para gratinar por cerca de 15 minutos."
+    "prepSteps": "1. **Carne:** Refogue a cebola e o alho, adicione as tiras de carne e cozinhe até dourar. Acrescente o molho inglês/shoyu, sal e pimenta. Cozinhe por alguns minutos.\n2. **Creme de Batata:** Misture as batatas amassadas com o leite, requeijão (se usar), sal e noz-moscada até obter um creme homogêneo.\n3. Em um refratário, coloque a carne e cubra com o creme de batata.\n4. Leve ao forno para gratinar por cerca de 15 minutos.",
+    "tips": "",
+    "storage": "Geladeira: até **4 dias** em potes herméticos.\nCongelador: até **3 meses** (preferencialmente sem o queijo gratinado).",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200030_recipe_tortinha_frango_fit",
@@ -1413,7 +2568,28 @@ export const PDF_LUIZA_DATA = [
         "items": "200g de frango desfiado\n1/2 cebola picada\n1 dente de alho picado\nMolho de tomate\nMilho e ervilha a gosto\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. **Massa:** Misture a farinha de aveia com o azeite e adicione água gelada aos poucos até formar uma massa homogênea. Forre forminhas de torta.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado, molho de tomate, milho, ervilha, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n3. Recheie as tortinhas com o frango.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até dourar."
+    "prepSteps": "1. **Massa:** Misture a farinha de aveia com o azeite e adicione água gelada aos poucos até formar uma massa homogênea. Forre forminhas de torta.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado, molho de tomate, milho, ervilha, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n3. Recheie as tortinhas com o frango.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até dourar.",
+    "tips": "Adicione queijo muçarela por cima antes de assar, se quiser, para um toque especial.😉",
+    "storage": "Geladeira: Até **3 dias**, em pote fechado.\nFreezer: Até **30 dias**, armazenadas em potes ou saquinhos zip. Para consumir, descongele na geladeira e reaqueça na airfryer.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200031_recipe_tortinha_frango_fit_ii",
@@ -1439,7 +2615,28 @@ export const PDF_LUIZA_DATA = [
         "items": "200g de frango desfiado\n1/2 cebola picada\n1 dente de alho picado\nMolho de tomate\nMilho e ervilha a gosto\nSal, pimenta do reino e cheiro verde a gosto"
       }
     ],
-    "prepSteps": "1. **Massa:** Misture a farinha de aveia com o azeite e adicione água gelada aos poucos até formar uma massa homogênea. Forre forminhas de torta.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado, molho de tomate, milho, ervilha, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n3. Recheie as tortinhas com o frango.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até dourar."
+    "prepSteps": "1. **Massa:** Misture a farinha de aveia com o azeite e adicione água gelada aos poucos até formar uma massa homogênea. Forre forminhas de torta.\n2. **Recheio:** Refogue a cebola e o alho, adicione o frango desfiado, molho de tomate, milho, ervilha, sal, pimenta e cheiro verde. Cozinhe por alguns minutos.\n3. Recheie as tortinhas com o frango.\n4. Leve ao forno pré-aquecido a 180°C por cerca de 20-25 minutos, ou até dourar.",
+    "tips": "",
+    "storage": "Geladeira: Até **3 dias**, em pote fechado.\nFreezer: Até **30 dias**, armazenadas em potes ou saquinhos zip. Para consumir, descongele na geladeira e reaqueça na airfryer.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_section_shakes_e_iogurtes",
@@ -1467,7 +2664,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 pote de iogurte natural\n5 morangos picados\n1 colher de chá de chia\nAdoçante a gosto"
       }
     ],
-    "prepSteps": "1. Em uma panela pequena, cozinhe os morangos picados com um pouco de água e adoçante até formar uma geleia.\n2. Deixe esfriar e misture a chia.\n3. Sirva a geleia sobre o iogurte natural."
+    "prepSteps": "1. Em uma panela pequena, cozinhe os morangos picados com um pouco de água e adoçante até formar uma geleia.\n2. Deixe esfriar e misture a chia.\n3. Sirva a geleia sobre o iogurte natural.",
+    "tips": "Os valores nutricionais correspondem a **1 potinho**.",
+    "storage": "**Geladeira:** Mantenha refrigerado e consuma em até 7 dias.\n**Congelamento:** Não recomendado (o iogurte pode talhar ao descongelar)",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200018_recipe_iogurte_natural_infinito",
@@ -1489,7 +2707,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 litro de leite integral ou semidesnatado\n1 pote de iogurte natural integral (170g) com fermento vivo"
       }
     ],
-    "prepSteps": "1. Aqueça o leite até quase ferver (85-90°C). Desligue o fogo e deixe amornar até 45°C (você consegue manter o dedo por 10 segundos).\n2. Em um recipiente, misture o iogurte natural com um pouco do leite morno até dissolver bem.\n3. Adicione essa mistura ao restante do leite, mexendo delicadamente.\n4. Tampe o recipiente e envolva-o em um pano de prato ou cobertor para manter a temperatura.\n5. Deixe descansar em um local sem corrente de ar por 6 a 8 horas (ou durante a noite).\n6. Após esse tempo, leve à geladeira por pelo menos 2 horas antes de consumir.\n7. Para fazer a próxima leva, reserve 3 colheres de sopa do seu iogurte pronto e repita o processo."
+    "prepSteps": "1. Aqueça o leite até quase ferver (85-90°C). Desligue o fogo e deixe amornar até 45°C (você consegue manter o dedo por 10 segundos).\n2. Em um recipiente, misture o iogurte natural com um pouco do leite morno até dissolver bem.\n3. Adicione essa mistura ao restante do leite, mexendo delicadamente.\n4. Tampe o recipiente e envolva-o em um pano de prato ou cobertor para manter a temperatura.\n5. Deixe descansar em um local sem corrente de ar por 6 a 8 horas (ou durante a noite).\n6. Após esse tempo, leve à geladeira por pelo menos 2 horas antes de consumir.\n7. Para fazer a próxima leva, reserve 3 colheres de sopa do seu iogurte pronto e repita o processo.",
+    "tips": "",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200025_recipe_milkshake_de_cafe",
@@ -1511,7 +2750,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 xícara de café forte e frio\n1/2 xícara de leite (ou bebida vegetal)\n1 bola de sorvete de creme light ou iogurte congelado\nGotas de adoçante a gosto\nGelo a gosto"
       }
     ],
-    "prepSteps": "1. Bata todos os ingredientes no liquidificador até ficar cremoso.\n2. Sirva imediatamente."
+    "prepSteps": "1. Bata todos os ingredientes no liquidificador até ficar cremoso.\n2. Sirva imediatamente.",
+    "tips": "Os valores da tabela correspondem a **1 milk shake**😉",
+    "storage": "O milkshake deve ser consumido na hora para manter a textura cremosa. Caso sobre, pode ser armazenado no congelador, mas precisará ser batido **novamente** antes de beber.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200024_recipe_milkshake_proteico",
@@ -1533,7 +2793,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 scoop de whey protein (sabor de sua preferência)\n200ml de leite (ou bebida vegetal)\n1 banana congelada\n1 colher de sopa de pasta de amendoim (opcional)\nGelo a gosto"
       }
     ],
-    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma mistura homogênea e cremosa.\n2. Sirva imediatamente."
+    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma mistura homogênea e cremosa.\n2. Sirva imediatamente.",
+    "tips": "",
+    "storage": "Geladeira: Até **3 dias**.\nCongelador: Até **30 dias**. Agite antes de consumir.",
+    "image": "",
+    "videoLink": "",
+    "layout": "2",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200076_recipe_shake_laxativo",
@@ -1555,7 +2836,28 @@ export const PDF_LUIZA_DATA = [
         "items": "1 copo de água ou água de coco\n1/2 mamão papaia\n1 colher de sopa de farelo de aveia\n1 colher de sopa de linhaça\n5 ameixas secas sem caroço\nGotas de adoçante (opcional)"
       }
     ],
-    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma mistura homogênea.\n2. Sirva imediatamente, preferencialmente em jejum ou antes de dormir."
+    "prepSteps": "1. Bata todos os ingredientes no liquidificador até obter uma mistura homogênea.\n2. Sirva imediatamente, preferencialmente em jejum ou antes de dormir.",
+    "tips": "Protocolo: Consumir \"dia sim, dia não\" para auxiliar na regulação do trânsito intestinal.\nDica: Se desejar reduzir as calorias, substitua o leite integral por água ou leite desnatado e use adoçante em vez de **mel**",
+    "storage": "",
+    "image": "",
+    "videoLink": "",
+    "layout": "8",
+    "fontSizes": {
+      "title": 3,
+      "ingredients": 2,
+      "prep": 2
+    },
+    "imageSize": 3,
+    "spacing": "normal",
+    "videoDisplayStyle": "button",
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "imageZoom": 100,
+    "columnRatio": "default",
+    "tipPlacement": "footer",
+    "storagePlacement": "footer",
+    "nutritionDisplayStyle": "default",
+    "titleAlignment": null
   },
   {
     "id": "p_1722457200077_shopping",
