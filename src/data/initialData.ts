@@ -3,6 +3,15 @@ import { ColumnRatioKey } from "@/lib/constants";
 import { z } from "zod";
 import originalJson from "./todas-as-receitas-original.json";
 
+// Categorias definidas diretamente aqui
+const TOC_CATEGORIES = [
+  "ACOMPANHAMENTOS, SALADAS & SOPAS",
+  "BOLOS, DOCES & SOBREMESAS",
+  "CAFÉ DA MANHÃ & LANCHES RÁPIDOS",
+  "SALGADOS E REFEIÇÕES",
+  "SHAKES E IOGURTES",
+];
+
 // Esquema Zod para validar a saída da IA para receitas
 export const recipeSchema = z
   .object({
