@@ -31,7 +31,7 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
                 <h1 className="font-playfair text-3xl font-bold tracking-widest text-navy">{finalTitle}</h1> {/* Título maior */}
                 <div className="w-16 h-1.5 bg-accent mx-auto mt-3 rounded-full opacity-70"></div> {/* Divisor mais substancial */}
             </div>
-            <div className="space-y-1 w-full"> {/* Ajustado o espaçamento entre os itens */}
+            <div className="space-y-2 w-full"> {/* Ajustado o espaçamento entre os itens de 1 para 2 */}
                 {itemsToDisplay.map((item) => {
                 const isSection = item.type === TEMPLATES.SECTION;
                 const isRecipe = item.type === TEMPLATES.RECIPE;
@@ -55,30 +55,22 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
                     <div key={item.id}> {/* Usando item.id como key */}
                         {isSection ? (
                             <div 
-                                className="flex items-center gap-3 py-2 px-3 bg-accent/10 rounded-lg mb-2 mt-6 cursor-pointer hover:bg-accent/20 transition-colors"
-                                onClick={() => onRecipeClick(item.id)}
-                            > {/* Novo estilo para seção */}
-                                <BookOpen size={16} className="text-accent shrink-0" />
-                                <span className="text-accent font-black text-sm uppercase tracking-widest">{itemDisplayTitle}</span>
-                            </div>
-                        ) : isRecipe ? (
-                            <div 
-                                className="flex items-baseline justify-between py-2 border-b border-navy/10 last:border-b-0 cursor-pointer hover:bg-gray-50 rounded-md px-2 -mx-2 transition-colors"
-                                onClick={() => onRecipeClick(item.id)}
-                            > {/* Novo estilo para receita */}
-                                <span className="text-navy/90 font-medium text-sm">{itemDisplayTitle}</span> {/* Texto da receita */}
-                                <div className="flex-1 border-b border-dotted border-navy/30 mx-3 mb-1.5"></div> {/* Linha pontilhada mais grossa */}
-                                <span className="text-navy font-bold text-xs bg-cream px-2 py-0.5 rounded-full shadow-sm">{String(pageNum).padStart(2, '0')}</span> {/* Badge do número da página */}
-                            </div>
-                        ) : (
-                            // Estilo genérico para outras páginas (Capa, Intro, Legenda, Compras)
-                            <div 
-                                className="flex items-baseline justify-between py-2 border-b border-navy/10 last:border-b-0 cursor-pointer hover:bg-gray-50 rounded-md px-2 -mx-2 transition-colors"
+                                className="flex items-center gap-3 py-2 px-4 bg-accent/10 rounded-xl my-4 cursor-pointer hover:bg-accent/20 transition-colors shadow-sm" // Increased padding, rounded-xl, added shadow, adjusted margin
                                 onClick={() => onRecipeClick(item.id)}
                             >
-                                <span className="text-navy/90 font-medium text-sm">{itemDisplayTitle}</span>
-                                <div className="flex-1 border-b border-dotted border-navy/30 mx-3 mb-1.5"></div>
-                                <span className="text-navy font-bold text-xs bg-cream px-2 py-0.5 rounded-full shadow-sm">{String(pageNum).padStart(2, '0')}</span>
+                                <BookOpen size={18} className="text-accent shrink-0" /> {/* Slightly larger icon */}
+                                <span className="text-accent font-black text-base uppercase tracking-widest">{itemDisplayTitle}</span> {/* Larger and bolder text */}
+                            </div>
+                        ) : (
+                            <div 
+                                className="flex items-baseline justify-between py-2 border-b border-gray-200 last:border-b-0 cursor-pointer hover:bg-surface rounded-md px-2 -mx-2 transition-colors" // Softer border, hover bg-surface
+                                onClick={() => onRecipeClick(item.id)}
+                            >
+                                <span className="text-navy font-semibold text-base">{itemDisplayTitle}</span> {/* Bolder and slightly larger text */}
+                                <div className="flex-1 border-b border-dotted border-gray-300 mx-3 mb-1.5"></div> {/* Lighter dotted line */}
+                                <span className="text-navy font-bold text-sm bg-cream px-2.5 py-1 rounded-full shadow-sm"> {/* Slightly larger badge */}
+                                    {String(pageNum).padStart(2, '0')}
+                                </span>
                             </div>
                         )}
                     </div>
