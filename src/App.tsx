@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Editor from "./pages/Editor"; // Import the new Editor component
 import NotFound from "./pages/NotFound";
+import ExtractorPage from "./pages/Extractor";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Editor />} /> {/* Render Editor on the root path */}
+          <Route path="/extractor" element={<ExtractorPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
