@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { PageData, TocPageData } from '@/data/initialData';
-import { TEMPLATES } from '@/lib/constants';
+import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants'; // Importando MAX_TOC_ITEMS_PER_PAGE
 import { BookOpen } from '@/components/icons'; // Importando o ícone BookOpen
 
 interface TocViewProps {
@@ -11,7 +11,7 @@ interface TocViewProps {
     onRecipeClick: (pageId: string) => void; // Nova prop para a função de clique
 }
 
-const MAX_TOC_ITEMS_PER_PAGE = 15; // Define a constante para o número máximo de itens por página de sumário
+// Removido: const MAX_TOC_ITEMS_PER_PAGE = 15; // Define a constante para o número máximo de itens por página de sumário
 
 export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
     // Filtra todas as páginas que não são do tipo SUMÁRIO para serem listadas

@@ -62,6 +62,9 @@ const Editor = () => {
         exportProject,
         importProject,
         loadPdfData,
+        showThemeEditor, // Novo
+        setShowThemeEditor, // Novo
+        handlePrint, // Novo
     } = useAppPersistence();
 
     // Usar o hook useAiFeatures
@@ -79,14 +82,8 @@ const Editor = () => {
         openMagicModal,
     } = useAiFeatures({ pages, setPages, updatePage, setSelectedId });
 
-    const [showThemeEditor, setShowThemeEditor] = useState(false);
-
-    const handlePrint = async () => { 
-        document.fonts.ready.then(() => {
-            toast.info("⚠️ DICA PARA PDF DIGITAL:\n1. Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF", { duration: 8000 }); 
-            window.print(); 
-        });
-    };
+    // Removido: const [showThemeEditor, setShowThemeEditor] = useState(false);
+    // Removido: const handlePrint = async () => { ... };
     
     return (
         <>

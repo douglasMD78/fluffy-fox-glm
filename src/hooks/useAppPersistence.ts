@@ -33,6 +33,9 @@ interface UseAppPersistenceResult {
     exportProject: () => void;
     importProject: (e: React.ChangeEvent<HTMLInputElement>) => void;
     loadPdfData: () => void;
+    showThemeEditor: boolean; // Adicionado
+    setShowThemeEditor: React.Dispatch<React.SetStateAction<boolean>>; // Adicionado
+    handlePrint: () => Promise<void>; // Adicionado
 }
 
 export const useAppPersistence = (): UseAppPersistenceResult => {
@@ -42,6 +45,7 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         "text": "#2D2D2D",
         "accent": "#FF2D75"
     });
+    const [showThemeEditor, setShowThemeEditor] = useState(false); // Movido para cá
 
     // Persistence states
     const [isSaving, setIsSaving] = useState(false);
@@ -186,6 +190,13 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         reader.readAsText(file);
     };
 
+    const handlePrint = async () => { // Movido para cá
+        document.fonts.ready.then(() => {
+            toast.info("⚠️ DICA PARA PDF DIGITAL:\n1. Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF", { duration: 8000 }); 
+            window.print(); 
+        });
+    };
+
     return {
         pages,
         setPages,
@@ -208,5 +219,8 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         exportProject,
         importProject,
         loadPdfData,
+        showThemeEditor,
+        setShowThemeEditor,
+        handlePrint,
     };
 };

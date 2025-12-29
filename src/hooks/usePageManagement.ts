@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
-import { TEMPLATES } from '@/lib/constants';
+import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants'; // Importando MAX_TOC_ITEMS_PER_PAGE
 import { PageData, INITIAL_DATA, PDF_LUIZA_DATA, TocPageData } from '@/data/initialData';
 
-const MAX_TOC_ITEMS_PER_PAGE = 15;
+// Removido: const MAX_TOC_ITEMS_PER_PAGE = 15;
 
 interface UsePageManagementProps {
     initialPages?: PageData[];

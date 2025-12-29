@@ -8,6 +8,8 @@ export enum TEMPLATES {
     SHOPPING = 'shopping'
 }
 
+export const MAX_TOC_ITEMS_PER_PAGE = 15; // Movido para cá
+
 export const TAG_DEFS = [
     { code: 'CM', label: 'Café da Manhã', color: 'bg-tag-cm', text: 'text-white' },
     { code: 'LM', label: 'Lanche da Manhã', color: 'bg-tag-lm', text: 'text-navy' },
