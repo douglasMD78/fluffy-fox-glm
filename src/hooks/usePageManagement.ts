@@ -22,9 +22,9 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     // Efeito para gerenciar a paginação do sumário
     useEffect(() => {
         const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
-        const totalItemsForToc = contentPages.length;
-        const requiredByItems = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
-        const requiredTocPagesCount = Math.min(MAX_TOC_PAGES, requiredByItems); // Limitar a no máximo 2
+
+        // NOVO: se houver receitas, criar exatamente 2 páginas de TOC; caso contrário, 1.
+        const requiredTocPagesCount = contentPages.length > 0 ? Math.min(2, MAX_TOC_PAGES) : 1;
 
         let newTocPages: PageData[] = [];
         for (let i = 0; i < requiredTocPagesCount; i++) {
