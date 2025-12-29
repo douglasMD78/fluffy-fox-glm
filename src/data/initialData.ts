@@ -207,7 +207,7 @@ const USER_CATEGORIZED_RECIPES = [
 ];
 
 // Utilitários
-type AnyPage = (typeof originalJson)["pages"][number];
+type AnyPage = typeof originalJson.pages[number];
 function clone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -215,64 +215,42 @@ function clone<T>(obj: T): T {
 export const PDF_LUIZA_DATA = (() => {
   const originalData: AnyPage[] = clone(originalJson.pages);
 
-  // Mapear receitas por título (upper)
+  // construir mapas
+  const recipePages = originalData.filter((p) => p.type === TEMPLATES.RECIPE);
   const recipeMap = new Map<string, AnyPage>();
-  originalData
-    .filter((p) => p.type === TEMPLATES.RECIPE)
-    .forEach((p) => recipeMap.set(p.title.toUpperCase(), p));
+  recipePages.forEach((r) => recipeMap.set(r.title.toUpperCase(), r));
 
-  // Correções de conteúdo e metadados
   // 1) Troca de conteúdo: SHAKE LAXATIVO ↔ IOGURTE COM GELEIA DE MORANGO
   const shakeTitle = "SHAKE LAXATIVO (REGULADOR INTESTINAL)";
-  const iogurteTitle = "IOGURTE COM GELEIA DE MORANGO";
+  const iogTitle = "IOGURTE COM GELEIA DE MORANGO";
   const shakePage = recipeMap.get(shakeTitle.toUpperCase());
-  const iogurtePage = recipeMap.get(iogurteTitle.toUpperCase());
-  if (shakePage && iogurtePage) {
-    const shakeContent = {
-      ingredientGroups: iogurtePage.ingredientGroups,
-      prepSteps: iogurtePage.prepSteps,
-      tips: iogurtePage.tips,
-      storage: iogurtePage.storage,
-      code: iogurtePage.code,
-      yield: "1 copo",
-      category: "SHAKES E IOGURTES",
-      layout: shakePage.layout ?? "2",
-      fontSizes: shakePage.fontSizes ?? { title: 3, ingredients: 2, prep: 2 },
-    };
-    const iogurteContent = {
-      ingredientGroups: shakePage.ingredientGroups,
-      prepSteps: shakePage.prepSteps,
-      tips: shakePage.tips,
-      storage: shakePage.storage,
-      code: shakePage.code,
-      yield: "8 potinhos",
-      category: "SHAKES E IOGURTES",
-      layout: iogurtePage.layout ?? "8",
-      fontSizes: iogurtePage.fontSizes ?? { title: 3, ingredients: 2, prep: 2 },
-    };
-    // Aplicar ajustes
-    shakePage.ingredientGroups = shakeContent.ingredientGroups;
-    shakePage.prepSteps = shakeContent.prepSteps;
-    shakePage.tips = "Protocolo: Consumir \"dia sim, dia não\" para auxiliar na regulação do trânsito intestinal.";
-    shakePage.storage =
-      "Consumir imediatamente para melhor textura; se guardar, manter refrigerado e agitar antes de beber.";
-    shakePage.category = shakeContent.category;
-    shakePage.yield = shakeContent.yield;
-    shakePage.layout = shakeContent.layout;
-    shakePage.fontSizes = shakeContent.fontSizes;
+  const iogPage = recipeMap.get(iogTitle.toUpperCase());
+  if (shakePage && iogPage) {
+    const tmpIngredients = shakePage.ingredientGroups;
+    const tmpPrep = shakePage.prepSteps;
+    const tmpTips = shakePage.tips;
+    const tmpStorage = shakePage.storage;
 
-    iogurtePage.ingredientGroups = iogurteContent.ingredientGroups;
-    iogurtePage.prepSteps =
+    // IOGURTE passa a ser iogurte caseiro + geleia
+    iogPage.ingredientGroups = tmpIngredients;
+    iogPage.prepSteps =
       "Aqueça o leite até atingir 40°C (morno ao toque) e dissolva o leite em pó. Adicione o iogurte, misture bem, cubra e deixe firmar em local abafado.\nEm uma panela, cozinhe morangos com suco de limão e adoçante até obter ponto de geleia espessa.\nDistribua a geleia no fundo dos potes e complete com o iogurte firme.";
-    iogurtePage.tips = "Se preferir, faça a geleia com pedaços maiores para textura.";
-    iogurtePage.storage = "Geladeira: até 7 dias. Congelamento não recomendado (o iogurte pode talhar).";
-    iogurtePage.category = iogurteContent.category;
-    iogurtePage.yield = iogurteContent.yield;
-    iogurtePage.layout = iogurteContent.layout;
-    iogurtePage.fontSizes = iogurteContent.fontSizes;
+    iogPage.tips = "Se preferir, faça a geleia com pedaços maiores para textura.";
+    iogPage.storage = "Geladeira: até 7 dias. Congelamento não recomendado (o iogurte pode talhar).";
+    iogPage.category = "SHAKES E IOGURTES";
+    iogPage.yield = "8 potinhos";
+
+    // SHAKE passa a ser o shake regulador de fibras
+    shakePage.ingredientGroups = iogPage.ingredientGroups;
+    shakePage.prepSteps =
+      "Em recipientes separados, coloque as ameixas e a chia de molho em um pouco de água por 10 a 15 minutos.\nA água onde a ameixa ficou de molho contém sorbitol (laxante natural) e deve ser usada na receita. A chia formará um \"gel\" que também será usado integralmente.\nNo liquidificador, coloque o líquido de sua escolha, a linhaça, o mamão, as ameixas com a água do molho, o gel de chia, o psyllium e o adoçante.\nBata até que a mistura fique homogênea e com uma cor mais escura.";
+    shakePage.tips = 'Protocolo: Consumir "dia sim, dia não" para auxiliar na regulação do trânsito intestinal.';
+    shakePage.storage = "Consumir imediatamente para melhor textura; se guardar, manter refrigerado e agitar antes de beber.";
+    shakePage.category = "SHAKES E IOGURTES";
+    shakePage.yield = "1 copo";
   }
 
-  // 2) Ajustar categorias específicas
+  // 2) Categorias específicas
   const toast = recipeMap.get("TOAST DE ATUM CREMOSO");
   if (toast) toast.category = "CAFÉ DA MANHÃ E LANCHES RÁPIDOS";
   const crepiocaDoce = recipeMap.get("CREPIOCA DOCE COM BANANA");
@@ -282,49 +260,38 @@ export const PDF_LUIZA_DATA = (() => {
   const milkProteico = recipeMap.get("MILKSHAKE PROTEICO");
   if (milkProteico) milkProteico.category = "SHAKES E IOGURTES";
 
-  // 3) Ajustar dados nutricionais do Abacaxi Caramelizado
+  // 3) Ajustar proteína do Abacaxi Caramelizado
   const abacaxi = recipeMap.get("ABACAXI CARAMELIZADO");
-  if (abacaxi && abacaxi.nutrition) {
-    abacaxi.nutrition.prot = "0.5g";
-  }
+  if (abacaxi?.nutrition) abacaxi.nutrition.prot = "0.5g";
 
   // 4) Corrigir dica do Macarrão Cremoso com Brócolis
   const macarrao = recipeMap.get("MACARRÃO CREMOSO COM BRÓCOLIS");
   if (macarrao) {
-    macarrao.tips =
-      "Para um toque especial, cubra com queijo muçarela e leve ao forno ou air fryer para gratinar.";
+    macarrao.tips = "Para um toque especial, cubra com queijo muçarela e leve ao forno ou air fryer para gratinar.";
   }
 
   // 5) Completar storage dos waffles
   const waffleDoce = recipeMap.get("WAFFLE DOCE");
   if (waffleDoce) {
-    waffleDoce.storage =
-      "Consumir na hora para melhor textura. Geladeira: até 1 dia, reaquecer na frigideira/air fryer.";
+    waffleDoce.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
   }
   const waffleSalgado = recipeMap.get("WAFFLE SALGADO");
   if (waffleSalgado) {
-    waffleSalgado.storage =
-      "Consumir na hora para melhor textura. Geladeira: até 1 dia, reaquecer na frigideira/air fryer.";
+    waffleSalgado.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
   }
 
-  // Construir páginas especiais e receituário
+  // Páginas especiais e sumário
   const specialPages = originalData.filter(
-    (p) =>
-      p.type === TEMPLATES.COVER ||
-      p.type === TEMPLATES.INTRO ||
-      p.type === TEMPLATES.LEGEND
+    (p) => p.type === TEMPLATES.COVER || p.type === TEMPLATES.INTRO || p.type === TEMPLATES.LEGEND
   );
   const tocPages = originalData.filter((p) => p.type === TEMPLATES.TOC);
-  const recipePages = originalData.filter((p) => p.type === TEMPLATES.RECIPE);
 
-  const recipeTitleMap = new Map<string, AnyPage>();
-  recipePages.forEach((r) => recipeTitleMap.set(r.title.toUpperCase(), r));
-
-  // Nova ordem com páginas de seção
+  // Construir nova ordem com seções conforme USER_CATEGORIZED_RECIPES
+  const titleMap = new Map<string, AnyPage>();
+  recipePages.forEach((r) => titleMap.set(r.title.toUpperCase(), r));
   const newRecipeOrder: AnyPage[] = [];
   USER_CATEGORIZED_RECIPES.forEach((itemTitle) => {
     if (itemTitle.endsWith("S") && itemTitle.length > 5) {
-      // Categoria => página de seção
       newRecipeOrder.push({
         id: `p_section_${itemTitle.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}`,
         type: TEMPLATES.SECTION,
@@ -332,37 +299,25 @@ export const PDF_LUIZA_DATA = (() => {
         subtitle: "",
       } as AnyPage);
     } else {
-      const recipe = recipeTitleMap.get(itemTitle.toUpperCase());
-      if (recipe) newRecipeOrder.push(recipe);
+      const r = titleMap.get(itemTitle.toUpperCase());
+      if (r) newRecipeOrder.push(r);
     }
   });
 
-  // Reconstruir PDF
-  const newPdfLuizaData: AnyPage[] = [];
+  // Remontar PDF
+  const newPdf: AnyPage[] = [];
+  const cover = specialPages.find((p) => p.type === TEMPLATES.COVER);
+  if (cover) newPdf.push(cover);
+  const introStart = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
+  if (introStart) newPdf.push(introStart);
+  if (tocPages.length) newPdf.push(...tocPages);
+  const legend = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
+  if (legend) newPdf.push(legend);
+  newPdf.push(...newRecipeOrder);
+  const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
+  if (introEnd) newPdf.push(introEnd);
 
-  // Capa
-  const coverPage = specialPages.find((p) => p.type === TEMPLATES.COVER);
-  if (coverPage) newPdfLuizaData.push(coverPage);
-
-  // Introdução inicial
-  const introPage = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
-  if (introPage) newPdfLuizaData.push(introPage);
-
-  // TODAS as páginas de Sumário
-  if (tocPages.length) newPdfLuizaData.push(...tocPages);
-
-  // Legendas
-  const legendPage = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
-  if (legendPage) newPdfLuizaData.push(legendPage);
-
-  // Receitas na ordem nova com seções
-  newPdfLuizaData.push(...newRecipeOrder);
-
-  // Introdução final
-  const finalIntroPage = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
-  if (finalIntroPage) newPdfLuizaData.push(finalIntroPage);
-
-  return newPdfLuizaData;
+  return newPdf;
 })();
 
 // Tipos
