@@ -24,13 +24,12 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
         const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
         const totalItemsForToc = contentPages.length;
         const requiredByItems = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
-        const requiredTocPagesCount = requiredByItems;
+        const requiredTocPagesCount = Math.min(MAX_TOC_PAGES, requiredByItems); // Limitar a no máximo 2
 
         let newTocPages: PageData[] = [];
         for (let i = 0; i < requiredTocPagesCount; i++) {
             const tocPageNumber = i + 1;
             const existingTocPage = existingTocPages.find(p => (p as TocPageData).tocPageNumber === tocPageNumber);
-            
             if (existingTocPage) {
                 newTocPages.push({ ...existingTocPage, tocPageNumber });
             } else {
@@ -39,17 +38,12 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
             }
         }
 
-        const currentTocPageIdsAndNumbers = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
-        const newTocPageIdsAndNumbers = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+        const currentTocMeta = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
+        const newTocMeta = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
 
-        if (currentTocPageIdsAndNumbers !== newTocPageIdsAndNumbers || existingTocPages.length !== newTocPages.length) {
-            let finalPages: PageData[] = [];
-            let tocInsertIndex = -1;
-
-            const firstExistingTocIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
-            if (firstExistingTocIndex !== -1) {
-                tocInsertIndex = firstExistingTocIndex;
-            } else {
+        if (currentTocMeta !== newTocMeta || existingTocPages.length !== newTocPages.length) {
+            let tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
+            if (tocInsertIndex === -1) {
                 tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
                 if (tocInsertIndex === -1) tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
                 if (tocInsertIndex !== -1) tocInsertIndex++;
@@ -57,13 +51,11 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
             }
 
             const pagesWithoutOldTocs = pages.filter(p => p.type !== TEMPLATES.TOC);
-            
-            finalPages = [
+            const finalPages: PageData[] = [
                 ...pagesWithoutOldTocs.slice(0, tocInsertIndex),
                 ...newTocPages,
-                ...pagesWithoutOldTocs.slice(tocInsertIndex)
+                ...pagesWithoutOldTocs.slice(tocInsertIndex),
             ];
-
             setPages(finalPages);
         }
     }, [contentPages, pages]); // Depende de contentPages (para mudanças de conteúdo) e pages (para contexto completo)

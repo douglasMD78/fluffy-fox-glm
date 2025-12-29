@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { PageData, TocPageData } from '@/data/initialData';
-import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants';
+import { TEMPLATES } from '@/lib/constants';
 
 interface TocViewProps {
   pages: PageData[];
@@ -16,8 +16,9 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
 
   const currentPageNumber = data.tocPageNumber || 1;
 
-  // Paginação fixa alinhada ao hook
-  const itemsPerPage = MAX_TOC_ITEMS_PER_PAGE;
+  // NOVO: calcular itens por página dinamicamente baseado no total e no número de páginas de TOC existentes (máx. 2)
+  const totalTocPages = pages.filter(p => p.type === TEMPLATES.TOC).length || 1;
+  const itemsPerPage = Math.ceil(allItemsForToc.length / totalTocPages);
   const startIndex = (currentPageNumber - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const itemsSlice = allItemsForToc.slice(startIndex, endIndex);
@@ -76,46 +77,46 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
   });
 
   return (
-    <div className="flex-1 flex flex-col py-8 px-6 font-sans">
-      {/* Cabeçalho minimalista */}
-      <div className="text-center mb-6">
-        <h1 className="font-playfair text-3xl md:text-4xl font-bold text-navy">{finalTitle}</h1>
-        <div className="w-14 h-1 bg-navy/10 mx-auto mt-3 rounded-full"></div>
+    <div className="flex-1 flex flex-col py-6 px-5 font-sans">
+      {/* Cabeçalho minimalista e compacto */}
+      <div className="text-center mb-4">
+        <h1 className="font-playfair text-2xl md:text-3xl font-bold text-navy">{finalTitle}</h1>
+        <div className="w-12 h-[2px] bg-navy/10 mx-auto mt-2 rounded"></div>
       </div>
 
-      {/* Duas colunas com blocos que não quebram */}
-      <div className="columns-1 md:columns-2 gap-8">
+      {/* Duas colunas com blocos que não quebram (compacto) */}
+      <div className="columns-1 md:columns-2 gap-6">
         {blocks.map((block) => {
           const sectionTitle = `${getDisplayTitle(block.section)}${block.section.title ? `: ${block.section.title}` : ''}${block.continued ? ' (continuação)' : ''}`;
           const sectionPage = getPageNumber(block.section);
           return (
-            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-5">
-              {/* Cabeçalho da seção (limpo, sem ícone) */}
+            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-3">
+              {/* Cabeçalho da seção */}
               <div
-                className="flex items-baseline justify-between py-1.5 px-2 rounded-md hover:bg-surface transition-colors cursor-pointer"
+                className="flex items-baseline justify-between py-1 px-2 rounded hover:bg-surface transition-colors cursor-pointer"
                 onClick={() => onRecipeClick(block.section.id)}
               >
-                <span className="text-navy font-semibold text-[13px]">{sectionTitle}</span>
-                <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[3px]"></div>
+                <span className="text-navy font-semibold text-[12px]">{sectionTitle}</span>
+                <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[2px]"></div>
                 {sectionPage && (
-                  <span className="text-navy/70 font-semibold text-[11px]">{sectionPage}</span>
+                  <span className="text-navy/70 font-semibold text-[10px]">{sectionPage}</span>
                 )}
               </div>
 
               {/* Receitas da seção */}
-              <ul className="mt-1 space-y-1.5">
+              <ul className="mt-1 space-y-1">
                 {block.recipes.map((r) => {
                   const pageNum = getPageNumber(r);
                   const title = getDisplayTitle(r);
                   return (
                     <li
                       key={r.id}
-                      className="flex items-baseline justify-between py-1.5 px-2 pl-3 hover:bg-surface rounded-md cursor-pointer transition-colors"
+                      className="flex items-baseline justify-between py-1 px-2 pl-3 hover:bg-surface rounded cursor-pointer transition-colors"
                       onClick={() => onRecipeClick(r.id)}
                     >
-                      <span className="text-navy/90 text-[13px]">{title}</span>
-                      <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[3px]"></div>
-                      {pageNum && <span className="text-navy/70 font-medium text-[11px]">{pageNum}</span>}
+                      <span className="text-navy/90 text-[12px]">{title}</span>
+                      <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[2px]"></div>
+                      {pageNum && <span className="text-navy/70 font-medium text-[10px]">{pageNum}</span>}
                     </li>
                   );
                 })}
