@@ -12,27 +12,23 @@ interface TocViewProps {
 }
 
 export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
-  // Itens do sumário (todas as páginas que não são o próprio TOC)
-  const allItemsForToc = pages.filter(p => p.type !== TEMPLATES.TOC);
+  // Itens válidos para o sumário: apenas seções e receitas
+  const allItemsForToc = pages.filter(p => p.type === TEMPLATES.SECTION || p.type === TEMPLATES.RECIPE);
 
-  // Posição e fatiamento usando a paginação fixa
   const currentPageNumber = data.tocPageNumber || 1;
+
+  // Paginação fixa alinhada ao hook
   const itemsPerPage = MAX_TOC_ITEMS_PER_PAGE;
   const startIndex = (currentPageNumber - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const itemsToDisplay = allItemsForToc.slice(startIndex, endIndex);
+  const itemsSlice = allItemsForToc.slice(startIndex, endIndex);
 
   // Título com continuação quando necessário
   const displayTitle = data.title || "SUMÁRIO";
   const finalTitle = currentPageNumber > 1 ? `${displayTitle} (Continuação)` : displayTitle;
 
-  // Numeração editorial: front matter não entra na contagem
-  const FRONT_MATTER = new Set<TEMPLATES>([
-    TEMPLATES.COVER,
-    TEMPLATES.INTRO,
-    TEMPLATES.TOC,
-    TEMPLATES.LEGEND,
-  ]);
+  // Numeração editorial: não contar front matter
+  const FRONT_MATTER = new Set<TEMPLATES>([TEMPLATES.COVER, TEMPLATES.INTRO, TEMPLATES.TOC, TEMPLATES.LEGEND, TEMPLATES.SHOPPING]);
   const contentPagesForNumbering = pages.filter(p => !FRONT_MATTER.has(p.type));
   const getPageNumber = (item: PageData) => {
     if (FRONT_MATTER.has(item.type)) return null;
@@ -43,71 +39,89 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
 
   const getDisplayTitle = (item: PageData) => {
     if (item.title) return item.title;
-    switch (item.type) {
-      case TEMPLATES.COVER: return 'Capa';
-      case TEMPLATES.INTRO: return 'Introdução';
-      case TEMPLATES.LEGEND: return 'Legendas';
-      case TEMPLATES.SHOPPING: return 'Lista de Compras';
-      case TEMPLATES.SECTION: return 'Seção';
-      case TEMPLATES.RECIPE: return 'Receita';
-      default: return 'Página sem Título';
-    }
+    return item.type === TEMPLATES.SECTION ? 'Seção' : 'Receita';
   };
+
+  // Encontrar a seção anterior do slice (para continuação)
+  const previousSection = (() => {
+    for (let i = startIndex - 1; i >= 0; i--) {
+      const it = allItemsForToc[i];
+      if (it?.type === TEMPLATES.SECTION) return it;
+    }
+    return null;
+  })();
+
+  // Montar blocos: cada seção seguida de suas receitas
+  type Block = { section: PageData; continued: boolean; recipes: PageData[] };
+  const blocks: Block[] = [];
+  let currentBlock: Block | null = null;
+
+  // Se o slice começa no meio de uma seção (primeiro item é receita), abrir bloco de continuação
+  if (itemsSlice[0]?.type === TEMPLATES.RECIPE && previousSection) {
+    currentBlock = { section: previousSection, continued: true, recipes: [] };
+    blocks.push(currentBlock);
+  }
+
+  itemsSlice.forEach((item) => {
+    if (item.type === TEMPLATES.SECTION) {
+      currentBlock = { section: item, continued: false, recipes: [] };
+      blocks.push(currentBlock);
+    } else {
+      if (!currentBlock) {
+        // Caso raro: receita sem seção anterior; criar bloco genérico
+        currentBlock = { section: { ...item, title: 'Outras Receitas', type: TEMPLATES.SECTION } as PageData, continued: false, recipes: [] };
+        blocks.push(currentBlock);
+      }
+      currentBlock.recipes.push(item);
+    }
+  });
 
   return (
     <div className="flex-1 flex flex-col py-8 px-6 font-sans">
-      {/* Cabeçalho coerente com o app */}
+      {/* Cabeçalho minimalista */}
       <div className="text-center mb-6">
-        <h1 className="font-playfair text-2xl md:text-3xl font-bold text-navy uppercase tracking-widest">
-          {finalTitle}
-        </h1>
-        <div className="w-14 h-1 bg-accent mx-auto mt-2 rounded-full opacity-50"></div>
+        <h1 className="font-playfair text-2xl md:text-3xl font-bold text-navy uppercase tracking-widest">{finalTitle}</h1>
+        <div className="w-14 h-1 bg-navy/20 mx-auto mt-2 rounded-full"></div>
       </div>
 
-      {/* Grid responsivo: ordem preservada, seções ocupam linha inteira */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {itemsToDisplay.map((item) => {
-          const isSection = item.type === TEMPLATES.SECTION;
-          const pageNum = getPageNumber(item);
-          const title = getDisplayTitle(item);
-
-          if (isSection) {
-            return (
+      {/* Duas colunas com blocos que não quebram */
+      /* Em mobile, uma coluna; em md+, duas colunas; blocos com break-inside: avoid */}
+      <div className="columns-1 md:columns-2 gap-8">
+        {blocks.map((block) => {
+          const sectionTitle = `${getDisplayTitle(block.section)}${block.section.title ? `: ${block.section.title}` : ''}${block.continued ? ' (continuação)' : ''}`;
+          const sectionPage = getPageNumber(block.section);
+          return (
+            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-4">
+              {/* Cabeçalho da seção */}
               <div
-                key={item.id}
-                className="md:col-span-2 flex items-center gap-2 py-2.5 px-4 bg-surface border border-gray-100 rounded-2xl cursor-pointer hover:shadow-sm transition-shadow"
-                onClick={() => onRecipeClick(item.id)}
+                className="flex items-baseline justify-between py-1.5 px-2 border-b border-gray-200 cursor-pointer"
+                onClick={() => onRecipeClick(block.section.id)}
               >
-                <BookOpen size={16} className="text-accent shrink-0" />
-                <span className="text-accent font-semibold text-sm tracking-wide">
-                  {title}
-                </span>
-                {pageNum && (
-                  <span className="ml-auto text-accent font-semibold text-[11px] bg-pastel px-2 py-0.5 rounded-full shadow-sm">
-                    {pageNum}
-                  </span>
+                <span className="text-navy font-semibold text-sm">{sectionTitle}</span>
+                <div className="flex-1 border-b border-dotted border-gray-300 mx-2 mb-[3px]"></div>
+                {sectionPage && (
+                  <span className="text-navy font-bold text-[11px] px-1.5">{sectionPage}</span>
                 )}
               </div>
-            );
-          }
 
-          return (
-            <div
-              key={item.id}
-              className="flex items-baseline justify-between py-2 px-3 bg-white/70 border border-gray-100 rounded-xl cursor-pointer hover:bg-accent/5 transition-colors"
-              onClick={() => onRecipeClick(item.id)}
-            >
-              <span className="text-navy font-medium text-sm">{title}</span>
-              {pageNum ? (
-                <>
-                  <div className="flex-1 border-b border-dotted border-accent/20 mx-2 mb-[3px] opacity-70"></div>
-                  <span className="text-accent font-semibold text-[11px] bg-pastel px-2 py-0.5 rounded-full shadow-sm">
-                    {pageNum}
-                  </span>
-                </>
-              ) : (
-                <span className="ml-2 text-sm text-muted-foreground"> </span>
-              )}
+              {/* Receitas da seção */}
+              <ul className="mt-1 space-y-1">
+                {block.recipes.map((r) => {
+                  const pageNum = getPageNumber(r);
+                  const title = getDisplayTitle(r);
+                  return (
+                    <li
+                      key={r.id}
+                      className="flex items-baseline justify-between py-1 px-2 pl-3 hover:bg-gray-50 rounded-md cursor-pointer transition-colors"
+                      onClick={() => onRecipeClick(r.id)}
+                    >
+                      <span className="text-navy text-sm">{title}</span>
+                      <div className="flex-1 border-b border-dotted border-gray-300 mx-2 mb-[3px]"></div>
+                      {pageNum && <span className="text-navy font-medium text-[11px]">{pageNum}</span>}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           );
         })}
