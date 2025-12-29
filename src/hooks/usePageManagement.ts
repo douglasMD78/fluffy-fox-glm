@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
-import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE, MAX_TOC_PAGES } from '@/lib/constants';
-import { PageData, INITIAL_DATA, PDF_LUIZA_DATA, TocPageData } from '@/data/initialData';
+import { TEMPLATES, MAX_TOC_PAGES } from '@/lib/constants';
+import { PageData, INITIAL_DATA, TocPageData } from '@/data/initialData';
 
 interface UsePageManagementProps {
     initialPages?: PageData[];
     initialSelectedId?: string | null;
 }
-
-// Gerar IDs determinísticos para páginas TOC
-const getTocPageId = (pageNumber: number) => `toc-page-${pageNumber}`;
 
 export const usePageManagement = (props?: UsePageManagementProps) => {
     const [pages, setPages] = useState<PageData[]>(props?.initialPages || []);
@@ -17,70 +14,45 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     const [dragItem, setDragItem] = useState<number | null>(null);
     const [dragOverItem, setDragOverItem] = useState<number | null>(null);
 
-    // Memoiza itens relevantes para o TOC (apenas receitas)
     const contentPages = useMemo(() => pages.filter(p => p.type === TEMPLATES.RECIPE), [pages]);
 
-    // Efeito para gerenciar a paginação do sumário (otimizado)
+    // Gerenciar TOC - simplificado
     useEffect(() => {
-        const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
-        const requiredTocPagesCount = contentPages.length > 0 ? Math.min(2, MAX_TOC_PAGES) : 1;
-
-        // Criar IDs determinísticos
-        const expectedTocIds = Array.from({ length: requiredTocPagesCount }, (_, i) => getTocPageId(i + 1));
-        const existingTocIds = existingTocPages.map(p => p.id).sort();
-
-        // Verificar se precisamos recriar as páginas TOC
-        const needsRecreation = 
-            existingTocPages.length !== requiredTocPagesCount ||
-            JSON.stringify(existingTocIds) !== JSON.stringify(expectedTocIds);
-
-        if (!needsRecreation) {
-            return; // Tudo OK, não precisa fazer nada
+        const existingTocs = pages.filter(p => p.type === TEMPLATES.TOC);
+        const hasRecipes = contentPages.length > 0;
+        
+        // Se não tem receitas, remover TOCs
+        if (!hasRecipes && existingTocs.length > 0) {
+            setPages(pages.filter(p => p.type !== TEMPLATES.TOC));
+            return;
         }
-
-        // Criar novas páginas TOC
-        let newTocPages: PageData[] = [];
-        for (let i = 0; i < requiredTocPagesCount; i++) {
-            const tocPageNumber = i + 1;
-            const tocPageId = getTocPageId(tocPageNumber);
-            const existingTocPage = existingTocPages.find(p => p.id === tocPageId);
-            
-            if (existingTocPage) {
-                newTocPages.push({ ...existingTocPage, tocPageNumber });
-            } else {
-                newTocPages.push({ 
-                    id: tocPageId, 
-                    type: TEMPLATES.TOC, 
-                    ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])), 
-                    tocPageNumber 
+        
+        // Se tem receitas e não tem TOCs, criar 2 páginas
+        if (hasRecipes && existingTocs.length === 0) {
+            const newTocs: PageData[] = [];
+            for (let i = 1; i <= 2; i++) {
+                newTocs.push({
+                    id: `toc-${i}`,
+                    type: TEMPLATES.TOC,
+                    ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])),
+                    tocPageNumber: i
                 });
             }
-        }
-
-        // Encontrar posição de inserção correta
-        let tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
-        if (tocInsertIndex === -1) {
-            // Inserir após Cover/Intro, mas antes de Legend
-            tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
-            if (tocInsertIndex !== -1) tocInsertIndex++;
+            
+            // Inserir após intro/cover
+            let insertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
+            if (insertIndex !== -1) insertIndex++;
             else {
-                tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
-                if (tocInsertIndex !== -1) tocInsertIndex++;
-                else tocInsertIndex = 0;
+                insertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
+                if (insertIndex !== -1) insertIndex++;
+                else insertIndex = 0;
             }
+            
+            const newPages = [...pages];
+            newPages.splice(insertIndex, 0, ...newTocs);
+            setPages(newPages);
         }
-
-        // Remover páginas TOC antigas e inserir as novas
-        const pagesWithoutOldTocs = pages.filter(p => p.type !== TEMPLATES.TOC);
-        const finalPages: PageData[] = [
-            ...pagesWithoutOldTocs.slice(0, tocInsertIndex),
-            ...newTocPages,
-            ...pagesWithoutOldTocs.slice(tocInsertIndex),
-        ];
-
-        setPages(finalPages);
-
-    }, [contentPages.length]); // Depende apenas do número de receitas, não de todo o array
+    }, [contentPages.length]);
 
     const addPage = (type: TEMPLATES) => { 
         const newId = `p_${Date.now()}`; 
