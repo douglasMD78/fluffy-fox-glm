@@ -2,6 +2,7 @@ import { TEMPLATES } from "@/lib/constants";
 import { ColumnRatioKey } from "@/lib/constants";
 import { z } from "zod";
 import originalJson from "./todas-as-receitas-original.json";
+import { TOC_CATEGORIES, normalizeCategory } from "@/lib/toc-categories";
 
 // Esquema Zod para validar a saída da IA para receitas
 export const recipeSchema = z
@@ -289,19 +290,27 @@ export const PDF_LUIZA_DATA = (() => {
   // Construir nova ordem com seções conforme USER_CATEGORIZED_RECIPES
   const titleMap = new Map<string, AnyPage>();
   recipePages.forEach((r) => titleMap.set(r.title.toUpperCase(), r));
+
+  const normalizedCategorySet = new Set(TOC_CATEGORIES.map(normalizeCategory));
+
   const newRecipeOrder: AnyPage[] = [];
   USER_CATEGORIZED_RECIPES.forEach((itemTitle) => {
-    if (itemTitle.endsWith("S") && itemTitle.length > 5) {
+    const normalized = normalizeCategory(itemTitle);
+
+    // SEÇÃO somente se o item está na lista oficial de categorias
+    if (normalizedCategorySet.has(normalized)) {
       newRecipeOrder.push({
         id: `p_section_${itemTitle.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}`,
         type: TEMPLATES.SECTION,
         title: itemTitle,
         subtitle: "",
       } as AnyPage);
-    } else {
-      const r = titleMap.get(itemTitle.toUpperCase());
-      if (r) newRecipeOrder.push(r);
+      return;
     }
+
+    // Caso contrário, é uma RECEITA (busca pelo título exato)
+    const r = titleMap.get(itemTitle.toUpperCase());
+    if (r) newRecipeOrder.push(r);
   });
 
   // Remontar PDF
