@@ -35,19 +35,29 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
     blocks.push({ header: OTHER_CATEGORY, recipes: others });
   }
 
+  // NOVO: ordenar blocos e receitas pelo índice real no array de páginas (ordem de leitura)
+  const pageIndexOf = (id: string) => pages.findIndex(p => p.id === id);
+  const sortedBlocks: CategoryBlock[] = blocks
+    .map(b => ({
+      header: b.header,
+      recipes: [...b.recipes].sort((r1, r2) => pageIndexOf(r1.id) - pageIndexOf(r2.id)),
+      _minIdx: Math.min(...b.recipes.map(r => pageIndexOf(r.id)))
+    }))
+    .sort((a, b) => a._minIdx - b._minIdx)
+    .map(({ _minIdx, ...rest }) => rest);
+
   // Quantidade de páginas de TOC existentes (máx. 2)
   const totalTocPages = pages.filter(p => p.type === TEMPLATES.TOC).length || 1;
 
   // Calcular "linhas" por bloco (1 cabeçalho + N receitas) e distribuir blocos entre as duas páginas
   const blockLines = (b: CategoryBlock) => 1 + b.recipes.length;
-  const totalLines = blocks.reduce((sum, b) => sum + blockLines(b), 0);
+  const totalLines = sortedBlocks.reduce((sum, b) => sum + blockLines(b), 0);
   const targetPerPage = Math.ceil(totalLines / totalTocPages);
 
   const pagesBlocks: CategoryBlock[][] = Array.from({ length: totalTocPages }, () => []);
   const pageLines: number[] = Array.from({ length: totalTocPages }, () => 0);
 
-  blocks.forEach((b) => {
-    // Preferir página 0 enquanto cabe; senão, enviar para a próxima
+  sortedBlocks.forEach((b) => {
     for (let pIdx = 0; pIdx < totalTocPages; pIdx++) {
       const fits = pageLines[pIdx] + blockLines(b) <= targetPerPage || pagesBlocks[pIdx].length === 0;
       if (fits) {
@@ -56,7 +66,6 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
         return;
       }
     }
-    // Se não couber dentro da meta, jogar no último (aceitar exceder a meta para garantir blocos inteiros)
     const last = totalTocPages - 1;
     pagesBlocks[last].push(b);
     pageLines[last] += blockLines(b);
