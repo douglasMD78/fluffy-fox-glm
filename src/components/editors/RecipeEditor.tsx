@@ -4,8 +4,16 @@ import { compressImage } from '@/utils/image';
 import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain, AlignLeft } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
-import { TOC_CATEGORIES } from '@/lib/toc-categories';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+
+// Categorias fixas diretamente no componente
+const RECIPE_CATEGORIES = [
+  "ACOMPANHAMENTOS, SALADAS & SOPAS",
+  "BOLOS, DOCES & SOBREMESAS",
+  "CAFÉ DA MANHÃ & LANCHES RÁPIDOS",
+  "SALGADOS E REFEIÇÕES",
+  "SHAKES E IOGURTES",
+];
 
 interface RecipeEditorProps {
     activePage: RecipePageData;
@@ -294,7 +302,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         </div>
 
         <div className="grid grid-cols-4 gap-2">
-            <div>
+            <div className="col-span-2">
                 <label className="text-[10px] font-bold text-navy/40 uppercase">Categoria</label>
                 <Select
                     value={activePage.category || ''}
@@ -304,7 +312,7 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                         <SelectValue placeholder="Selecione a categoria" />
                     </SelectTrigger>
                     <SelectContent>
-                        {TOC_CATEGORIES.map((cat) => (
+                        {RECIPE_CATEGORIES.map((cat) => (
                             <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                         ))}
                     </SelectContent>
@@ -426,7 +434,6 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                     <input className="w-full bg-white border border-gray-200 p-2 rounded-lg text-center text-xs text-navy font-bold focus:border-accent outline-none" value={activePage.nutrition[m as keyof typeof activePage.nutrition]} onChange={e => updatePage({ nutrition: { ...activePage.nutrition, [m]: e.target.value }})} />
                 </div>
             ))}
-        </div>
         </div>
     );
 };
