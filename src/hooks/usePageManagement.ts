@@ -22,54 +22,7 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
 
     // Efeito para gerenciar a paginação do sumário
     useEffect(() => {
-        const existingTocPages = pages.filter(p => p.type === TEMPLATES.TOC);
-        const totalItemsForToc = contentPages.length;
-        const requiredByItems = Math.max(1, Math.ceil(totalItemsForToc / MAX_TOC_ITEMS_PER_PAGE));
-        const requiredTocPagesCount = Math.min(MAX_TOC_PAGES, requiredByItems); // Limitar em no máximo 2
-
-        let newTocPages: PageData[] = [];
-        for (let i = 0; i < requiredTocPagesCount; i++) {
-            const tocPageNumber = i + 1;
-            const existingTocPage = existingTocPages.find(p => (p as TocPageData).tocPageNumber === tocPageNumber);
-            
-            if (existingTocPage) {
-                newTocPages.push({ ...existingTocPage, tocPageNumber });
-            } else {
-                const newId = `p_toc_${Date.now()}_${tocPageNumber}`;
-                newTocPages.push({ id: newId, type: TEMPLATES.TOC, ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])), tocPageNumber });
-            }
-        }
-
-        // Compara as páginas de sumário geradas com as existentes para evitar loop infinito
-        const currentTocPageIdsAndNumbers = existingTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
-        const newTocPageIdsAndNumbers = newTocPages.map(p => `${p.id}-${(p as TocPageData).tocPageNumber}`).sort().join(',');
-
-        if (currentTocPageIdsAndNumbers !== newTocPageIdsAndNumbers || existingTocPages.length !== newTocPages.length) {
-            let finalPages: PageData[] = [];
-            let tocInsertIndex = -1;
-
-            // Encontra a posição da primeira página de sumário existente ou onde ela deveria ser inserida
-            const firstExistingTocIndex = pages.findIndex(p => p.type === TEMPLATES.TOC);
-            if (firstExistingTocIndex !== -1) {
-                tocInsertIndex = firstExistingTocIndex;
-            } else {
-                // Tenta inserir após a introdução ou capa
-                tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.INTRO);
-                if (tocInsertIndex === -1) tocInsertIndex = pages.findIndex(p => p.type === TEMPLATES.COVER);
-                if (tocInsertIndex !== -1) tocInsertIndex++; // Inserir APÓS a página encontrada
-                else tocInsertIndex = 0; // Padrão: no início
-            }
-
-            const pagesWithoutOldTocs = pages.filter(p => p.type !== TEMPLATES.TOC);
-            
-            finalPages = [
-                ...pagesWithoutOldTocs.slice(0, tocInsertIndex),
-                ...newTocPages,
-                ...pagesWithoutOldTocs.slice(tocInsertIndex)
-            ];
-
-            setPages(finalPages);
-        }
+        // Sem efeito para gerar ou inserir páginas de sumário (TOC)
     }, [contentPages, pages]); // Depende de contentPages (para mudanças de conteúdo) e pages (para contexto completo)
 
     const addPage = (type: TEMPLATES) => { 
