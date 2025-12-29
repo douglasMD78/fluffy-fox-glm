@@ -11,12 +11,6 @@ import { toast } from 'sonner'; // Importar toast
 import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize } from '@/components/icons';
 
 // Editors
-import { RecipeEditor } from '@/components/editors/RecipeEditor';
-import { CoverEditor } from '@/components/editors/CoverEditor';
-import { IntroEditor } from '@/components/editors/IntroEditor';
-import { SectionEditor } from '@/components/editors/SectionEditor';
-import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
-import { LegendEditor } from '@/components/editors/LegendEditor';
 import { GlobalSettingsEditor } from '@/components/editors/GlobalSettingsEditor'; // Caminho corrigido
 
 // Views
@@ -36,6 +30,7 @@ import { getPageBackgroundColor } from '@/utils/pageStyles';
 
 // Components
 import { Sidebar } from '@/components/Sidebar'; // Importar o novo componente Sidebar
+import { EditorPanel } from '@/components/EditorPanel'; // Importar o novo componente EditorPanel
 
 const MAX_TOC_ITEMS_PER_PAGE = 15; // Deve ser consistente com TocView.tsx
 
@@ -389,6 +384,14 @@ const Editor = () => {
         }
     };
 
+    const handleDeletePage = () => {
+        if (selectedId && confirm("Tem certeza que deseja excluir esta página?")) {
+            setPages(pages.filter(p => p.id !== selectedId));
+            setSelectedId(null);
+            toast.success("Página excluída com sucesso!");
+        }
+    };
+
     const activePage = pages.find(p => p.id === selectedId);
     
     return (
@@ -493,6 +496,14 @@ const Editor = () => {
                     ))}
                     <div className="h-40 no-print"></div>
                 </section>
+
+                {/* EDITOR PANEL */}
+                <EditorPanel
+                    activePage={activePage}
+                    updatePage={updatePage}
+                    onAiRequest={openMagicModal}
+                    onDeletePage={handleDeletePage}
+                />
             </div>
         </>
     );
