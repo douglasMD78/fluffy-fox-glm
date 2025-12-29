@@ -16,8 +16,8 @@ export const usePageManagement = (props?: UsePageManagementProps) => {
     const [dragItem, setDragItem] = useState<number | null>(null);
     const [dragOverItem, setDragOverItem] = useState<number | null>(null);
 
-    // Memoiza itens relevantes para o TOC (apenas seções e receitas)
-    const contentPages = useMemo(() => pages.filter(p => p.type === TEMPLATES.SECTION || p.type === TEMPLATES.RECIPE), [pages]);
+    // Memoiza itens relevantes para o TOC (apenas receitas)
+    const contentPages = useMemo(() => pages.filter(p => p.type === TEMPLATES.RECIPE), [pages]);
 
     // Efeito para gerenciar a paginação do sumário
     useEffect(() => {

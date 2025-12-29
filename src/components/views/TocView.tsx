@@ -3,6 +3,7 @@
 import React from 'react';
 import { PageData, TocPageData } from '@/data/initialData';
 import { TEMPLATES } from '@/lib/constants';
+import { TOC_CATEGORIES, OTHER_CATEGORY, normalizeCategory } from '@/lib/toc-categories';
 
 interface TocViewProps {
   pages: PageData[];
@@ -11,68 +12,91 @@ interface TocViewProps {
 }
 
 export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) => {
-  // Itens válidos para o sumário: apenas seções e receitas
-  const allItemsForToc = pages.filter(p => p.type === TEMPLATES.SECTION || p.type === TEMPLATES.RECIPE);
+  // Apenas receitas entram no sumário por categorias
+  const recipePages = pages.filter(p => p.type === TEMPLATES.RECIPE);
 
   const currentPageNumber = data.tocPageNumber || 1;
 
-  // NOVO: calcular itens por página dinamicamente baseado no total e no número de páginas de TOC existentes (máx. 2)
+  // Número de páginas de TOC criado pelo hook (limitado a 2)
   const totalTocPages = pages.filter(p => p.type === TEMPLATES.TOC).length || 1;
-  const itemsPerPage = Math.ceil(allItemsForToc.length / totalTocPages);
+
+  // Montar lista achatada: [header, recipe, recipe, header, recipe, ...] na ordem oficial das categorias
+  type FlatItem = 
+    | { kind: 'header'; label: string }
+    | { kind: 'recipe'; page: PageData };
+
+  const flatItems: FlatItem[] = [];
+  const normalizedCats = TOC_CATEGORIES.map(normalizeCategory);
+
+  const assigned = new Set<string>();
+  normalizedCats.forEach((catLabel, idx) => {
+    const originalLabel = TOC_CATEGORIES[idx];
+    const recipesInCat = recipePages.filter(r => normalizeCategory((r as any).category) === catLabel);
+    if (recipesInCat.length > 0) {
+      flatItems.push({ kind: 'header', label: originalLabel });
+      recipesInCat.forEach(r => { flatItems.push({ kind: 'recipe', page: r }); assigned.add(r.id); });
+    }
+  });
+
+  // Receitas com categoria fora da lista oficial vão para "OUTRAS RECEITAS"
+  const others = recipePages.filter(r => !assigned.has(r.id));
+  if (others.length > 0) {
+    flatItems.push({ kind: 'header', label: OTHER_CATEGORY });
+    others.forEach(r => flatItems.push({ kind: 'recipe', page: r }));
+  }
+
+  // Itens por página: dividir todo o conteúdo uniformemente entre as páginas existentes
+  const itemsPerPage = Math.ceil(flatItems.length / totalTocPages);
   const startIndex = (currentPageNumber - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const itemsSlice = allItemsForToc.slice(startIndex, endIndex);
+  const pageSlice = flatItems.slice(startIndex, endIndex);
 
-  // Título com continuação quando necessário
+  // Título com continuação
   const displayTitle = data.title || "SUMÁRIO";
   const finalTitle = currentPageNumber > 1 ? `${displayTitle} (Continuação)` : displayTitle;
 
-  // Numeração editorial: não contar front matter
+  // Numeração editorial (apenas conteúdo, sem front matter)
   const FRONT_MATTER = new Set<TEMPLATES>([TEMPLATES.COVER, TEMPLATES.INTRO, TEMPLATES.TOC, TEMPLATES.LEGEND, TEMPLATES.SHOPPING]);
   const contentPagesForNumbering = pages.filter(p => !FRONT_MATTER.has(p.type));
   const getPageNumber = (item: PageData) => {
-    if (FRONT_MATTER.has(item.type)) return null;
     const idx = contentPagesForNumbering.findIndex(p => p.id === item.id);
     if (idx === -1) return null;
     return String(idx + 1).padStart(2, '0');
   };
 
   const getDisplayTitle = (item: PageData) => {
-    if (item.title) return item.title;
-    return item.type === TEMPLATES.SECTION ? 'Seção' : 'Receita';
+    return item.title || 'Receita';
   };
 
-  // Encontrar a seção anterior do slice (para continuação)
-  const previousSection = (() => {
+  // Encontrar cabeçalho anterior para continuação quando a página começa com receita
+  const previousHeaderLabel = (() => {
     for (let i = startIndex - 1; i >= 0; i--) {
-      const it = allItemsForToc[i];
-      if (it?.type === TEMPLATES.SECTION) return it;
+      const it = flatItems[i];
+      if (it?.kind === 'header') return it.label;
     }
     return null;
   })();
 
-  // Montar blocos: cada seção seguida de suas receitas
-  type Block = { section: PageData; continued: boolean; recipes: PageData[] };
+  // Recriar blocos: { header, continued, recipes[] }
+  type Block = { header: string; continued: boolean; recipes: PageData[] };
   const blocks: Block[] = [];
   let currentBlock: Block | null = null;
 
-  // Se o slice começa no meio de uma seção (primeiro item é receita), abrir bloco de continuação
-  if (itemsSlice[0]?.type === TEMPLATES.RECIPE && previousSection) {
-    currentBlock = { section: previousSection, continued: true, recipes: [] };
+  if (pageSlice[0]?.kind === 'recipe' && previousHeaderLabel) {
+    currentBlock = { header: previousHeaderLabel, continued: true, recipes: [] };
     blocks.push(currentBlock);
   }
 
-  itemsSlice.forEach((item) => {
-    if (item.type === TEMPLATES.SECTION) {
-      currentBlock = { section: item, continued: false, recipes: [] };
+  pageSlice.forEach((it) => {
+    if (it.kind === 'header') {
+      currentBlock = { header: it.label, continued: false, recipes: [] };
       blocks.push(currentBlock);
     } else {
       if (!currentBlock) {
-        // Caso raro: receita sem seção anterior; criar bloco genérico
-        currentBlock = { section: { ...item, title: 'Outras Receitas', type: TEMPLATES.SECTION } as PageData, continued: false, recipes: [] };
+        currentBlock = { header: OTHER_CATEGORY, continued: false, recipes: [] };
         blocks.push(currentBlock);
       }
-      currentBlock.recipes.push(item);
+      currentBlock.recipes.push(it.page);
     }
   });
 
@@ -86,24 +110,25 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
 
       {/* Duas colunas com blocos que não quebram (compacto) */}
       <div className="columns-1 md:columns-2 gap-6">
-        {blocks.map((block) => {
-          const sectionTitle = `${getDisplayTitle(block.section)}${block.section.title ? `: ${block.section.title}` : ''}${block.continued ? ' (continuação)' : ''}`;
-          const sectionPage = getPageNumber(block.section);
+        {blocks.map((block, idx) => {
+          const sectionTitle = `${block.header}${block.continued ? ' (continuação)' : ''}`;
           return (
-            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-3">
-              {/* Cabeçalho da seção */}
+            <div key={`${block.header}-${idx}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-3">
+              {/* Cabeçalho da categoria */}
               <div
                 className="flex items-baseline justify-between py-1 px-2 rounded hover:bg-surface transition-colors cursor-pointer"
-                onClick={() => onRecipeClick(block.section.id)}
+                onClick={() => {
+                  const first = block.recipes[0];
+                  if (first) onRecipeClick(first.id);
+                }}
               >
                 <span className="text-navy font-semibold text-[12px]">{sectionTitle}</span>
                 <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[2px]"></div>
-                {sectionPage && (
-                  <span className="text-navy/70 font-semibold text-[10px]">{sectionPage}</span>
-                )}
+                {/* Não há número de página para cabeçalho de categoria */}
+                <span className="text-navy/50 text-[10px]"></span>
               </div>
 
-              {/* Receitas da seção */}
+              {/* Receitas da categoria */}
               <ul className="mt-1 space-y-1">
                 {block.recipes.map((r) => {
                   const pageNum = getPageNumber(r);

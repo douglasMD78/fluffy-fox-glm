@@ -4,6 +4,8 @@ import { compressImage } from '@/utils/image';
 import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, Minus, Maximize, HardDrive, Brain, AlignLeft } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
+import { TOC_CATEGORIES } from '@/lib/toc-categories';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface RecipeEditorProps {
     activePage: RecipePageData;
@@ -292,9 +294,30 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         </div>
 
         <div className="grid grid-cols-4 gap-2">
-            <div><label className="text-[10px] font-bold text-navy/40 uppercase">Categoria</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.category} onChange={e => updatePage({category: e.target.value})} /></div>
-            <div><label className="text-[10px] font-bold text-navy/40 uppercase">Tags (Códigos: CM, A, J...)</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: CM, A, J" value={activePage.code} onChange={e => updatePage({code: e.target.value})} /></div>
-            <div><label className="text-[10px] font-bold text-navy/40 uppercase">Rendimento</label><input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.yield} onChange={e => updatePage({yield: e.target.value})} /></div>
+            <div>
+                <label className="text-[10px] font-bold text-navy/40 uppercase">Categoria</label>
+                <Select
+                    value={activePage.category || ''}
+                    onValueChange={(val) => updatePage({ category: val })}
+                >
+                    <SelectTrigger className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none">
+                        <SelectValue placeholder="Selecione a categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {TOC_CATEGORIES.map((cat) => (
+                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+            <div>
+                <label className="text-[10px] font-bold text-navy/40 uppercase">Tags (Códigos: CM, A, J...)</label>
+                <input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: CM, A, J" value={activePage.code} onChange={e => updatePage({code: e.target.value})} />
+            </div>
+            <div>
+                <label className="text-[10px] font-bold text-navy/40 uppercase">Rendimento</label>
+                <input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.yield} onChange={e => updatePage({yield: e.target.value})} />
+            </div>
         </div>
         <div className="space-y-4">
             <div className="flex justify-between items-center"><label className="text-[10px] font-black text-accent uppercase tracking-widest">Ingredientes</label><button onClick={() => updatePage({ ingredientGroups: [...activePage.ingredientGroups, { title: '', items: '' }] })} className="p-1 bg-rose-50 text-accent rounded hover:bg-rose-100 transition-colors"><Plus size={14}/></button></div>
