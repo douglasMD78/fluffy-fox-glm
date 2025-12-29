@@ -3,7 +3,6 @@
 import React from 'react';
 import { PageData, TocPageData } from '@/data/initialData';
 import { TEMPLATES, MAX_TOC_ITEMS_PER_PAGE } from '@/lib/constants';
-import { BookOpen } from '@/components/icons';
 
 interface TocViewProps {
   pages: PageData[];
@@ -80,44 +79,43 @@ export const TocView: React.FC<TocViewProps> = ({ pages, data, onRecipeClick }) 
     <div className="flex-1 flex flex-col py-8 px-6 font-sans">
       {/* Cabeçalho minimalista */}
       <div className="text-center mb-6">
-        <h1 className="font-playfair text-2xl md:text-3xl font-bold text-navy uppercase tracking-widest">{finalTitle}</h1>
-        <div className="w-14 h-1 bg-navy/20 mx-auto mt-2 rounded-full"></div>
+        <h1 className="font-playfair text-3xl md:text-4xl font-bold text-navy">{finalTitle}</h1>
+        <div className="w-14 h-1 bg-navy/10 mx-auto mt-3 rounded-full"></div>
       </div>
 
-      {/* Duas colunas com blocos que não quebram */
-      /* Em mobile, uma coluna; em md+, duas colunas; blocos com break-inside: avoid */}
+      {/* Duas colunas com blocos que não quebram */}
       <div className="columns-1 md:columns-2 gap-8">
         {blocks.map((block) => {
           const sectionTitle = `${getDisplayTitle(block.section)}${block.section.title ? `: ${block.section.title}` : ''}${block.continued ? ' (continuação)' : ''}`;
           const sectionPage = getPageNumber(block.section);
           return (
-            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-4">
-              {/* Cabeçalho da seção */}
+            <div key={`${block.section.id}-${block.continued ? 'cont' : 'full'}`} style={{ breakInside: 'avoid' }} className="mb-5">
+              {/* Cabeçalho da seção (limpo, sem ícone) */}
               <div
-                className="flex items-baseline justify-between py-1.5 px-2 border-b border-gray-200 cursor-pointer"
+                className="flex items-baseline justify-between py-1.5 px-2 rounded-md hover:bg-surface transition-colors cursor-pointer"
                 onClick={() => onRecipeClick(block.section.id)}
               >
-                <span className="text-navy font-semibold text-sm">{sectionTitle}</span>
-                <div className="flex-1 border-b border-dotted border-gray-300 mx-2 mb-[3px]"></div>
+                <span className="text-navy font-semibold text-[13px]">{sectionTitle}</span>
+                <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[3px]"></div>
                 {sectionPage && (
-                  <span className="text-navy font-bold text-[11px] px-1.5">{sectionPage}</span>
+                  <span className="text-navy/70 font-semibold text-[11px]">{sectionPage}</span>
                 )}
               </div>
 
               {/* Receitas da seção */}
-              <ul className="mt-1 space-y-1">
+              <ul className="mt-1 space-y-1.5">
                 {block.recipes.map((r) => {
                   const pageNum = getPageNumber(r);
                   const title = getDisplayTitle(r);
                   return (
                     <li
                       key={r.id}
-                      className="flex items-baseline justify-between py-1 px-2 pl-3 hover:bg-gray-50 rounded-md cursor-pointer transition-colors"
+                      className="flex items-baseline justify-between py-1.5 px-2 pl-3 hover:bg-surface rounded-md cursor-pointer transition-colors"
                       onClick={() => onRecipeClick(r.id)}
                     >
-                      <span className="text-navy text-sm">{title}</span>
-                      <div className="flex-1 border-b border-dotted border-gray-300 mx-2 mb-[3px]"></div>
-                      {pageNum && <span className="text-navy font-medium text-[11px]">{pageNum}</span>}
+                      <span className="text-navy/90 text-[13px]">{title}</span>
+                      <div className="flex-1 border-b border-dotted border-navy/15 mx-2 mb-[3px]"></div>
+                      {pageNum && <span className="text-navy/70 font-medium text-[11px]">{pageNum}</span>}
                     </li>
                   );
                 })}
