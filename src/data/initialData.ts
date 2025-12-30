@@ -167,7 +167,47 @@ function clone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export const PDF_LUIZA_DATA = (() => {
+// NOVO: Calibrar rendimento por padrões de título (apenas se o campo estiver vazio após limpeza)
+function calibrateYieldByTitle(title: string, currentYield: string, category: string): string {
+  if (currentYield && String(currentYield).trim()) {
+    // Se já tem valor preenchido, mantém
+    return String(currentYield).trim();
+  }
+
+  const titleU = title.toUpperCase();
+  const cat = canonicalCategory(category);
+
+  // Padrões específicos de título, retornam yield natural quando detectados
+  if (titleU.includes("HAMBÚRGUER")) return "6 hambúrgueres";
+  if (titleU.includes("MINI PIZZA") || titleU.includes("PIZZA") || titleU.includes("DISQUINHOS")) return "12 disquinhos";
+  if (titleU.includes("TOAST")) return "8 toasts";
+  if (titleU.includes("COXINHA")) return "9 coxinhas";
+  if (titleU.includes("PASTELZINHO") || titleU.includes("PASTEIZINHO")) return "6 pasteizinhos";
+  if (titleU.includes("BOLINHO DE CHOCOLATE")) return "6 bolinhos";
+  if (titleU.includes("MUFFIN")) return "4 muffins";
+  if (titleU.includes("BOLINHO DE MICROONDAS")) return "1 bolinho";
+  if (titleU.includes("PÃO DE MEL")) return "6 unidades";
+  if (titleU.includes("SORVETE")) return "1 porção (conforme o tamanho da porção)";
+  if (titleU.includes("PRESTÍGIO FIT") || titleU.includes("BOLO NO POTE") || titleU.includes("DANONINHO FIT") || titleU.includes("FLAN") || titleU.includes("MOUSSE") || titleU.includes("PUDDING")) {
+    return "1 potinho";
+  }
+  // Heurísticas já existentes (shakes/iogurtes)
+  if (cat === "SHAKES E IOGURTES") {
+    if (titleU.includes("IOGURTE")) return "1 potinho";
+    if (titleU.includes("SHAKE")) return "1 copo";
+    return "1 porção";
+  }
+  // Padrões por categoria (genérico)
+  if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") return "4 porções";
+  if (cat === "BOLOS, DOCES & SOBREMESAS") return "1 porção";
+  if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
+  if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
+
+  return "1 porção";
+}
+
+// Função de refatoração exportada
+export function refatorarDadosIniciais(): AnyPage[] {
   const originalData: AnyPage[] = clone(originalJson.pages);
 
   // construir mapas
@@ -262,44 +302,22 @@ export const PDF_LUIZA_DATA = (() => {
     }
   })();
 
-  // NOVO: Padronizar categorias para os nomes canônicos
-  function canonicalCategory(name?: string) {
-    const s = String(name || "").toUpperCase().trim();
-    if (s.includes("SOPAS") || s.includes("CALDOS") || s.includes("ACOMPANHAMENTOS") || s.includes("SALADAS")) {
-      return "ACOMPANHAMENTOS, SALADAS & SOPAS";
-    }
-    if (s.includes("BOLOS") || s.includes("SOBREMESAS") || s.includes("DOCES")) {
-      return "BOLOS, DOCES & SOBREMESAS";
-    }
-    if (s.includes("LANCHES") || s.includes("CAFÉ")) {
-      return "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
-    }
-    if (s.includes("SALGADOS") || s.includes("REFEIÇÕES")) {
-      return "SALGADOS E REFEIÇÕES";
-    }
-    if (s.includes("SHAKES") || s.includes("IOGURTES")) {
-      return "SHAKES E IOGURTES";
-    }
-    return name || "";
-  }
-
+  // Padronizar categorias para os nomes canônicos
   recipePages.forEach((p) => {
     (p as any).category = canonicalCategory((p as any).category);
   });
 
-  // NOVO: Substituição inteligente de tags por categoria, preservando edições manuais
+  // Substituição inteligente de tags por categoria, preservando edições manuais
   function smartTagsForRecipe(title: string, category: string, currentCodeRaw: string): { tags: string[]; isManual: boolean } {
     const titleU = title.toUpperCase();
     const cat = canonicalCategory(category);
     const currentCodes = normalizeCodes(currentCodeRaw);
 
     // Flag simples: se o usuário editou tags diretamente via código no JSON, marcamos como manual
-    // Aqui usamos heurística: se as tags atuais divergem totalmente do recomendado para a categoria, consideramos manual
     const recommendedCat = getRecommendedTags(title, cat);
     const isManual = currentCodes.length > 0 && !recommendedCat.some(t => currentCodes.includes(t));
 
     if (isManual) {
-      // Preservar manualmente: retorna o que está, sem alterar
       return { tags: currentCodes, isManual: true };
     }
 
@@ -324,7 +342,6 @@ export const PDF_LUIZA_DATA = (() => {
         smart = ["LM"];
       }
     } else {
-      // Fallback: usa recomendado atual
       smart = recommendedCat;
     }
 
@@ -349,46 +366,7 @@ export const PDF_LUIZA_DATA = (() => {
     page._tagsLocked = isManual;
   });
 
-  // NOVO: Calibrar rendimento por padrões de título (apenas se o campo estiver vazio após limpeza)
-  function calibrateYieldByTitle(title: string, currentYield: string, category: string): string {
-    if (currentYield && String(currentYield).trim()) {
-      // Se já tem valor preenchido, mantém
-      return String(currentYield).trim();
-    }
-
-    const titleU = title.toUpperCase();
-    const cat = canonicalCategory(category);
-
-    // Padrões específicos de título, retornam yield natural quando detectados
-    if (titleU.includes("HAMBÚRGUER")) return "6 hambúrgueres";
-    if (titleU.includes("MINI PIZZA") || titleU.includes("PIZZA") || titleU.includes("DISQUINHOS")) return "12 disquinhos";
-    if (titleU.includes("TOAST")) return "8 toasts";
-    if (titleU.includes("COXINHA")) return "9 coxinhas";
-    if (titleU.includes("PASTELZINHO") || titleU.includes("PASTEIZINHO")) return "6 pasteizinhos";
-    if (titleU.includes("BOLINHO DE CHOCOLATE")) return "6 bolinhos";
-    if (titleU.includes("MUFFIN")) return "4 muffins";
-    if (titleU.includes("BOLINHO DE MICROONDAS")) return "1 bolinho";
-    if (titleU.includes("PÃO DE MEL")) return "6 unidades";
-    if (titleU.includes("SORVETE")) return "1 porção (conforme o tamanho da porção)";
-    if (titleU.includes("PRESTÍGIO FIT") || titleU.includes("BOLO NO POTE") || titleU.includes("DANONINHO FIT") || titleU.includes("FLAN") || titleU.includes("MOUSSE") || titleU.includes("PUDDING")) {
-      return "1 potinho";
-    }
-    // Heurísticas já existentes (shakes/iogurtes)
-    if (cat === "SHAKES E IOGURTES") {
-      if (titleU.includes("IOGURTE")) return "1 potinho";
-      if (titleU.includes("SHAKE")) return "1 copo";
-      return "1 porção";
-    }
-    // Padrões por categoria (genérico)
-    if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") return "4 porções";
-    if (cat === "BOLOS, DOCES & SOBREMESAS") return "1 porção";
-    if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
-    if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
-
-    return "1 porção";
-  }
-
-  // Agora aplicar calibração após limpeza e before default genérico
+  // Calibrar rendimento por padrões de título
   recipePages.forEach((p) => {
     const page: any = p;
 
@@ -398,7 +376,7 @@ export const PDF_LUIZA_DATA = (() => {
     // 2) Calibrar por título, só se estiver vazio
     page.yield = calibrateYieldByTitle(String(page.title || ""), String(page.yield || ""), String(page.category || ""));
 
-    // 3) Se ainda vazio, atribuir padrão por categoria (reutilizar a função anterior para consistência)
+    // 3) Se ainda vazio, atribuir padrão por categoria
     if (!page.yield || !String(page.yield).trim()) {
       const cat = String(page.category || "");
       const t = String(page.title || "").toUpperCase();
@@ -413,20 +391,19 @@ export const PDF_LUIZA_DATA = (() => {
           if (t.includes("SHAKE")) return "1 copo";
           return "1 porção";
         }
-        return "1ção";
+        return "1 porção";
       }
 
       page.yield = defaultYieldByCategory();
     }
   });
 
-  // NOVO: Correção de tags (code) e limpeza do rendimento (yield)
+  // Correção de tags (code) e limpeza do rendimento (yield)
   const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
 
   function extractCodesFromString(s?: string): string[] {
     const text = String(s || "").toUpperCase();
     const matches = text.match(/\b(CM|LM|A|LT|J|S|AC|B)\b/g) || [];
-    // remove duplicatas preservando ordem
     const seen = new Set<string>();
     const out: string[] = [];
     for (const m of matches) {
@@ -448,7 +425,6 @@ export const PDF_LUIZA_DATA = (() => {
     // Remover códigos soltos fora de parênteses
     val = val.replace(/\b(CM|LM|A|LT|J|S|AC|B)\b/g, "").replace(/\s+,/g, ",").replace(/,\s+/g, ", ").trim();
 
-    // Se depois da limpeza sobrou vazio, deixa vazio (melhor do que mostrar tags no lugar do rendimento)
     return val.trim();
   }
 
@@ -488,7 +464,6 @@ export const PDF_LUIZA_DATA = (() => {
         if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
         if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
         if (cat === "SHAKES E IOGURTES") {
-          // Pequena heurística: se for iogurte com geleia ou iogurte natural, prefere "1 potinho"
           if (t.includes("IOGURTE")) return "1 potinho";
           if (t.includes("SHAKE")) return "1 copo";
           return "1 porção";
@@ -507,7 +482,6 @@ export const PDF_LUIZA_DATA = (() => {
 
   // Agrupar receitas por categoria canônica, inserindo capa de seção antes de cada grupo
   function buildGroupedOrder(recipes: AnyPage[]): AnyPage[] {
-    // Mapa categoria -> receitas
     const byCat = new Map<string, AnyPage[]>();
     recipes.forEach((r) => {
       const cat = String((r as any).category || "").trim();
@@ -523,14 +497,12 @@ export const PDF_LUIZA_DATA = (() => {
       const catRecipes = byCat.get(cat);
       if (catRecipes && catRecipes.length > 0) {
         usedCats.add(cat);
-        // Inserir capa da seção antes das receitas
         grouped.push({
           id: `p_section_${cat.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}`,
           type: TEMPLATES.SECTION,
           title: cat,
           subtitle: "",
         } as AnyPage);
-        // Adicionar receitas da categoria (mantém ordem original delas)
         grouped.push(...catRecipes);
       }
     }
@@ -565,7 +537,7 @@ export const PDF_LUIZA_DATA = (() => {
   const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
   if (introEnd) newPdf.push(introEnd);
 
-  // QA FINAL: Validação e correções residuais (consistência entre categoria, tags e yield)
+  // QA FINAL: Validação e correções residuais
   function qaConsistency(recipes: AnyPage[]) {
     const issues: { title: string; issue: string }[] = [];
 
@@ -574,7 +546,6 @@ export const PDF_LUIZA_DATA = (() => {
       const title = String(p.title || "").trim();
       const cat = canonicalCategory(String(p.category || ""));
       const tags = normalizeCodes(p.code);
-      const yieldRaw = String(p.yield || "").trim();
       const titleU = title.toUpperCase();
 
       // 1) Categoria vs Tags: garantir que não há mistura inadequada
@@ -622,15 +593,7 @@ export const PDF_LUIZA_DATA = (() => {
         }
       }
 
-      // 2) Yield vazio ou só números: garantir que haja texto útil
-      if (!yieldRaw || /^\d+$/.test(yieldRaw)) {
-        // Deixa a calibragem anterior já lidar, só registra se vazio
-        if (!yieldRaw) {
-          issues.push({ title, issue: "Yield ficou vazio após calibragem" });
-        }
-      }
-
-      // 3) Categoria vazia ou desconhecida: usar canônica por heurística de título
+      // 2) Categoria vazia ou desconhecida: usar canônica por heurística de título
       if (!cat) {
         let inferred = "";
         if (titleU.includes("SHAKE") || titleU.includes("IOGURTE")) {
@@ -651,7 +614,6 @@ export const PDF_LUIZA_DATA = (() => {
       }
     });
 
-    // Log para inspeção (pode remover ou comentar em prod)
     if (issues.length > 0) {
       console.group("🔍 QA Consistência Final");
       issues.forEach(({ title, issue }) => console.warn(`- ${title}: ${issue}`));
@@ -667,6 +629,10 @@ export const PDF_LUIZA_DATA = (() => {
   qaConsistency(recipePages);
 
   return newPdf;
+}
+
+export const PDF_LUIZA_DATA = (() => {
+  return refatorarDadosIniciais();
 })();
 
 // Tipos
@@ -684,3 +650,24 @@ export type CoverPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.COVER];
 export type SectionPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SECTION];
 export type ShoppingPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.SHOPPING];
 export type LegendPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.LEGEND];
+
+// NOVO: Padronizar categorias para os nomes canônicos
+function canonicalCategory(name?: string) {
+  const s = String(name || "").toUpperCase().trim();
+  if (s.includes("SOPAS") || s.includes("CALDOS") || s.includes("ACOMPANHAMENTOS") || s.includes("SALADAS")) {
+    return "ACOMPANHAMENTOS, SALADAS & SOPAS";
+  }
+  if (s.includes("BOLOS") || s.includes("SOBREMESAS") || s.includes("DOCES")) {
+    return "BOLOS, DOCES & SOBREMESAS";
+  }
+  if (s.includes("LANCHES") || s.includes("CAFÉ")) {
+    return "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  }
+  if (s.includes("SALGADOS") || s.includes("REFEIÇÕES")) {
+    return "SALGADOS E REFEIÇÕES";
+  }
+  if (s.includes("SHAKES") || s.includes("IOGURTES")) {
+    return "SHAKES E IOGURTES";
+  }
+  return name || "";
+}
