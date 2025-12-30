@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import type { PageData, TocPageData } from "@/data/initialData";
-import { buildTocItems, getPrintablePageNumberMap, splitTocIntoParts } from "@/utils/toc";
+import { buildTocItems, getPrintablePageNumberMap, splitTocIntoParts, TOC_MAX_UNITS_PER_PAGE } from "@/utils/toc";
 
 interface TocViewProps {
   data: TocPageData;
@@ -17,8 +17,7 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
     const pagesWithoutToc = allPages.filter((p) => p.type !== "toc");
     const items = buildTocItems(pagesWithoutToc);
 
-    // "B" (detalhado) ocupa mais espaço -> estimativa para ficar 2–3 páginas.
-    const parts = splitTocIntoParts(items, 42);
+    const parts = splitTocIntoParts(items, TOC_MAX_UNITS_PER_PAGE);
     const idx = Math.max(1, part || 1) - 1;
 
     return {

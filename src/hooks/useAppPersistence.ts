@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { PageData, PDF_LUIZA_DATA, INITIAL_DATA } from '@/data/initialData';
 import { TEMPLATES } from '@/lib/constants';
 import { usePageManagement } from './usePageManagement'; // Importar o hook de gerenciamento de páginas
-import { buildTocItems, splitTocIntoParts } from '@/utils/toc';
+import { buildTocItems, splitTocIntoParts, TOC_MAX_UNITS_PER_PAGE } from '@/utils/toc';
 
 interface Theme {
     bg: string;
@@ -114,7 +114,7 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         const withoutToc = currentPages.filter(p => p.type !== TEMPLATES.TOC);
 
         const tocItems = buildTocItems(withoutToc);
-        const parts = splitTocIntoParts(tocItems, 42);
+        const parts = splitTocIntoParts(tocItems, TOC_MAX_UNITS_PER_PAGE);
         const requiredCount = parts.length;
 
         const tocPages: PageData[] = Array.from({ length: requiredCount }).map((_, idx) => ({

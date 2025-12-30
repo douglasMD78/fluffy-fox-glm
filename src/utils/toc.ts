@@ -12,6 +12,8 @@ export type TocItem =
       tags?: string;
     };
 
+export const TOC_MAX_UNITS_PER_PAGE = 48;
+
 export function buildTocItems(pages: PageData[]): TocItem[] {
   const items: TocItem[] = [];
 
@@ -41,7 +43,9 @@ export function splitTocIntoParts(items: TocItem[], maxUnitsPerPage: number): To
   let current: TocItem[] = [];
   let used = 0;
 
-  const unitsFor = (it: TocItem) => (it.kind === "section" ? 3 : 2);
+  // Ajustado para refletir o layout atual (sem linha de meta/tags):
+  // Seção ocupa um pouco mais; receita ocupa menos.
+  const unitsFor = (it: TocItem) => (it.kind === "section" ? 2 : 1);
 
   for (const it of items) {
     const u = unitsFor(it);
