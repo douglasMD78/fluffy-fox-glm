@@ -19,7 +19,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] print:hidden"></div>
             
             {/* Header elegante e impactante */}
-            <div className="relative text-center py-12 px-6 print:py-10">
+            <div className="relative text-center py-12 px-6 print:py-8 print:px-8">
                 <div className="max-w-5xl mx-auto">
                     <div className="mb-6 print:mb-4">
                         <span className="inline-block text-[11px] font-light text-navy/40 uppercase tracking-[0.3em] mb-3 print:text-[9px]">
@@ -30,9 +30,9 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                         {data.title}
                     </h1>
                     <div className="flex items-center justify-center gap-3 mb-6">
-                        <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/50 to-transparent"></div>
-                        <div className="w-2 h-2 bg-accent rounded-full shadow-sm"></div>
-                        <div className="h-px w-12 bg-gradient-to-l from-transparent via-accent/50 to-transparent"></div>
+                        <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/50 to-transparent print:w-8"></div>
+                        <div className="w-2 h-2 bg-accent rounded-full shadow-sm print:w-1.5 print:h-1.5"></div>
+                        <div className="h-px w-12 bg-gradient-to-l from-transparent via-accent/50 to-transparent print:w-8"></div>
                     </div>
                     <p className="text-navy/60 text-sm leading-relaxed font-light max-w-2xl mx-auto print:text-[12px] print:leading-relaxed">
                         {data.text}
@@ -55,17 +55,17 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                 <span className="w-1 h-1 bg-accent/30 rounded-full"></span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 print:grid-cols-3 print:gap-5">
-                            {mealTags.map((tag, index) => (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 print:grid-cols-3 print:gap-4">
+                            {mealTags.map((tag) => (
                                 <div
                                     key={tag.code}
-                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-5 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
+                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
                                 >
                                     <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
-                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-10 print:h-10 print:text-[10px] print:shadow-sm print-color-adjust`}>
+                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
                                             {tag.code}
                                         </div>
-                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[10px]">
+                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
                                             {tag.label}
                                         </span>
                                     </div>
@@ -86,17 +86,17 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                 <span className="w-1 h-1 bg-accent/30 rounded-full"></span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print:grid-cols-3 print:gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print:grid-cols-3 print:gap-4">
                             {otherTags.map((tag) => (
                                 <div
                                     key={tag.code}
-                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-5 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
+                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
                                 >
                                     <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
-                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-10 print:h-10 print:text-[10px] print:shadow-sm print-color-adjust`}>
+                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
                                             {tag.code}
                                         </div>
-                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[10px]">
+                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
                                             {tag.label}
                                         </span>
                                     </div>
@@ -108,9 +108,9 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                     {/* Rodapé profissional */}
                     <div className="mt-16 text-center print:mt-12">
                         <div className="flex items-center justify-center gap-3 mb-5">
-                            <div className="h-px w-8 bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
-                            <div className="w-1.5 h-1.5 bg-accent/50 rounded-full"></div>
-                            <div className="h-px w-8 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
+                            <div className="h-px w-8 bg-gradient-to-r from-transparent via-accent/30 to-transparent print:w-6"></div>
+                            <div className="w-1.5 h-1.5 bg-accent/50 rounded-full print:w-1 print:h-1"></div>
+                            <div className="h-px w-8 bg-gradient-to-l from-transparent via-accent/30 to-transparent print:w-6"></div>
                         </div>
                         <p className="text-navy/30 text-[10px] uppercase tracking-[0.15em] font-light print:text-[8px] mb-2">
                             Guia de Referência Rápida
