@@ -605,7 +605,7 @@ function buildGroupedOrder(recipes: AnyPage[]): AnyPage[] {
   return grouped;
 }
 
-// Função principal de refatoração - AGORA SIMPLIFICADA
+// Função principal de refatoração
 export function refatorarDadosIniciais(): AnyPage[] {
   const originalData: AnyPage[] = clone(originalJson.pages);
   const transformer = new RecipeTransformer(originalData);
@@ -620,8 +620,46 @@ export function refatorarDadosIniciais(): AnyPage[] {
   transformer.finalizeTagsAndYields();
   transformer.runQA();
 
-  // Retornar os dados transformados COMPLETOS - incluindo todas as páginas originais
-  return originalData;
+  // --- Montar PDF final no formato "print-ready" (inclui TOC e capas de seção) ---
+  const specialPages = originalData.filter(
+    (p) => p.type === TEMPLATES.COVER || p.type === TEMPLATES.INTRO || p.type === TEMPLATES.LEGEND
+  );
+
+  // Preservar quaisquer páginas de TOC existentes no arquivo original (se houver)
+  const tocPages = originalData.filter((p) => p.type === TEMPLATES.TOC);
+
+  // Receitas transformadas
+  const recipePages = originalData.filter((p) => p.type === TEMPLATES.RECIPE);
+
+  // Agrupar receitas por categoria e inserir capas de seção
+  const newRecipeOrder = buildGroupedOrder(recipePages);
+
+  // Monta a lista final na ordem de impressão:
+  // Capa -> Intro inicial -> (todas as páginas de TOC) -> Legenda -> Seções+Receitas -> Intro final
+  const newPdf: AnyPage[] = [];
+
+  const cover = specialPages.find((p) => p.type === TEMPLATES.COVER);
+  if (cover) newPdf.push(cover);
+
+  const introStart = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
+  if (introStart) newPdf.push(introStart);
+
+  if (tocPages.length > 0) {
+    // Insere as páginas de sumário encontradas no JSON (mantém número de páginas de TOC)
+    newPdf.push(...tocPages);
+  }
+
+  const legend = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
+  if (legend) newPdf.push(legend);
+
+  // Por fim, adiciona as seções + receitas agrupadas
+  newPdf.push(...newRecipeOrder);
+
+  const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
+  if (introEnd) newPdf.push(introEnd);
+
+  // Retorna o PDF já montado (print-ready)
+  return newPdf;
 }
 
 export const PDF_LUIZA_DATA = (() => {
