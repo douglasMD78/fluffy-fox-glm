@@ -5,6 +5,10 @@ import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, 
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+// ADD: imports para tags e toast
+import { TAG_DEFS } from '@/lib/constants';
+import { normalizeCodes, getRecommendedTags, validateTags } from '@/utils/tagging';
+import { toast } from 'sonner';
 
 // Categorias fixas diretamente no componente
 const RECIPE_CATEGORIES = [
@@ -56,6 +60,42 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
         setPositionX(x);
         setPositionY(y);
     }, [activePage.objectPosition]);
+
+    useEffect(() => {
+        // Valida automaticamente quando categoria, título ou tags mudam
+        const { ok, recommended, missing } = validateTags(activePage.code, activePage.title, activePage.category);
+        // Evita spams: só notifica quando há recomendação útil
+        if (recommended.length) {
+            if (!ok) {
+                toast.warning(`Sugestão de tags: ${recommended.join(', ')}`, {
+                    description: missing.length
+                        ? `Faltando: ${missing.join(', ')}`
+                        : 'Ajuste as tags para combinar com a receita.',
+                });
+            }
+        }
+    }, [activePage.code, activePage.category, activePage.title]);
+
+    // Helpers de tags
+    const setTagsFromArray = (arr: string[]) => {
+        const codes = normalizeCodes(arr.join(','));
+        updatePage({ code: codes.join(', ') });
+    };
+    const toggleTag = (code: string) => {
+        const current = normalizeCodes(activePage.code);
+        const exists = current.includes(code as any);
+        const next = exists ? current.filter((c) => c !== code) : [...current, code as any];
+        updatePage({ code: next.join(', ') });
+    };
+    const applySuggestion = () => {
+        const suggested = getRecommendedTags(activePage.title, activePage.category);
+        if (!suggested.length) {
+            toast.info('Nenhuma sugestão específica para esta receita.');
+            return;
+        }
+        updatePage({ code: suggested.join(', ') });
+        toast.success(`Tags aplicadas: ${suggested.join(', ')}`);
+    };
 
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -327,6 +367,46 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 <input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" value={activePage.yield} onChange={e => updatePage({yield: e.target.value})} />
             </div>
         </div>
+
+        {/* BLOCO: Tags (códigos) */}
+        <div className="space-y-2 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Tags (CM, LM, A, LT, J, S, AC, B)</label>
+            <input
+                className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none"
+                placeholder="Ex: CM, LM"
+                value={activePage.code || ''}
+                onChange={(e) => updatePage({ code: e.target.value })}
+            />
+            <div className="flex flex-wrap gap-2 mt-2">
+                {TAG_DEFS.map((t) => {
+                    const active = normalizeCodes(activePage.code).includes(t.code as any);
+                    return (
+                        <button
+                            key={t.code}
+                            type="button"
+                            onClick={() => toggleTag(t.code)}
+                            className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase border transition-all ${active ? `${t.color} ${t.text} border-transparent shadow-sm` : 'bg-surface text-navy/60 border-gray-200 hover:bg-gray-100'}`}
+                            title={t.label}
+                        >
+                            {t.code}
+                        </button>
+                    );
+                })}
+            </div>
+            <div className="flex items-center justify-between mt-2">
+                <div className="text-[10px] text-navy/50">
+                    Sugestão: {getRecommendedTags(activePage.title, activePage.category).join(', ') || '—'}
+                </div>
+                <button
+                    type="button"
+                    onClick={applySuggestion}
+                    className="px-3 py-1 rounded-md text-[10px] font-bold uppercase bg-accent text-white shadow-sm hover:bg-accent/90"
+                >
+                    Aplicar Sugestão
+                </button>
+            </div>
+        </div>
+
         <div className="space-y-4">
             <div className="flex justify-between items-center"><label className="text-[10px] font-black text-accent uppercase tracking-widest">Ingredientes</label><button onClick={() => updatePage({ ingredientGroups: [...activePage.ingredientGroups, { title: '', items: '' }] })} className="p-1 bg-rose-50 text-accent rounded hover:bg-rose-100 transition-colors"><Plus size={14}/></button></div>
             {activePage.ingredientGroups.map((group, gIdx) => (
