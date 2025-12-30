@@ -5,7 +5,7 @@ import {
   Sandwich, 
   Soup, 
   Cake, 
-  Yogurt,
+  Milk,
   ChefHat,
   Salad
 } from 'lucide-react';
@@ -25,7 +25,7 @@ const TAG_ICONS = {
   'J': { icon: ChefHat, label: 'Jantar' },
   'S': { icon: Cake, label: 'Sobremesa' },
   'AC': { icon: Salad, label: 'Acompanhamento' },
-  'B': { icon: Yogurt, label: 'Base' }
+  'B': { icon: Milk, label: 'Base' }
 };
 
 export const RecipeClassification: React.FC<RecipeClassificationProps> = ({ 
