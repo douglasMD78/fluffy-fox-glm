@@ -226,3 +226,10 @@ export const Maximize: React.FC<IconProps> = (p) => (
     <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
   </IconBase>
 );
+
+export const Search: React.FC<IconProps> = (p) => (
+  <IconBase {...p}>
+    <circle cx="11" cy="11" r="8"></circle>
+    <path d="m21 21-4.35-4.35"></path>
+  </IconBase>
+);
