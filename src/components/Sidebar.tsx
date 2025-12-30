@@ -1,11 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { TEMPLATES } from '@/lib/constants';
 import { PageData } from '@/data/initialData';
 
 // Icons
-import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize } from '@/components/icons';
+import { Plus, Trash2, Save, FileUp, Printer, Settings, BookOpen, ImageIcon, Layout, List, AlignLeft, MagicStick, RefreshCw, Sparkles, Brain, Package, Columns, PlayCircle, Type, Minus, HardDrive, Palette, Maximize, Search } from '@/components/icons';
 
 interface SidebarProps {
     pages: PageData[];
@@ -50,6 +50,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onDragEnd,
     onRefactor,
 }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredPages = useMemo(() => {
+        if (!searchTerm.trim()) return pages;
+        
+        const term = searchTerm.toLowerCase();
+        return pages.filter(page => 
+            (page.title && page.title.toLowerCase().includes(term)) ||
+            (page.type && page.type.toLowerCase().includes(term))
+        );
+    }, [pages, searchTerm]);
+
     return (
         <aside className="w-72 bg-white/80 backdrop-blur-md border-r border-white/50 flex flex-col no-print shrink-0 z-10 shadow-soft">
             <div className="p-6 border-b border-gray-100/50">
@@ -69,22 +81,47 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button onClick={onRestoreDefault} className="w-full bg-surface hover:bg-gray-100 text-navy/50 p-2 rounded-xl text-[9px] font-bold uppercase flex items-center justify-center gap-2 transition-all"><RefreshCw size={12} /> Restaurar Padrão</button>
             </div>
 
+            <div className="p-4 border-b border-gray-100/50">
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-navy/40" size={14} />
+                    <input
+                        type="text"
+                        placeholder="Pesquisar receitas..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 bg-surface border border-gray-200 rounded-xl text-[11px] font-sans text-navy placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+                    />
+                </div>
+                {searchTerm && (
+                    <div className="mt-2 text-[9px] text-navy/50 text-center">
+                        {filteredPages.length} {filteredPages.length === 1 ? 'resultado' : 'resultados'} encontrados
+                    </div>
+                )}
+            </div>
+
             <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
-                {pages.map((p, i) => (
+                {filteredPages.map((p, i) => (
                 <div
                     key={p.id}
                     draggable={p.type !== TEMPLATES.TOC}
-                    onDragStart={() => (p.type !== TEMPLATES.TOC ? onDragStart(i) : undefined)}
-                    onDragEnter={() => (p.type !== TEMPLATES.TOC ? onDragEnter(i) : undefined)}
+                    onDragStart={() => (p.type !== TEMPLATES.TOC ? onDragStart(pages.indexOf(p)) : undefined)}
+                    onDragEnter={() => (p.type !== TEMPLATES.TOC ? onDragEnter(pages.indexOf(p)) : undefined)}
                     onDragEnd={() => (p.type !== TEMPLATES.TOC ? onDragEnd() : undefined)}
                     onDragOver={(e) => e.preventDefault()}
                     onClick={() => onPageSelect(p.id)}
-                    className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''} ${p.type === TEMPLATES.TOC ? 'cursor-default active:cursor-default' : ''}`}
+                    className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === pages.indexOf(p) ? 'border-t-2 border-accent' : ''} ${p.type === TEMPLATES.TOC ? 'cursor-default active:cursor-default' : ''}`}
                 >
-                    <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
+                    <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{pages.indexOf(p) + 1}</span>
                     <div className="flex-1 truncate text-[11px] font-bold uppercase tracking-widest font-sans">{p.title || 'Sem Título'}</div>
                 </div>
                 ))}
+                {filteredPages.length === 0 && (
+                    <div className="text-center py-8 text-navy/40">
+                        <Search size={24} className="mx-auto mb-2 opacity-50" />
+                        <p className="text-[11px] font-sans">Nenhuma receita encontrada</p>
+                        <p className="text-[9px] mt-1">Tente outros termos</p>
+                    </div>
+                )}
             </div>
 
             <div className="p-4 border-t border-gray-100/50 bg-white/50">
