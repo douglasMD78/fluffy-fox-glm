@@ -16,8 +16,8 @@ export const CoverView: React.FC<CoverViewProps> = ({ data }) => {
 
             <div className="text-center relative z-10 px-4">
                 <h1 className="font-playfair text-[50px] italic leading-none mb-4 text-center" style={{ color: 'var(--color-cover-title-text)' }}>{data.title}</h1>
-                <div className="w-12 h-px mx-auto opacity-50 mb-3" style={{ backgroundColor: 'var(--color-cover-divider-bg)' }}></div>
-                <h2 className="text-xl font-light tracking-[0.5em] uppercase font-lato scale-90 text-center leading-tight" style={{ color: 'var(--color-cover-title-text)' }}>{data.subtitle}</h2>
+                <div className="w-12 h-px mx-auto opacity-50 mb-2" style={{ backgroundColor: 'var(--color-cover-divider-bg)' }}></div>
+                <h2 className="text-xl font-light tracking-[0.5em] uppercase font-lato scale-90 text-center leading-none" style={{ color: 'var(--color-cover-title-text)' }}>{data.subtitle}</h2>
             </div>
 
             <div className="px-6 py-3 rounded-full bg-white/40 backdrop-blur-sm mb-12 shadow-sm relative z-10 print:bg-white border border-opacity-20 text-center" style={{ borderColor: 'var(--color-cover-title-text)' }}>
