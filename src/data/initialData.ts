@@ -565,6 +565,107 @@ export const PDF_LUIZA_DATA = (() => {
   const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
   if (introEnd) newPdf.push(introEnd);
 
+  // QA FINAL: Validação e correções residuais (consistência entre categoria, tags e yield)
+  function qaConsistency(recipes: AnyPage[]) {
+    const issues: { title: string; issue: string }[] = [];
+
+    recipes.forEach((r) => {
+      const p = r as any;
+      const title = String(p.title || "").trim();
+      const cat = canonicalCategory(String(p.category || ""));
+      const tags = normalizeCodes(p.code);
+      const yieldRaw = String(p.yield || "").trim();
+      const titleU = title.toUpperCase();
+
+      // 1) Categoria vs Tags: garantir que não há mistura inadequada
+      if (cat === "BOLOS, DOCES & SOBREMESAS") {
+        const undesired = tags.filter(t => ["CM", "LM", "LT", "A", "J", "AC", "B"].includes(t));
+        if (undesired.length > 0) {
+          issues.push({ title, issue: `Doces/Sobremesas com tags indevidas: ${undesired.join(", ")}` });
+          p.code = "S";
+        }
+      }
+
+      if (cat === "SALGADOS E REFEIÇÕES") {
+        const undesired = tags.filter(t => ["CM", "LM", "LT", "S", "AC", "B"].includes(t));
+        if (undesired.length > 0) {
+          issues.push({ title, issue: `Salgados/Refeições com tags indevidas: ${undesired.join(", ")}` });
+          p.code = "A, J";
+        }
+      }
+
+      if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") {
+        const undesired = tags.filter(t => ["A", "J", "S", "AC", "B"].includes(t));
+        if (undesired.length > 0) {
+          issues.push({ title, issue: `Café/Lanches com tags indevidas: ${undesired.join(", ")}` });
+          p.code = "CM, LM";
+        }
+      }
+
+      if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") {
+        const isSoup = titleU.includes("CALDINHO") || titleU.includes("SOPA");
+        const expected = isSoup ? ["A", "J"] : ["AC"];
+        const undesired = tags.filter(t => !expected.includes(t));
+        if (undesired.length > 0) {
+          issues.push({ title, issue: `Acomp/Saladas/Sopas com tags indevidas: ${undesired.join(", ")}` });
+          p.code = expected.join(", ");
+        }
+      }
+
+      if (cat === "SHAKES E IOGURTES") {
+        const isBase = titleU.includes("IOGURTE NATURAL INFINITO") || titleU.includes("SHAKE LAXATIVO");
+        const expected = isBase ? ["B", "LM"] : ["LM"];
+        const undesired = tags.filter(t => !expected.includes(t));
+        if (undesired.length > 0) {
+          issues.push({ title, issue: `Shakes/Iogurtes com tags indevidas: ${undesired.join(", ")}` });
+          p.code = expected.join(", ");
+        }
+      }
+
+      // 2) Yield vazio ou só números: garantir que haja texto útil
+      if (!yieldRaw || /^\d+$/.test(yieldRaw)) {
+        // Deixa a calibragem anterior já lidar, só registra se vazio
+        if (!yieldRaw) {
+          issues.push({ title, issue: "Yield ficou vazio após calibragem" });
+        }
+      }
+
+      // 3) Categoria vazia ou desconhecida: usar canônica por heurística de título
+      if (!cat) {
+        let inferred = "";
+        if (titleU.includes("SHAKE") || titleU.includes("IOGURTE")) {
+          inferred = "SHAKES E IOGURTES";
+        } else if (titleU.includes("BOLO") || titleU.includes("DOC") || titleU.includes("SOBREMESA") || titleU.includes("BRIGADEIRO") || titleU.includes("MOUSSE")) {
+          inferred = "BOLOS, DOCES & SOBREMESAS";
+        } else if (titleU.includes("HAMBÚRGUER") || titleU.includes("FRANGO") || titleU.includes("CARNE") || titleU.includes("ARROZ") || titleU.includes("MACARRÃO") || titleU.includes("PIZZA") || titleU.includes("COXINHA") || titleU.includes("PASTEL") || titleU.includes("CROQUETE") || titleU.includes("TORTINHA")) {
+          inferred = "SALGADOS E REFEIÇÕES";
+        } else if (titleU.includes("CALDINHO") || titleU.includes("SOPA") || titleU.includes("SALADA") || titleU.includes("BATATA") || titleU.includes("REQUEIJÃO")) {
+          inferred = "ACOMPANHAMENTOS, SALADAS & SOPAS";
+        } else if (titleU.includes("PANQUECA") || titleU.includes("WAFFLE") || titleU.includes("OVERNIGHT") || titleU.includes("TOAST") || titleU.includes("PÃO") || titleU.includes("SANDUÍCHE") || titleU.includes("CREPIOCA")) {
+          inferred = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+        }
+        if (inferred) {
+          issues.push({ title, issue: `Categoria vazia/inferida: ${inferred}` });
+          p.category = inferred;
+        }
+      }
+    });
+
+    // Log para inspeção (pode remover ou comentar em prod)
+    if (issues.length > 0) {
+      console.group("🔍 QA Consistência Final");
+      issues.forEach(({ title, issue }) => console.warn(`- ${title}: ${issue}`));
+      console.groupEnd();
+    } else {
+      console.info("✅ QA Consistência: Nenhum problema encontrado.");
+    }
+
+    return issues;
+  }
+
+  // Rodar QA nas receitas finais
+  qaConsistency(recipePages);
+
   return newPdf;
 })();
 
