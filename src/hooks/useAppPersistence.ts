@@ -111,19 +111,30 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
     }, []); // Run only once on mount
 
     const ensureTocPages = (currentPages: PageData[]): PageData[] => {
+        const existingTocById = new Map<string, PageData>();
+        currentPages.filter(p => p.type === TEMPLATES.TOC).forEach(p => existingTocById.set(p.id, p));
+
         const withoutToc = currentPages.filter(p => p.type !== TEMPLATES.TOC);
 
         const tocItems = buildTocItems(withoutToc);
         const parts = splitTocIntoParts(tocItems, TOC_MAX_UNITS_PER_PAGE);
         const requiredCount = parts.length;
 
-        const tocPages: PageData[] = Array.from({ length: requiredCount }).map((_, idx) => ({
-            id: `p_toc_${idx + 1}`,
-            type: TEMPLATES.TOC,
-            ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])),
-            part: idx + 1,
-            title: idx === 0 ? 'Sumário' : 'Sumário (continuação)',
-        }));
+        const tocPages: PageData[] = Array.from({ length: requiredCount }).map((_, idx) => {
+            const id = `p_toc_${idx + 1}`;
+            const existing = existingTocById.get(id);
+
+            const base = {
+                id,
+                type: TEMPLATES.TOC,
+                ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])),
+                ...(existing ? { title: existing.title, fontScale: (existing as any).fontScale } : {}),
+                part: idx + 1,
+            } as PageData;
+
+            if (!base.title) base.title = idx === 0 ? 'Sumário' : 'Sumário (continuação)';
+            return base;
+        });
 
         const insertIndex = Math.max(
             0,

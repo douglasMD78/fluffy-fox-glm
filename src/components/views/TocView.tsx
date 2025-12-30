@@ -15,6 +15,9 @@ interface TocViewProps {
 export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
   const { part } = data;
 
+  const fontScale = Math.max(0.8, Math.min(1, Number((data as any).fontScale ?? 1)));
+  const itemFontPx = Math.round(11 * fontScale * 10) / 10;
+
   const { itemsForThisPart, totalParts, pageNumberById } = useMemo(() => {
     const pageNumberById = getPrintablePageNumberMap(allPages);
 
@@ -46,14 +49,17 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
         )}
       </div>
 
-      {/* Safe-area real: reservamos espaço de sobra no fim da página para não cortar na impressão */}
+      {/* Safe-area real */}
       <div className="flex-1 px-8 pb-14">
         <div className="columns-2 gap-8">
           {itemsForThisPart.map((it, i) => {
             if (it.kind === "section") {
               return (
                 <div key={`${it.kind}-${i}`} className="break-inside-avoid mb-3 mt-2">
-                  <div className="text-[11px] font-black tracking-[0.18em] uppercase text-accent">
+                  <div
+                    className="font-black tracking-[0.18em] uppercase text-accent"
+                    style={{ fontSize: `${itemFontPx}px` }}
+                  >
                     {it.title}
                   </div>
                   <div className="mt-2 h-px w-full bg-accent/15" />
@@ -67,9 +73,16 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
             return (
               <div key={`${it.kind}-${it.pageId}`} className="break-inside-avoid mb-3">
                 <div className="flex items-end gap-2">
-                  <div className="text-[11px] font-bold text-navy leading-snug flex-1">{it.title}</div>
+                  <div
+                    className="font-bold text-navy leading-snug flex-1"
+                    style={{ fontSize: `${itemFontPx}px` }}
+                  >
+                    {it.title}
+                  </div>
                   <div className="flex-1 border-b border-dotted border-navy/25 translate-y-[-3px]" />
-                  <div className="text-[11px] font-black text-navy tabular-nums">{pageLabel}</div>
+                  <div className="font-black text-navy tabular-nums" style={{ fontSize: `${itemFontPx}px` }}>
+                    {pageLabel}
+                  </div>
                 </div>
               </div>
             );
@@ -77,7 +90,6 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
         </div>
       </div>
 
-      {/* Rodapé fixo com borda + respiro extra (e sem cortar) */}
       <div className="px-8 pb-10">
         <div className="border-t border-navy/10 pt-3">
           <div className="text-center text-[9px] text-navy/40 font-bold tracking-widest uppercase">

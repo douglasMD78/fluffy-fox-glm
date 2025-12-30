@@ -100,6 +100,7 @@ export const INITIAL_DATA = {
   [TEMPLATES.TOC]: {
     title: "Sumário",
     part: 1,
+    fontScale: 1,
   },
   [TEMPLATES.INTRO]: {
     title: "Um Olá Especial",
