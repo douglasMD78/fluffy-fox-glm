@@ -2,6 +2,7 @@ import { TEMPLATES } from "@/lib/constants";
 import { ColumnRatioKey } from "@/lib/constants";
 import { z } from "zod";
 import originalJson from "./todas-as-receitas-original.json";
+import { normalizeCodes, getRecommendedTags } from "@/utils/tagging";
 
 // Categorias definidas diretamente aqui
 const TOC_CATEGORIES = [
@@ -284,6 +285,64 @@ export const PDF_LUIZA_DATA = (() => {
 
   recipePages.forEach((p) => {
     (p as any).category = canonicalCategory((p as any).category);
+  });
+
+  // NOVO: Correção de tags (code) e limpeza do rendimento (yield)
+  const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
+
+  function extractCodesFromString(s?: string): string[] {
+    const text = String(s || "").toUpperCase();
+    const matches = text.match(/\b(CM|LM|A|LT|J|S|AC|B)\b/g) || [];
+    // remove duplicatas preservando ordem
+    const seen = new Set<string>();
+    const out: string[] = [];
+    for (const m of matches) {
+      if (!seen.has(m)) { seen.add(m); out.push(m); }
+    }
+    return out;
+  }
+
+  function cleanYield(y?: string): string {
+    if (!y) return "";
+    let val = String(y);
+
+    // Remover parênteses que contenham códigos de tag
+    val = val.replace(/\([^)]*\)/g, (group) => {
+      const hasCode = TAG_CODES.some((code) => group.toUpperCase().includes(code));
+      return hasCode ? "" : group;
+    });
+
+    // Remover códigos soltos fora de parênteses
+    val = val.replace(/\b(CM|LM|A|LT|J|S|AC|B)\b/g, "").replace(/\s+,/g, ",").replace(/,\s+/g, ", ").trim();
+
+    // Se depois da limpeza sobrou vazio, deixa vazio (melhor do que mostrar tags no lugar do rendimento)
+    return val.trim();
+  }
+
+  recipePages.forEach((p) => {
+    const page: any = p;
+
+    // 1) Juntar tags vindas de code atual + yield + recomendações (categoria/título)
+    const currentCodes = normalizeCodes(page.code).map(String);
+    const yieldCodes = extractCodesFromString(page.yield);
+    const recommended = getRecommendedTags(page.title, page.category).map(String);
+
+    // Ajuste específico para Bases conhecidas (Requeijão, Iogurte Natural Infinito)
+    const titleU = String(page.title || "").toUpperCase();
+    const baseExtras: string[] = [];
+    if (titleU.includes("REQUEIJÃO")) baseExtras.push("B");
+
+    // Consolida conjunto de tags e remove duplicatas
+    const allCodesSet = new Set<string>([...currentCodes, ...yieldCodes, ...recommended, ...baseExtras]);
+    const finalCodes = Array.from(allCodesSet);
+
+    // 2) Aplicar tags consolidadas de volta no campo code (ordenar por uma ordem estável)
+    const order = ["B", "CM", "LM", "LT", "A", "J", "AC", "S"];
+    finalCodes.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    page.code = finalCodes.join(", ");
+
+    // 3) Limpar rendimento, removendo tags indevidas
+    page.yield = cleanYield(page.yield);
   });
 
   // Páginas especiais sem TOC
