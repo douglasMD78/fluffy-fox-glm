@@ -5,6 +5,7 @@ import { RecipePageData } from '@/data/initialData';
 import { ImageIcon, Sparkles, Package, PlayCircle } from '@/components/icons';
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS } from '@/lib/constants';
 import { TagList } from './TagList';
+import { RecipeClassification } from './RecipeClassification'; // Importar novo componente
 import { InfoFooter } from './InfoFooter';
 import { renderMarkdownText } from '@/utils/markdown';
 import { RecipeTip } from './RecipeTip'; // Importar RecipeTip
@@ -98,7 +99,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                         <div className={`mt-auto flex items-center gap-2 ${titleAlignmentClass === 'text-right' ? 'justify-end' : ''}`}>
                             <span className="text-[8px] text-accent font-bold uppercase tracking-widest">{data.yield}</span>
                             <div className="h-2 w-px bg-accent/30"></div>
-                            <TagList tags={data.code} />
+                            <RecipeClassification tags={data.code} compact={true} />
                         </div>
                     </div>
                 </div>

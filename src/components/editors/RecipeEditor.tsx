@@ -5,6 +5,7 @@ import { ImageIcon, Plus, Trash2, Sparkles, Package, Columns, PlayCircle, Type, 
 import { FONT_SIZES, IMG_SIZES, SPACING_MAP, COLUMN_RATIOS, ColumnRatioKey } from '@/lib/constants';
 import { MarkdownTextarea } from '@/components/common/MarkdownTextarea';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { RecipeClassification } from '@/components/views/RecipeClassification';
 // ADD: imports para tags e toast
 import { TAG_DEFS } from '@/lib/constants';
 import { normalizeCodes, getRecommendedTags, validateTags } from '@/utils/tagging';
@@ -377,6 +378,14 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 value={activePage.code || ''}
                 onChange={(e) => updatePage({ code: e.target.value })}
             />
+            
+            {activePage.code && (
+                <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                    <span className="text-[9px] text-navy/50 font-medium mb-1 block">Visualização:</span>
+                    <RecipeClassification tags={activePage.code} compact={false} />
+                </div>
+            )}
+            
             <div className="flex flex-wrap gap-2 mt-2">
                 {TAG_DEFS.map((t) => {
                     const active = normalizeCodes(activePage.code).includes(t.code as any);

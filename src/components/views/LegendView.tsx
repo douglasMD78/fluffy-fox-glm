@@ -1,6 +1,16 @@
 import React from 'react';
 import { LegendPageData } from '@/data/initialData';
 import { TAG_DEFS } from '@/lib/constants';
+import { 
+  Coffee, 
+  Cookie, 
+  Sandwich, 
+  Soup, 
+  Cake, 
+  Yogurt,
+  ChefHat,
+  Salad
+} from 'lucide-react';
 
 interface LegendViewProps {
     data: LegendPageData;
@@ -12,6 +22,18 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
     // Agrupar tags por categorias para melhor organização
     const mealTags = codes.filter(tag => ['CM', 'LM', 'A', 'LT', 'J'].includes(tag.code));
     const otherTags = codes.filter(tag => ['S', 'AC', 'B'].includes(tag.code));
+
+    // Mapeamento de tags para ícones do Lucide
+    const TAG_ICONS = {
+        'CM': { icon: Coffee, label: 'Café da Manhã' },
+        'LM': { icon: Cookie, label: 'Lanche da Manhã' },
+        'A': { icon: Sandwich, label: 'Almoço' },
+        'LT': { icon: Cookie, label: 'Lanche da Tarde' },
+        'J': { icon: ChefHat, label: 'Jantar' },
+        'S': { icon: Cake, label: 'Sobremesa' },
+        'AC': { icon: Salad, label: 'Acompanhamento' },
+        'B': { icon: Yogurt, label: 'Base' }
+    };
 
     return (
         <div className="flex-1 flex flex-col min-h-screen bg-gradient-to-br from-[#fefefe] via-[#f8fafb] to-[#f1f5f9] font-sans print:min-h-[297mm] print:w-[210mm] print:overflow-hidden relative">
@@ -56,21 +78,26 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                             </div>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 print:grid-cols-3 print:gap-4">
-                            {mealTags.map((tag) => (
-                                <div
-                                    key={tag.code}
-                                    className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
-                                >
-                                    <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
-                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
-                                            {tag.code}
+                            {mealTags.map((tag) => {
+                                const iconData = TAG_ICONS[tag.code as keyof typeof TAG_ICONS];
+                                const IconComponent = iconData?.icon;
+                                
+                                return (
+                                    <div
+                                        key={tag.code}
+                                        className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
+                                    >
+                                        <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
+                                            <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust flex items-center justify-center`}>
+                                                {IconComponent ? <IconComponent size={20} /> : tag.code}
+                                            </div>
+                                            <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
+                                                {tag.label}
+                                            </span>
                                         </div>
-                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
-                                            {tag.label}
-                                        </span>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -87,21 +114,26 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print:grid-cols-3 print:gap-4">
-                            {otherTags.map((tag) => (
-                                <div
-                                    key={tag.code}
-                                    className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
-                                >
-                                    <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
-                                        <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
-                                            {tag.code}
+                            {otherTags.map((tag) => {
+                                const iconData = TAG_ICONS[tag.code as keyof typeof TAG_ICONS];
+                                const IconComponent = iconData?.icon;
+                                
+                                return (
+                                    <div
+                                        key={tag.code}
+                                        className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
+                                    >
+                                        <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
+                                            <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust flex items-center justify-center`}>
+                                                {IconComponent ? <IconComponent size={20} /> : tag.code}
+                                            </div>
+                                            <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
+                                                {tag.label}
+                                            </span>
                                         </div>
-                                        <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
-                                            {tag.label}
-                                        </span>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
