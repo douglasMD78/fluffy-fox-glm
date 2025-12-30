@@ -4,7 +4,8 @@ export enum TEMPLATES {
     LEGEND = 'legend',
     RECIPE = 'recipe',
     SECTION = 'section',
-    SHOPPING = 'shopping'
+    SHOPPING = 'shopping',
+    TOC = 'toc'
 }
 
 export const TAG_DEFS = [

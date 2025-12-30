@@ -18,6 +18,7 @@ export const recipeSchema = z
     title: z.string().min(1, "Título é obrigatório."),
     category: z.string().optional(),
     code: z.string().optional(),
+    time: z.string().optional(),
     yield: z.string().optional(),
     nutrition: z
       .object({
@@ -96,6 +97,10 @@ export const INITIAL_DATA = {
     author: "@LU.MTSFIT",
     edition: "EDIÇÃO ESPECIAL",
   },
+  [TEMPLATES.TOC]: {
+    title: "Sumário",
+    part: 1,
+  },
   [TEMPLATES.INTRO]: {
     title: "Um Olá Especial",
     highlight: "para Você!",
@@ -119,6 +124,7 @@ export const INITIAL_DATA = {
     title: "TÍTULO DA RECEITA",
     category: "CATEGORIA",
     code: "CM, LT",
+    time: "10 min",
     yield: "1 porção",
     nutrition: { cal: "000", prot: "0g", carb: "0g", fat: "0g" },
     macroNote: "Valores referentes a 1 porção.",
@@ -331,7 +337,14 @@ export const PDF_LUIZA_DATA = (() => {
 })();
 
 // Tipos
-export type PageData = (typeof PDF_LUIZA_DATA)[0];
+export type PageData = {
+  id: string;
+  type: TEMPLATES;
+  title?: string;
+  [key: string]: any;
+};
+
+export type TocPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.TOC];
 export type RecipePageData = (typeof INITIAL_DATA)[typeof TEMPLATES.RECIPE];
 export type IntroPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.INTRO];
 export type CoverPageData = (typeof INITIAL_DATA)[typeof TEMPLATES.COVER];

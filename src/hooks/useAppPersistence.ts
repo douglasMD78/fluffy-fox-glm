@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { PageData, PDF_LUIZA_DATA, INITIAL_DATA } from '@/data/initialData';
 import { TEMPLATES } from '@/lib/constants';
 import { usePageManagement } from './usePageManagement'; // Importar o hook de gerenciamento de páginas
+import { buildTocItems, splitTocIntoParts } from '@/utils/toc';
 
 interface Theme {
     bg: string;
@@ -46,6 +47,7 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         "accent": "#FF2D75"
     });
     const [showThemeEditor, setShowThemeEditor] = useState(false); // Movido para cá
+    const [initialized, setInitialized] = useState(false);
 
     // Persistence states
     const [isSaving, setIsSaving] = useState(false);
@@ -93,18 +95,62 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
                         setSelectedId(parsed[0]?.id || null);
                         await idb.set(DB_KEY, { pages: parsed, theme });
                     } else {
-                        setPages(PDF_LUIZA_DATA);
-                        setSelectedId(PDF_LUIZA_DATA[0].id);
+                        setPages(PDF_LUIZA_DATA as any);
+                        setSelectedId((PDF_LUIZA_DATA as any)[0].id);
                     }
                 }
             } catch (err) {
                 console.error("Erro ao carregar DB", err);
                 toast.error("Erro ao carregar dados salvos. Carregando dados padrão.");
-                setPages(PDF_LUIZA_DATA);
+                setPages(PDF_LUIZA_DATA as any);
+            } finally {
+                setInitialized(true);
             }
         };
         initDB();
     }, []); // Run only once on mount
+
+    const ensureTocPages = (currentPages: PageData[]): PageData[] => {
+        const withoutToc = currentPages.filter(p => p.type !== TEMPLATES.TOC);
+
+        const tocItems = buildTocItems(withoutToc);
+        const parts = splitTocIntoParts(tocItems, 42);
+        const requiredCount = parts.length;
+
+        const tocPages: PageData[] = Array.from({ length: requiredCount }).map((_, idx) => ({
+            id: `p_toc_${idx + 1}`,
+            type: TEMPLATES.TOC,
+            ...JSON.parse(JSON.stringify(INITIAL_DATA[TEMPLATES.TOC])),
+            part: idx + 1,
+            title: idx === 0 ? 'Sumário' : 'Sumário (continuação)',
+        }));
+
+        const insertIndex = Math.max(
+            0,
+            withoutToc.findIndex(p => p.type === TEMPLATES.SECTION || p.type === TEMPLATES.RECIPE)
+        );
+
+        const safeInsertIndex = insertIndex === -1 ? withoutToc.length : insertIndex;
+
+        const next = [
+            ...withoutToc.slice(0, safeInsertIndex),
+            ...tocPages,
+            ...withoutToc.slice(safeInsertIndex),
+        ];
+
+        const sameShape =
+            next.length === currentPages.length &&
+            next.every((p, i) => currentPages[i]?.id === p.id && currentPages[i]?.type === p.type);
+
+        return sameShape ? currentPages : next;
+    };
+
+    // Sync TOC pages (keeps 2–3 pages automatically as content grows)
+    useEffect(() => {
+        if (!initialized) return;
+        const next = ensureTocPages(pages);
+        if (next !== pages) setPages(next);
+    }, [initialized, pages, setPages]);
 
     // Save changes effect
     useEffect(() => {

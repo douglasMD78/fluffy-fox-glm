@@ -11,5 +11,6 @@ export const getPageBackgroundColor = (pageType: TEMPLATES, theme: Theme): strin
     if (pageType === TEMPLATES.COVER) return theme.bg;
     if (pageType === TEMPLATES.SHOPPING) return theme.surface || '#F9F9F9'; 
     if (pageType === TEMPLATES.LEGEND) return theme.bg; 
+    if (pageType === TEMPLATES.TOC) return 'white';
     return 'white';
 };

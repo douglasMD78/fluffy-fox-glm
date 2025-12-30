@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TEMPLATES } from '@/lib/constants';
-import { PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData } from '@/data/initialData';
+import { PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, TocPageData } from '@/data/initialData';
 
 // Icons
 import { Trash2 } from '@/components/icons';
@@ -14,6 +14,7 @@ import { IntroEditor } from '@/components/editors/IntroEditor';
 import { SectionEditor } from '@/components/editors/SectionEditor';
 import { ShoppingEditor } from '@/components/editors/ShoppingEditor';
 import { LegendEditor } from '@/components/editors/LegendEditor';
+import { TocEditor } from '@/components/editors/TocEditor';
 
 interface EditorPanelProps {
     activePage: PageData | undefined;
@@ -35,6 +36,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({ activePage, updatePage
         switch (activePage.type) {
             case TEMPLATES.COVER:
                 return <CoverEditor activePage={activePage as CoverPageData} updatePage={updatePage} />;
+            case TEMPLATES.TOC:
+                return <TocEditor activePage={activePage as TocPageData} updatePage={updatePage} />;
             case TEMPLATES.INTRO:
                 return <IntroEditor activePage={activePage as IntroPageData} updatePage={updatePage} onAiRequest={() => onAiRequest('intro')} />;
             case TEMPLATES.RECIPE:

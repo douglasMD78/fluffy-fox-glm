@@ -319,8 +319,8 @@ export const RecipeEditor: React.FC<RecipeEditorProps> = ({ activePage, updatePa
                 </Select>
             </div>
             <div>
-                <label className="text-[10px] font-bold text-navy/40 uppercase">Tags (Códigos: CM, A, J...)</label>
-                <input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: CM, A, J" value={activePage.code} onChange={e => updatePage({code: e.target.value})} />
+                <label className="text-[10px] font-bold text-navy/40 uppercase">Tempo</label>
+                <input className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs text-navy focus:border-accent outline-none" placeholder="Ex: 15 min" value={activePage.time || ''} onChange={e => updatePage({time: e.target.value})} />
             </div>
             <div>
                 <label className="text-[10px] font-bold text-navy/40 uppercase">Rendimento</label>

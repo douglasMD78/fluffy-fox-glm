@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TEMPLATES, FONT_SIZES, IMG_SIZES, SPACING_MAP } from '@/lib/constants';
-import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, recipeSchema, introSchema, shoppingSchema } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
+import { INITIAL_DATA, PDF_LUIZA_DATA, PageData, RecipePageData, IntroPageData, CoverPageData, SectionPageData, ShoppingPageData, LegendPageData, recipeSchema, introSchema, shoppingSchema, TocPageData } from '@/data/initialData'; // Importar esquemas Zod e tipos específicos
 import { compressImage } from '@/utils/image';
 import { callGemini } from '@/utils/gemini';
 import { generatePdf } from '@/utils/pdf';
@@ -20,6 +20,7 @@ import { RecipeView } from '@/components/views/RecipeView';
 import { IntroView } from '@/components/views/IntroView';
 import { ShoppingView } from '@/components/views/ShoppingView';
 import { LegendView } from '@/components/views/LegendView';
+import { TocView } from '@/components/views/TocView';
 
 // Theme Styles
 import { ThemeStyles } from '@/components/ThemeStyles';
@@ -141,32 +142,45 @@ const Editor = () => {
 
                 {/* PREVIEW */}
                 <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
-                    {pages.map((p, idx) => (
-                    <div 
-                        key={p.id} 
-                        id={`preview-${p.id}`} 
-                        className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
-                        style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
-                    >
-                        <div className="a4-page-texture"></div>
-                        {/* Wrapper "Safe Print Area" */}
-                        <div className="z-10 relative h-full flex flex-col">
-                            {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
-                            {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} />}
-                            
-                            {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
-                            {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
-                            
-                            {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />}
-                            {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />}
-                            {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
-                            
-                            <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
-                                <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span><span>{p.type === TEMPLATES.COVER ? '' : String(idx + 1).padStart(2, '0')}</span>
-                            </div>
-                        </div>
-                    </div>
-                    ))}
+                    {(() => {
+                        let pageCounter = 0;
+
+                        return pages.map((p, idx) => {
+                            const pageNumberLabel =
+                                p.type === TEMPLATES.COVER
+                                    ? ''
+                                    : String((pageCounter += 1)).padStart(2, '0');
+
+                            return (
+                                <div 
+                                    key={p.id} 
+                                    id={`preview-${p.id}`} 
+                                    className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
+                                    style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
+                                >
+                                    <div className="a4-page-texture"></div>
+                                    {/* Wrapper "Safe Print Area" */}
+                                    <div className="z-10 relative h-full flex flex-col">
+                                        {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
+                                        {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}
+                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} />}
+
+                                        {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
+                                        {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
+
+                                        {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />}
+                                        {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />}
+                                        {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
+
+                                        <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
+                                            <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span>
+                                            <span>{p.type === TEMPLATES.COVER ? '' : pageNumberLabel}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        });
+                    })()}
                     <div className="h-40 no-print"></div>
                 </section>
 

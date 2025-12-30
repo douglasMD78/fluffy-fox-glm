@@ -71,13 +71,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {pages.map((p, i) => (
                 <div
                     key={p.id}
-                    draggable
-                    onDragStart={() => onDragStart(i)}
-                    onDragEnter={() => onDragEnter(i)}
-                    onDragEnd={onDragEnd}
+                    draggable={p.type !== TEMPLATES.TOC}
+                    onDragStart={() => (p.type !== TEMPLATES.TOC ? onDragStart(i) : undefined)}
+                    onDragEnter={() => (p.type !== TEMPLATES.TOC ? onDragEnter(i) : undefined)}
+                    onDragEnd={() => (p.type !== TEMPLATES.TOC ? onDragEnd() : undefined)}
                     onDragOver={(e) => e.preventDefault()}
                     onClick={() => onPageSelect(p.id)}
-                    className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''}`}
+                    className={`group flex items-center gap-3 p-3 rounded-xl cursor-grab active:cursor-grabbing transition-all border ${selectedId === p.id ? 'bg-accent text-white shadow-lg shadow-accent/30 border-transparent' : 'border-transparent text-navy/60 hover:bg-surface'} ${dragOverItem === i ? 'border-t-2 border-accent' : ''} ${p.type === TEMPLATES.TOC ? 'cursor-default active:cursor-default' : ''}`}
                 >
                     <span className={`text-[10px] font-mono w-4 ${selectedId === p.id ? 'text-white/70' : 'text-accent'}`}>{i + 1}</span>
                     <div className="flex-1 truncate text-[11px] font-bold uppercase tracking-widest font-sans">{p.title || 'Sem Título'}</div>
