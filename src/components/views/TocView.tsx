@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { TagList } from "@/components/views/TagList";
 import type { PageData, TocPageData } from "@/data/initialData";
 import { buildTocItems, getPrintablePageNumberMap, splitTocIntoParts } from "@/utils/toc";
 
@@ -58,23 +57,12 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
             const pageNum = pageNumberById.get(it.pageId);
             const pageLabel = pageNum ? String(pageNum).padStart(2, "0") : "--";
 
-            const metaParts = [it.time, it.yield].filter(Boolean).join(" • ");
-
             return (
               <div key={`${it.kind}-${it.pageId}`} className="break-inside-avoid mb-3">
                 <div className="flex items-end gap-2">
                   <div className="text-[11px] font-bold text-navy leading-snug flex-1">{it.title}</div>
                   <div className="flex-1 border-b border-dotted border-navy/25 translate-y-[-3px]" />
                   <div className="text-[11px] font-black text-navy tabular-nums">{pageLabel}</div>
-                </div>
-
-                <div className="mt-1 flex items-center justify-between gap-2">
-                  <div className="text-[9px] font-semibold text-navy/50 uppercase tracking-widest">
-                    {metaParts || "\u00A0"}
-                  </div>
-                  <div className="shrink-0">
-                    <TagList tags={it.tags || ""} />
-                  </div>
                 </div>
               </div>
             );
