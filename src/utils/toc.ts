@@ -12,7 +12,12 @@ export type TocItem =
       tags?: string;
     };
 
-export const TOC_MAX_UNITS_PER_PAGE = 48;
+/**
+ * Ajuste fino: como agora o sumário não mostra meta/tags,
+ * cabe mais conteúdo; porém precisamos de folga para não cortar na impressão.
+ * 44 tende a manter 2 páginas e distribuir melhor (sem cortar a primeira).
+ */
+export const TOC_MAX_UNITS_PER_PAGE = 44;
 
 export function buildTocItems(pages: PageData[]): TocItem[] {
   const items: TocItem[] = [];
