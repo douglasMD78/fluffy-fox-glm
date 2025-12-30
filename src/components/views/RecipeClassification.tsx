@@ -34,7 +34,7 @@ export const RecipeClassification: React.FC<RecipeClassificationProps> = ({
 }) => {
   if (!tags) return null;
   
-  const codes = tags.split(',').map(c => c.trim().filter(Boolean);
+  const codes = tags.split(',').map(c => c.trim().filter(Boolean));
   
   if (codes.length === 0) return null;
 
