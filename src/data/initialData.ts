@@ -506,6 +506,11 @@ export function refatorarDadosIniciais(): AnyPage[] {
     (p) => p.type === TEMPLATES.COVER || p.type === TEMPLATES.INTRO || p.type === TEMPLATES.LEGEND
   );
 
+  // Páginas de sumário (manter as existentes)
+  const tocPages = originalData.filter(
+    (p) => p.type === TEMPLATES.TOC
+  );
+
   // Agrupar receitas por categoria canônica, inserindo capa de seção antes de cada grupo
   function buildGroupedOrder(recipes: AnyPage[]): AnyPage[] {
     // Mapa categoria -> receitas
@@ -554,12 +559,16 @@ export function refatorarDadosIniciais(): AnyPage[] {
 
   const newRecipeOrder = buildGroupedOrder(recipePages);
 
-  // Remontar PDF sem TOC
+  // Remontar PDF COM TOC (incluindo as 5 páginas de sumário existentes)
   const newPdf: AnyPage[] = [];
   const cover = specialPages.find((p) => p.type === TEMPLATES.COVER);
   if (cover) newPdf.push(cover);
   const introStart = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
   if (introStart) newPdf.push(introStart);
+  
+  // Incluir todas as páginas de sumário existentes
+  newPdf.push(...tocPages);
+  
   const legend = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
   if (legend) newPdf.push(legend);
   newPdf.push(...newRecipeOrder);
