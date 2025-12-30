@@ -605,7 +605,7 @@ function buildGroupedOrder(recipes: AnyPage[]): AnyPage[] {
   return grouped;
 }
 
-// Função principal de refatoração
+// Função principal de refatoração - AGORA SIMPLIFICADA
 export function refatorarDadosIniciais(): AnyPage[] {
   const originalData: AnyPage[] = clone(originalJson.pages);
   const transformer = new RecipeTransformer(originalData);
@@ -620,27 +620,8 @@ export function refatorarDadosIniciais(): AnyPage[] {
   transformer.finalizeTagsAndYields();
   transformer.runQA();
 
-  // Montar PDF final
-  const specialPages = originalData.filter(
-    (p) => p.type === TEMPLATES.COVER || p.type === TEMPLATES.INTRO || p.type === TEMPLATES.LEGEND
-  );
-  const tocPages = originalData.filter((p) => p.type === TEMPLATES.TOC);
-  const recipePages = originalData.filter((p) => p.type === TEMPLATES.RECIPE);
-  const newRecipeOrder = buildGroupedOrder(recipePages);
-
-  const newPdf: AnyPage[] = [];
-  const cover = specialPages.find((p) => p.type === TEMPLATES.COVER);
-  if (cover) newPdf.push(cover);
-  const introStart = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_intro");
-  if (introStart) newPdf.push(introStart);
-  newPdf.push(...tocPages);
-  const legend = specialPages.find((p) => p.type === TEMPLATES.LEGEND);
-  if (legend) newPdf.push(legend);
-  newPdf.push(...newRecipeOrder);
-  const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
-  if (introEnd) newPdf.push(introEnd);
-
-  return newPdf;
+  // Retornar os dados transformados COMPLETOS - incluindo todas as páginas originais
+  return originalData;
 }
 
 export const PDF_LUIZA_DATA = (() => {
