@@ -94,6 +94,9 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                             <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
                                                 {tag.label}
                                             </span>
+                                            <span className="text-navy/60 font-bold text-[9px] uppercase tracking-wider print:text-[7px]">
+                                                {tag.code}
+                                            </span>
                                         </div>
                                     </div>
                                 );
@@ -129,6 +132,9 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                             </div>
                                             <span className="text-navy font-light text-[11px] uppercase tracking-wider leading-tight print:text-[9px]">
                                                 {tag.label}
+                                            </span>
+                                            <span className="text-navy/60 font-bold text-[9px] uppercase tracking-wider print:text-[7px]">
+                                                {tag.code}
                                             </span>
                                         </div>
                                     </div>
