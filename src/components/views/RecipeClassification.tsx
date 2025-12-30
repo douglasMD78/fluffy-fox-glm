@@ -60,7 +60,7 @@ export const RecipeClassification: React.FC<RecipeClassificationProps> = ({
             title={iconData.label}
           >
             <IconComponent size={iconSize} />
-            {!compact && <span className="text-[10px] font-bold uppercase">{code}</span>}
+            <span className="text-[10px] font-bold uppercase">{code}</span>
           </div>
         );
       })}
