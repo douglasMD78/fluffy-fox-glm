@@ -343,6 +343,28 @@ export const PDF_LUIZA_DATA = (() => {
 
     // 3) Limpar rendimento, removendo tags indevidas
     page.yield = cleanYield(page.yield);
+
+    // 4) Preencher rendimento padrão se ficou vazio
+    if (!page.yield || !String(page.yield).trim()) {
+      const cat = String(page.category || "");
+      const t = String(page.title || "").toUpperCase();
+
+      function defaultYieldByCategory() {
+        if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") return "4 porções";
+        if (cat === "BOLOS, DOCES & SOBREMESAS") return "1 porção";
+        if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
+        if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
+        if (cat === "SHAKES E IOGURTES") {
+          // Pequena heurística: se for iogurte com geleia ou iogurte natural, prefere "1 potinho"
+          if (t.includes("IOGURTE")) return "1 potinho";
+          if (t.includes("SHAKE")) return "1 copo";
+          return "1 porção";
+        }
+        return "1 porção";
+      }
+
+      page.yield = defaultYieldByCategory();
+    }
   });
 
   // Páginas especiais sem TOC
