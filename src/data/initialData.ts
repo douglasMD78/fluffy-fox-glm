@@ -267,13 +267,39 @@ export const PDF_LUIZA_DATA = (() => {
 
   // 2) Categorias específicas
   const toast = recipeMap.get("TOAST DE ATUM CREMOSO");
-  if (toast) toast.category = "CAFÉ DA MANHÃ E LANCHES RÁPIDOS";
+  if (toast) toast.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
   const crepiocaDoce = recipeMap.get("CREPIOCA DOCE COM BANANA");
-  if (crepiocaDoce) crepiocaDoce.category = "CAFÉ DA MANHÃ E LANCHES RÁPIDOS";
+  if (crepiocaDoce) crepiocaDoce.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
   const milkCafe = recipeMap.get("MILK SHAKE DE CAFÉ");
   if (milkCafe) milkCafe.category = "SHAKES E IOGURTES";
   const milkProteico = recipeMap.get("MILKSHAKE PROTEICO");
   if (milkProteico) milkProteico.category = "SHAKES E IOGURTES";
+
+  // 2.1) Tags faltantes de Café da Manhã / Lanches Rápidos (CM/LM)
+  const panquecaFit = recipeMap.get("PANQUECA FIT");
+  if (panquecaFit) panquecaFit.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const overnightOats = recipeMap.get("OVERNIGHT OATS");
+  if (overnightOats) overnightOats.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const waffleDoce = recipeMap.get("WAFFLE DOCE");
+  if (waffleDoce) waffleDoce.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const waffleSalgado = recipeMap.get("WAFFLE SALGADO");
+  if (waffleSalgado) waffleSalgado.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const paoCarneMoida = recipeMap.get("PÃO COM CARNE MOÍDA");
+  if (paoCarneMoida) paoCarneMoida.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const sanduicheNatural = recipeMap.get("SANDUÍCHE NATURAL");
+  if (sanduicheNatural) sanduicheNatural.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+  const crepioca = recipeMap.get("CREPIOCA");
+  if (crepioca) crepioca.category = "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+
+  // 2.2) Tags faltantes de Shakes / Iogurtes (B/LM/LT/CM)
+  const iogurteNatural = recipeMap.get("IOGURTE NATURAL INFINITO");
+  if (iogurteNatural) iogurteNatural.category = "SHAKES E IOGURTES";
+  const iogurteGeleiaMorango = recipeMap.get("IOGURTE COM GELEIA DE MORANGO");
+  if (iogurteGeleiaMorango) iogurteGeleiaMorango.category = "SHAKES E IOGURTES";
+  const milkshakeCafe = recipeMap.get("MILK SHAKE DE CAFÉ");
+  if (milkshakeCafe) milkshakeCafe.category = "SHAKES E IOGURTES";
+  const milkshakeProteico = recipeMap.get("MILKSHAKE PROTEICO");
+  if (milkshakeProteico) milkshakeProteico.category = "SHAKES E IOGURTES";
 
   // 3) Ajustar proteína do Abacaxi Caramelizado
   const abacaxi = recipeMap.get("ABACAXI CARAMELIZADO");
