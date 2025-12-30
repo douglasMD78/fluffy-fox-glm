@@ -7,7 +7,7 @@ import {
   Sandwich, 
   Soup, 
   Cake, 
-  Yogurt,
+  Milk,
   ChefHat,
   Salad
 } from 'lucide-react';
@@ -32,7 +32,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
         'J': { icon: ChefHat, label: 'Jantar' },
         'S': { icon: Cake, label: 'Sobremesa' },
         'AC': { icon: Salad, label: 'Acompanhamento' },
-        'B': { icon: Yogurt, label: 'Base' }
+        'B': { icon: Milk, label: 'Base' }
     };
 
     return (
