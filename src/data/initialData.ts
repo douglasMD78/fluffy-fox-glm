@@ -376,6 +376,19 @@ export const PDF_LUIZA_DATA = (() => {
   const titleMap = new Map<string, AnyPage>();
   recipePages.forEach((r) => titleMap.set(r.title.toUpperCase(), r));
 
+  // NOVO: normalizador para melhorar o matching (remove acentos, normaliza espaços)
+  const norm = (s: string) =>
+    String(s || "")
+      .toUpperCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  // Recriar o mapa com chave normalizada
+  const normalizedTitleMap = new Map<string, AnyPage>();
+  recipePages.forEach((r) => normalizedTitleMap.set(norm(String(r.title || "")), r));
+
   const newRecipeOrder: AnyPage[] = [];
   USER_CATEGORIZED_RECIPES.forEach((itemTitle) => {
     // Se é uma seção conhecida
@@ -389,9 +402,21 @@ export const PDF_LUIZA_DATA = (() => {
       return;
     }
 
-    // Caso contrário, é uma RECEITA (busca pelo título exato)
-    const r = titleMap.get(itemTitle.toUpperCase());
+    // Caso contrário, é uma RECEITA (matcher tolerante)
+    const byExact = titleMap.get(itemTitle.toUpperCase());
+    const byNorm = normalizedTitleMap.get(norm(itemTitle));
+    const r = byExact || byNorm;
     if (r) newRecipeOrder.push(r);
+  });
+
+  // NOVO: fallback — garante que nenhuma receita fique de fora
+  const includedIds = new Set<string>(
+    newRecipeOrder.filter((p) => p.type === TEMPLATES.RECIPE).map((p) => String(p.id))
+  );
+  recipePages.forEach((rp) => {
+    if (!includedIds.has(String(rp.id))) {
+      newRecipeOrder.push(rp);
+    }
   });
 
   // Remontar PDF sem TOC
