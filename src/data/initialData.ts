@@ -349,6 +349,77 @@ export const PDF_LUIZA_DATA = (() => {
     page._tagsLocked = isManual;
   });
 
+  // NOVO: Calibrar rendimento por padrões de título (apenas se o campo estiver vazio após limpeza)
+  function calibrateYieldByTitle(title: string, currentYield: string, category: string): string {
+    if (currentYield && String(currentYield).trim()) {
+      // Se já tem valor preenchido, mantém
+      return String(currentYield).trim();
+    }
+
+    const titleU = title.toUpperCase();
+    const cat = canonicalCategory(category);
+
+    // Padrões específicos de título, retornam yield natural quando detectados
+    if (titleU.includes("HAMBÚRGUER")) return "6 hambúrgueres";
+    if (titleU.includes("MINI PIZZA") || titleU.includes("PIZZA") || titleU.includes("DISQUINHOS")) return "12 disquinhos";
+    if (titleU.includes("TOAST")) return "8 toasts";
+    if (titleU.includes("COXINHA")) return "9 coxinhas";
+    if (titleU.includes("PASTELZINHO") || titleU.includes("PASTEIZINHO")) return "6 pasteizinhos";
+    if (titleU.includes("BOLINHO DE CHOCOLATE")) return "6 bolinhos";
+    if (titleU.includes("MUFFIN")) return "4 muffins";
+    if (titleU.includes("BOLINHO DE MICROONDAS")) return "1 bolinho";
+    if (titleU.includes("PÃO DE MEL")) return "6 unidades";
+    if (titleU.includes("SORVETE")) return "1 porção (conforme o tamanho da porção)";
+    if (titleU.includes("PRESTÍGIO FIT") || titleU.includes("BOLO NO POTE") || titleU.includes("DANONINHO FIT") || titleU.includes("FLAN") || titleU.includes("MOUSSE") || titleU.includes("PUDDING")) {
+      return "1 potinho";
+    }
+    // Heurísticas já existentes (shakes/iogurtes)
+    if (cat === "SHAKES E IOGURTES") {
+      if (titleU.includes("IOGURTE")) return "1 potinho";
+      if (titleU.includes("SHAKE")) return "1 copo";
+      return "1 porção";
+    }
+    // Padrões por categoria (genérico)
+    if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") return "4 porções";
+    if (cat === "BOLOS, DOCES & SOBREMESAS") return "1 porção";
+    if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
+    if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
+
+    return "1 porção";
+  }
+
+  // Agora aplicar calibração após limpeza e before default genérico
+  recipePages.forEach((p) => {
+    const page: any = p;
+
+    // 1) Extrair códigos do yield (já feito acima) e limpar yield
+    page.yield = cleanYield(page.yield);
+
+    // 2) Calibrar por título, só se estiver vazio
+    page.yield = calibrateYieldByTitle(String(page.title || ""), String(page.yield || ""), String(page.category || ""));
+
+    // 3) Se ainda vazio, atribuir padrão por categoria (reutilizar a função anterior para consistência)
+    if (!page.yield || !String(page.yield).trim()) {
+      const cat = String(page.category || "");
+      const t = String(page.title || "").toUpperCase();
+
+      function defaultYieldByCategory() {
+        if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") return "4 porções";
+        if (cat === "BOLOS, DOCES & SOBREMESAS") return "1 porção";
+        if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
+        if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
+        if (cat === "SHAKES E IOGURTES") {
+          if (t.includes("IOGURTE")) return "1 potinho";
+          if (t.includes("SHAKE")) return "1 copo";
+          return "1 porção";
+        }
+        return "1ção";
+      }
+
+      page.yield = defaultYieldByCategory();
+    }
+  });
+
   // NOVO: Correção de tags (code) e limpeza do rendimento (yield)
   const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
 
