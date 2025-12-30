@@ -180,13 +180,12 @@ export const PDF_LUIZA_DATA = (() => {
   const shakePage = recipeMap.get(shakeTitle.toUpperCase());
   const iogPage = recipeMap.get(iogTitle.toUpperCase());
   if (shakePage && iogPage) {
-    const tmpIngredients = shakePage.ingredientGroups;
-    const tmpPrep = shakePage.prepSteps;
-    const tmpTips = shakePage.tips;
-    const tmpStorage = shakePage.storage;
+    // Guardar ingredientes originais de cada página ANTES de sobrescrever
+    const shakeIngredientsFromJSON = shakePage.ingredientGroups;
+    const iogIngredientsFromJSON = iogPage.ingredientGroups;
 
-    // IOGURTE passa a ser iogurte caseiro + geleia
-    iogPage.ingredientGroups = tmpIngredients;
+    // IOGURTE passa a ser iogurte caseiro + geleia (usa ingredientes que estavam originalmente no shake)
+    iogPage.ingredientGroups = shakeIngredientsFromJSON;
     iogPage.prepSteps =
       "Aqueça o leite até atingir 40°C (morno ao toque) e dissolva o leite em pó. Adicione o iogurte, misture bem, cubra e deixe firmar em local abafado.\nEm uma panela, cozinhe morangos com suco de limão e adoçante até obter ponto de geleia espessa.\nDistribua a geleia no fundo dos potes e complete com o iogurte firme.";
     iogPage.tips = "Se preferir, faça a geleia com pedaços maiores para textura.";
@@ -194,8 +193,8 @@ export const PDF_LUIZA_DATA = (() => {
     iogPage.category = "SHAKES E IOGURTES";
     iogPage.yield = "8 potinhos";
 
-    // SHAKE passa a ser o shake regulador de fibras
-    shakePage.ingredientGroups = iogPage.ingredientGroups;
+    // SHAKE passa a ser o shake regulador de fibras (usa ingredientes que estavam originalmente no iogurte)
+    shakePage.ingredientGroups = iogIngredientsFromJSON;
     shakePage.prepSteps =
       "Em recipientes separados, coloque as ameixas e a chia de molho em um pouco de água por 10 a 15 minutos.\nA água onde a ameixa ficou de molho contém sorbitol (laxante natural) e deve ser usada na receita. A chia formará um \"gel\" que também será usado integralmente.\nNo liquidificador, coloque o líquido de sua escolha, a linhaça, o mamão, as ameixas com a água do molho, o gel de chia, o psyllium e o adoçante.\nBata até que a mistura fique homogênea e com uma cor mais escura.";
     shakePage.tips = 'Protocolo: Consumir "dia sim, dia não" para auxiliar na regulação do trânsito intestinal.';
