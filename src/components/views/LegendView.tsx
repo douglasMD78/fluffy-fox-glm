@@ -59,7 +59,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                             {mealTags.map((tag) => (
                                 <div
                                     key={tag.code}
-                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
+                                    className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
                                 >
                                     <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
                                         <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
@@ -90,7 +90,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                             {otherTags.map((tag) => (
                                 <div
                                     key={tag.code}
-                                    className="group relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200 hover:shadow-lg hover:bg-white transition-all duration-300 hover:-translate-y-1"
+                                    className="relative bg-white/70 backdrop-blur-sm border border-gray-100/60 rounded-2xl p-6 print:p-4 print:bg-white print:border-gray-200"
                                 >
                                     <div className="flex flex-col items-center text-center space-y-3 print:space-y-2">
                                         <div className={`${tag.color} ${tag.text} font-light text-xs w-12 h-12 flex items-center justify-center rounded-xl shadow-md print:w-9 print:h-9 print:text-[10px] print:shadow-sm print-color-adjust`}>
