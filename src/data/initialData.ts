@@ -376,18 +376,46 @@ export const PDF_LUIZA_DATA = (() => {
   const titleMap = new Map<string, AnyPage>();
   recipePages.forEach((r) => titleMap.set(r.title.toUpperCase(), r));
 
-  // NOVO: normalizador para melhorar o matching (remove acentos, normaliza espaços)
+  // Normalizador para melhorar matching (remove acentos, normaliza espaços e pontuação simples)
   const norm = (s: string) =>
     String(s || "")
       .toUpperCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, " ")
+      .replace(/[\u0300-\u036f]/g, "")   // acentos
+      .replace(/[^\w\s]/g, " ")          // pontuação vira espaço
+      .replace(/\s+/g, " ")              // espaços únicos
       .trim();
 
-  // Recriar o mapa com chave normalizada
+  // Mapa normalizado
   const normalizedTitleMap = new Map<string, AnyPage>();
   recipePages.forEach((r) => normalizedTitleMap.set(norm(String(r.title || "")), r));
+
+  // Busca tolerante: tenta exato, normalizado e "includes" nos dois sentidos
+  function findRecipeByTitle(itemTitle: string): AnyPage | undefined {
+    const exact = titleMap.get(itemTitle.toUpperCase());
+    if (exact) return exact;
+
+    const nItem = norm(itemTitle);
+    const byNorm = normalizedTitleMap.get(nItem);
+    if (byNorm) return byNorm;
+
+    // Includes (item contém receita ou receita contém item)
+    let candidate: AnyPage | undefined;
+    const nItemWords = nItem.split(" ").filter(Boolean);
+    for (const r of recipePages) {
+      const nTitle = norm(String(r.title || ""));
+      if (nTitle.includes(nItem) || nItem.includes(nTitle)) {
+        candidate = r;
+        break;
+      }
+      // fallback: forte interseção de palavras
+      const overlap = nItemWords.filter((w) => nTitle.includes(w)).length;
+      if (!candidate && overlap >= Math.max(1, Math.floor(nItemWords.length * 0.4))) {
+        candidate = r;
+      }
+    }
+    return candidate;
+  }
 
   const newRecipeOrder: AnyPage[] = [];
   USER_CATEGORIZED_RECIPES.forEach((itemTitle) => {
@@ -403,13 +431,11 @@ export const PDF_LUIZA_DATA = (() => {
     }
 
     // Caso contrário, é uma RECEITA (matcher tolerante)
-    const byExact = titleMap.get(itemTitle.toUpperCase());
-    const byNorm = normalizedTitleMap.get(norm(itemTitle));
-    const r = byExact || byNorm;
+    const r = findRecipeByTitle(itemTitle);
     if (r) newRecipeOrder.push(r);
   });
 
-  // NOVO: fallback — garante que nenhuma receita fique de fora
+  // Fallback — garante que nenhuma receita fique de fora
   const includedIds = new Set<string>(
     newRecipeOrder.filter((p) => p.type === TEMPLATES.RECIPE).map((p) => String(p.id))
   );
