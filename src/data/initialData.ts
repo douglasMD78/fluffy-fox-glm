@@ -312,14 +312,17 @@ export const PDF_LUIZA_DATA = (() => {
   }
 
   // 5) Completar storage dos waffles
-  const waffleDoce = recipeMap.get("WAFFLE DOCE");
-  if (waffleDoce) {
-    waffleDoce.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
-  }
-  const waffleSalgado = recipeMap.get("WAFFLE SALGADO");
-  if (waffleSalgado) {
-    waffleSalgado.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
-  }
+  // Consolidado em bloco isolado para evitar declarações duplicadas de variáveis
+  (function updateWaffleStorage() {
+    const wDoce = recipeMap.get("WAFFLE DOCE");
+    if (wDoce) {
+      wDoce.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
+    }
+    const wSalgado = recipeMap.get("WAFFLE SALGADO");
+    if (wSalgado) {
+      wSalgado.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
+    }
+  })();
 
   // Páginas especiais sem TOC
   const specialPages = originalData.filter(
