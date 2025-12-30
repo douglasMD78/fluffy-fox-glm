@@ -114,7 +114,7 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
         const withoutToc = currentPages.filter(p => p.type !== TEMPLATES.TOC);
 
         const tocItems = buildTocItems(withoutToc);
-        const parts = splitTocIntoParts(tocItems, 30);
+        const parts = splitTocIntoParts(tocItems, 42);
         const requiredCount = parts.length;
 
         const tocPages: PageData[] = Array.from({ length: requiredCount }).map((_, idx) => ({
