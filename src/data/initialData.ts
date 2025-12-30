@@ -287,6 +287,68 @@ export const PDF_LUIZA_DATA = (() => {
     (p as any).category = canonicalCategory((p as any).category);
   });
 
+  // NOVO: Substituição inteligente de tags por categoria, preservando edições manuais
+  function smartTagsForRecipe(title: string, category: string, currentCodeRaw: string): { tags: string[]; isManual: boolean } {
+    const titleU = title.toUpperCase();
+    const cat = canonicalCategory(category);
+    const currentCodes = normalizeCodes(currentCodeRaw);
+
+    // Flag simples: se o usuário editou tags diretamente via código no JSON, marcamos como manual
+    // Aqui usamos heurística: se as tags atuais divergem totalmente do recomendado para a categoria, consideramos manual
+    const recommendedCat = getRecommendedTags(title, cat);
+    const isManual = currentCodes.length > 0 && !recommendedCat.some(t => currentCodes.includes(t));
+
+    if (isManual) {
+      // Preservar manualmente: retorna o que está, sem alterar
+      return { tags: currentCodes, isManual: true };
+    }
+
+    // Substituição inteligente baseada na categoria canônica
+    let smart: string[] = [];
+    if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") {
+      smart = ["CM", "LM"];
+    } else if (cat === "BOLOS, DOCES & SOBREMESAS") {
+      smart = ["S"];
+    } else if (cat === "SALGADOS E REFEIÇÕES") {
+      smart = ["A", "J"];
+    } else if (cat === "ACOMPANHAMENTOS, SALADAS & SOPAS") {
+      if (titleU.includes("CALDINHO") || titleU.includes("SOPA")) {
+        smart = ["A", "J"];
+      } else {
+        smart = ["AC"];
+      }
+    } else if (cat === "SHAKES E IOGURTES") {
+      if (titleU.includes("IOGURTE NATURAL INFINITO") || titleU.includes("SHAKE LAXATIVO")) {
+        smart = ["B", "LM"];
+      } else {
+        smart = ["LM"];
+      }
+    } else {
+      // Fallback: usa recomendado atual
+      smart = recommendedCat;
+    }
+
+    // Ajuste fino para bases conhecidas (ex.: Requeijão)
+    if (titleU.includes("REQUEIJÃO")) {
+      if (!smart.includes("B")) smart.push("B");
+    }
+
+    return { tags: smart, isManual: false };
+  }
+
+  recipePages.forEach((p) => {
+    const page: any = p;
+    const { tags: smartTags, isManual } = smartTagsForRecipe(String(page.title || ""), String(page.category || ""), String(page.code || ""));
+
+    // Ordenar por prioridade
+    const order = ["B", "CM", "LM", "LT", "A", "J", "AC", "S"];
+    smartTags.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    page.code = smartTags.join(", ");
+
+    // Atualiza campo de controle manual (para uso futuro no editor, se quiser persistir)
+    page._tagsLocked = isManual;
+  });
+
   // NOVO: Correção de tags (code) e limpeza do rendimento (yield)
   const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
 
