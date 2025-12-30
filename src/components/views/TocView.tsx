@@ -1,6 +1,11 @@
 import React, { useMemo } from "react";
 import type { PageData, TocPageData } from "@/data/initialData";
-import { buildTocItems, getPrintablePageNumberMap, splitTocIntoParts, TOC_MAX_UNITS_PER_PAGE } from "@/utils/toc";
+import {
+  buildTocItems,
+  getPrintablePageNumberMap,
+  splitTocIntoParts,
+  TOC_MAX_UNITS_PER_PAGE,
+} from "@/utils/toc";
 
 interface TocViewProps {
   data: TocPageData;
@@ -68,8 +73,10 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
           })}
         </div>
 
-        <div className="mt-6 text-center text-[9px] text-navy/40 font-bold tracking-widest uppercase">
-          {totalParts > 1 ? "Continua na próxima página" : "Boa leitura"}
+        <div className="mt-3 border-t border-navy/10 pt-3 pb-6">
+          <div className="text-center text-[9px] text-navy/40 font-bold tracking-widest uppercase">
+            {totalParts > 1 ? "Continua na próxima página" : "Boa leitura"}
+          </div>
         </div>
       </div>
     </div>
