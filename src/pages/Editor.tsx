@@ -38,6 +38,8 @@ import { MagicModal } from '@/components/modals/MagicModal'; // Importar MagicMo
 import { useAiFeatures } from '@/hooks/useAiFeatures'; // Importar useAiFeatures
 import { useAppPersistence } from '@/hooks/useAppPersistence'; // Importar o novo hook useAppPersistence
 
+import { refatorarDadosIniciais } from '@/data/initialData';
+
 const Editor = () => {
     // Usar o hook useAppPersistence para gerenciar páginas, tema e persistência
     const {
@@ -85,6 +87,13 @@ const Editor = () => {
     // Removido: const [showThemeEditor, setShowThemeEditor] = useState(false);
     // Removido: const handlePrint = async () => { ... };
     
+    const handleRefactor = () => {
+        if (confirm("Refatorar vai reaplicar ordenação, tags e rendimentos automáticos. Continuar?")) {
+            const refactored = refatorarDadosIniciais();
+            setPages(refactored);
+        }
+    };
+
     return (
         <>
             <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
@@ -138,6 +147,7 @@ const Editor = () => {
                     onDragStart={handleDragStart}
                     onDragEnter={onDragEnter} // Usando onDragEnter do hook
                     onDragEnd={handleSort}
+                    onRefactor={handleRefactor}
                 />
 
                 {/* PREVIEW */}

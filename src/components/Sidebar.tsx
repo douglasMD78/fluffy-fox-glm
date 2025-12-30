@@ -26,6 +26,7 @@ interface SidebarProps {
     onDragStart: (index: number) => void;
     onDragEnter: (index: number) => void;
     onDragEnd: () => void;
+    onRefactor: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -47,6 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onDragStart,
     onDragEnter,
     onDragEnd,
+    onRefactor,
 }) => {
     return (
         <aside className="w-72 bg-white/80 backdrop-blur-md border-r border-white/50 flex flex-col no-print shrink-0 z-10 shadow-soft">
