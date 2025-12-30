@@ -13,14 +13,36 @@ export type TocItem =
     };
 
 /**
- * Como agora o sumário está mais "enxuto", caberia mais conteúdo,
- * mas precisamos de folga para não cortar na impressão (área segura inferior).
+ * Como o Sumário tem 2 colunas e títulos longos podem quebrar linha,
+ * precisamos de folga real para não estourar a altura e cortar texto na impressão.
  */
-export const TOC_MAX_UNITS_PER_PAGE = 40;
+export const TOC_MAX_UNITS_PER_PAGE = 34;
+
+function normalizedTitle(s: string) {
+  return String(s || "").trim().replace(/\s+/g, " ");
+}
+
+function recipeUnitsByTitle(title: string) {
+  // Base: 1 item.
+  // Se o título é longo, ele tende a quebrar linha e "custa" mais altura.
+  const t = normalizedTitle(title);
+
+  let u = 1;
+
+  // thresholds calibrados para A5 em 2 colunas com font 11px
+  if (t.length > 28) u += 0.6;
+  if (t.length > 40) u += 0.6;
+  if (t.length > 52) u += 0.6;
+
+  // parênteses costumam aumentar quebra
+  if (t.includes("(") || t.includes(")")) u += 0.2;
+
+  return u;
+}
 
 function unitsFor(it: TocItem) {
-  // Layout atual (sem meta/tags): seção ocupa um pouco mais; receita ocupa menos.
-  return it.kind === "section" ? 2 : 1;
+  if (it.kind === "section") return 2;
+  return recipeUnitsByTitle(it.title);
 }
 
 function partUnits(part: TocItem[]) {
@@ -42,37 +64,23 @@ function fixTrailingSection(parts: TocItem[][]) {
   }
 }
 
-function balanceLastTwo(parts: TocItem[][], maxUnitsPerPage: number) {
-  if (parts.length < 2) return;
+function ensureSectionHasFollower(parts: TocItem[][]) {
+  // Evita uma página começar com "seção" e logo em seguida outra seção,
+  // ou ficar com seção "solta" no topo sem receita visível.
+  for (let i = 0; i < parts.length; i++) {
+    const first = parts[i][0];
+    const second = parts[i][1];
 
-  const lastIdx = parts.length - 1;
-  const a = parts[lastIdx - 1];
-  const b = parts[lastIdx];
-
-  const minDesired = Math.floor(maxUnitsPerPage * 0.7);
-
-  // Se a última página está muito vazia, puxar algumas receitas da anterior.
-  // Mantém regra de não terminar em seção.
-  while (
-    partUnits(b) < minDesired &&
-    partUnits(a) > minDesired &&
-    a.length > 0
-  ) {
-    // não mover seção sozinha
-    const candidate = a[a.length - 1];
-    if (!candidate) break;
-
-    if (candidate.kind === "section") {
-      // se a anterior está terminando em seção, empurra ela pra próxima (e continua)
-      fixTrailingSection(parts);
-      break;
+    if (first?.kind === "section" && (!second || second.kind === "section")) {
+      // tenta puxar 1 receita da página anterior (se existir)
+      if (i > 0) {
+        const prev = parts[i - 1];
+        const candidate = prev[prev.length - 1];
+        if (candidate && candidate.kind === "recipe") {
+          parts[i].unshift(prev.pop()!);
+        }
+      }
     }
-
-    const u = unitsFor(candidate);
-    if (partUnits(b) + u > maxUnitsPerPage) break;
-
-    b.unshift(a.pop()!);
-    fixTrailingSection(parts);
   }
 }
 
@@ -124,9 +132,9 @@ export function splitTocIntoParts(items: TocItem[], maxUnitsPerPage: number): To
 
   const normalized = parts.length ? parts : [[]];
 
-  // Regras "inteligentes"
+  // Regras "inteligentes" para não estourar altura e não ficar feio.
   fixTrailingSection(normalized);
-  balanceLastTwo(normalized, maxUnitsPerPage);
+  ensureSectionHasFollower(normalized);
 
   return normalized;
 }

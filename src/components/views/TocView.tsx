@@ -32,6 +32,8 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
     };
   }, [allPages, part]);
 
+  const isLastPart = (part || 1) >= totalParts;
+
   return (
     <div className="flex-1 flex flex-col h-full bg-white font-sans">
       <div className="px-8 pt-10 pb-6 text-center">
@@ -44,7 +46,8 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
         )}
       </div>
 
-      <div className="flex-1 px-8 pb-10">
+      {/* Safe-area real: reservamos espaço de sobra no fim da página para não cortar na impressão */}
+      <div className="flex-1 px-8 pb-14">
         <div className="columns-2 gap-8">
           {itemsForThisPart.map((it, i) => {
             if (it.kind === "section") {
@@ -72,10 +75,13 @@ export const TocView: React.FC<TocViewProps> = ({ data, allPages }) => {
             );
           })}
         </div>
+      </div>
 
-        <div className="mt-3 border-t border-navy/10 pt-3 pb-6">
+      {/* Rodapé fixo com borda + respiro extra (e sem cortar) */}
+      <div className="px-8 pb-10">
+        <div className="border-t border-navy/10 pt-3">
           <div className="text-center text-[9px] text-navy/40 font-bold tracking-widest uppercase">
-            {totalParts > 1 ? "Continua na próxima página" : "Boa leitura"}
+            {!isLastPart ? "Continua na próxima página" : "Boa leitura"}
           </div>
         </div>
       </div>
