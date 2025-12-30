@@ -206,6 +206,38 @@ function calibrateYieldByTitle(title: string, currentYield: string, category: st
   return "1 porção";
 }
 
+// Correção de tags (code) e limpeza do rendimento (yield)
+const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
+
+function extractCodesFromString(s?: string): string[] {
+  const text = String(s || "").toUpperCase();
+  const matches = text.match(/\b(CM|LM|A|LT|J|S|AC|B)\b/g) || [];
+  // remove duplicatas preservando ordem
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const m of matches) {
+    if (!seen.has(m)) { seen.add(m); out.push(m); }
+  }
+  return out;
+}
+
+function cleanYield(y?: string): string {
+  if (!y) return "";
+  let val = String(y);
+
+  // Remover parênteses que contenham códigos de tag
+  val = val.replace(/\([^)]*\)/g, (group) => {
+    const hasCode = TAG_CODES.some((code) => group.toUpperCase().includes(code));
+    return hasCode ? "" : group;
+  });
+
+  // Remover códigos soltos fora de parênteses
+  val = val.replace(/\b(CM|LM|A|LT|J|S|AC|B)\b/g, "").replace(/\s+,/g, ",").replace(/,\s+/g, ", ").trim();
+
+  // Se depois da limpeza sobrou vazio, deixa vazio (melhor do que mostrar tags no lugar do rendimento)
+  return val.trim();
+}
+
 // Função de refatoração exportada
 export function refatorarDadosIniciais(): AnyPage[] {
   const originalData: AnyPage[] = clone(originalJson.pages);
@@ -302,22 +334,44 @@ export function refatorarDadosIniciais(): AnyPage[] {
     }
   })();
 
-  // Padronizar categorias para os nomes canônicos
+  // NOVO: Padronizar categorias para os nomes canônicos
+  function canonicalCategory(name?: string) {
+    const s = String(name || "").toUpperCase().trim();
+    if (s.includes("SOPAS") || s.includes("CALDOS") || s.includes("ACOMPANHAMENTOS") || s.includes("SALADAS")) {
+      return "ACOMPANHAMENTOS, SALADAS & SOPAS";
+    }
+    if (s.includes("BOLOS") || s.includes("SOBREMESAS") || s.includes("DOCES")) {
+      return "BOLOS, DOCES & SOBREMESAS";
+    }
+    if (s.includes("LANCHES") || s.includes("CAFÉ")) {
+      return "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+    }
+    if (s.includes("SALGADOS") || s.includes("REFEIÇÕES")) {
+      return "SALGADOS E REFEIÇÕES";
+    }
+    if (s.includes("SHAKES") || s.includes("IOGURTES")) {
+      return "SHAKES E IOGURTES";
+    }
+    return name || "";
+  }
+
   recipePages.forEach((p) => {
     (p as any).category = canonicalCategory((p as any).category);
   });
 
-  // Substituição inteligente de tags por categoria, preservando edições manuais
+  // NOVO: Substituição inteligente de tags por categoria, preservando edições manuais
   function smartTagsForRecipe(title: string, category: string, currentCodeRaw: string): { tags: string[]; isManual: boolean } {
     const titleU = title.toUpperCase();
     const cat = canonicalCategory(category);
     const currentCodes = normalizeCodes(currentCodeRaw);
 
     // Flag simples: se o usuário editou tags diretamente via código no JSON, marcamos como manual
+    // Aqui usamos heurística: se as tags atuais divergem totalmente do recomendado para a categoria, consideramos manual
     const recommendedCat = getRecommendedTags(title, cat);
     const isManual = currentCodes.length > 0 && !recommendedCat.some(t => currentCodes.includes(t));
 
     if (isManual) {
+      // Preservar manualmente: retorna o que está, sem alterar
       return { tags: currentCodes, isManual: true };
     }
 
@@ -342,6 +396,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
         smart = ["LM"];
       }
     } else {
+      // Fallback: usa recomendado atual
       smart = recommendedCat;
     }
 
@@ -376,7 +431,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
     // 2) Calibrar por título, só se estiver vazio
     page.yield = calibrateYieldByTitle(String(page.title || ""), String(page.yield || ""), String(page.category || ""));
 
-    // 3) Se ainda vazio, atribuir padrão por categoria
+    // 3) Se ainda vazio, atribuir padrão por categoria (reutilizar a função anterior para consistência)
     if (!page.yield || !String(page.yield).trim()) {
       const cat = String(page.category || "");
       const t = String(page.title || "").toUpperCase();
@@ -397,36 +452,6 @@ export function refatorarDadosIniciais(): AnyPage[] {
       page.yield = defaultYieldByCategory();
     }
   });
-
-  // Correção de tags (code) e limpeza do rendimento (yield)
-  const TAG_CODES = ["CM", "LM", "A", "LT", "J", "S", "AC", "B"];
-
-  function extractCodesFromString(s?: string): string[] {
-    const text = String(s || "").toUpperCase();
-    const matches = text.match(/\b(CM|LM|A|LT|J|S|AC|B)\b/g) || [];
-    const seen = new Set<string>();
-    const out: string[] = [];
-    for (const m of matches) {
-      if (!seen.has(m)) { seen.add(m); out.push(m); }
-    }
-    return out;
-  }
-
-  function cleanYield(y?: string): string {
-    if (!y) return "";
-    let val = String(y);
-
-    // Remover parênteses que contenham códigos de tag
-    val = val.replace(/\([^)]*\)/g, (group) => {
-      const hasCode = TAG_CODES.some((code) => group.toUpperCase().includes(code));
-      return hasCode ? "" : group;
-    });
-
-    // Remover códigos soltos fora de parênteses
-    val = val.replace(/\b(CM|LM|A|LT|J|S|AC|B)\b/g, "").replace(/\s+,/g, ",").replace(/,\s+/g, ", ").trim();
-
-    return val.trim();
-  }
 
   recipePages.forEach((p) => {
     const page: any = p;
@@ -464,6 +489,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
         if (cat === "CAFÉ DA MANHÃ & LANCHES RÁPIDOS") return "1 porção";
         if (cat === "SALGADOS E REFEIÇÕES") return "1 porção";
         if (cat === "SHAKES E IOGURTES") {
+          // Pequena heurística: se for iogurte com geleia ou iogurte natural, prefere "1 potinho"
           if (t.includes("IOGURTE")) return "1 potinho";
           if (t.includes("SHAKE")) return "1 copo";
           return "1 porção";
@@ -482,6 +508,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
 
   // Agrupar receitas por categoria canônica, inserindo capa de seção antes de cada grupo
   function buildGroupedOrder(recipes: AnyPage[]): AnyPage[] {
+    // Mapa categoria -> receitas
     const byCat = new Map<string, AnyPage[]>();
     recipes.forEach((r) => {
       const cat = String((r as any).category || "").trim();
@@ -497,12 +524,14 @@ export function refatorarDadosIniciais(): AnyPage[] {
       const catRecipes = byCat.get(cat);
       if (catRecipes && catRecipes.length > 0) {
         usedCats.add(cat);
+        // Inserir capa da seção antes das receitas
         grouped.push({
           id: `p_section_${cat.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}`,
           type: TEMPLATES.SECTION,
           title: cat,
           subtitle: "",
         } as AnyPage);
+        // Adicionar receitas da categoria (mantém ordem original delas)
         grouped.push(...catRecipes);
       }
     }
@@ -537,7 +566,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
   const introEnd = specialPages.find((p) => p.type === TEMPLATES.INTRO && p.id === "p_final");
   if (introEnd) newPdf.push(introEnd);
 
-  // QA FINAL: Validação e correções residuais
+  // QA FINAL: Validação e correções residuais (consistência entre categoria, tags e yield)
   function qaConsistency(recipes: AnyPage[]) {
     const issues: { title: string; issue: string }[] = [];
 
@@ -546,6 +575,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
       const title = String(p.title || "").trim();
       const cat = canonicalCategory(String(p.category || ""));
       const tags = normalizeCodes(p.code);
+      const yieldRaw = String(p.yield || "").trim();
       const titleU = title.toUpperCase();
 
       // 1) Categoria vs Tags: garantir que não há mistura inadequada
@@ -593,7 +623,15 @@ export function refatorarDadosIniciais(): AnyPage[] {
         }
       }
 
-      // 2) Categoria vazia ou desconhecida: usar canônica por heurística de título
+      // 2) Yield vazio ou só números: garantir que haja texto útil
+      if (!yieldRaw || /^\d+$/.test(yieldRaw)) {
+        // Deixa a calibragem anterior já lidar, só registra se vazio
+        if (!yieldRaw) {
+          issues.push({ title, issue: "Yield ficou vazio após calibragem" });
+        }
+      }
+
+      // 3) Categoria vazia ou desconhecida: usar canônica por heurística de título
       if (!cat) {
         let inferred = "";
         if (titleU.includes("SHAKE") || titleU.includes("IOGURTE")) {
@@ -614,6 +652,7 @@ export function refatorarDadosIniciais(): AnyPage[] {
       }
     });
 
+    // Log para inspeção (pode remover ou comentar em prod)
     if (issues.length > 0) {
       console.group("🔍 QA Consistência Final");
       issues.forEach(({ title, issue }) => console.warn(`- ${title}: ${issue}`));
