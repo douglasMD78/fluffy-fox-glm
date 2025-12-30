@@ -250,7 +250,6 @@ export const PDF_LUIZA_DATA = (() => {
   }
 
   // 5) Completar storage dos waffles
-  // Consolidado em bloco isolado para evitar declarações duplicadas de variáveis
   (function updateWaffleStorage() {
     const wDoce = recipeMap.get("WAFFLE DOCE");
     if (wDoce) {
@@ -261,6 +260,31 @@ export const PDF_LUIZA_DATA = (() => {
       wSalgado.storage = "Consumir na hora para melhor textura. Geladeira: até 1 dia; reaquecer na frigideira/air fryer.";
     }
   })();
+
+  // NOVO: Padronizar categorias para os nomes canônicos
+  function canonicalCategory(name?: string) {
+    const s = String(name || "").toUpperCase().trim();
+    if (s.includes("SOPAS") || s.includes("CALDOS") || s.includes("ACOMPANHAMENTOS") || s.includes("SALADAS")) {
+      return "ACOMPANHAMENTOS, SALADAS & SOPAS";
+    }
+    if (s.includes("BOLOS") || s.includes("SOBREMESAS") || s.includes("DOCES")) {
+      return "BOLOS, DOCES & SOBREMESAS";
+    }
+    if (s.includes("LANCHES") || s.includes("CAFÉ")) {
+      return "CAFÉ DA MANHÃ & LANCHES RÁPIDOS";
+    }
+    if (s.includes("SALGADOS") || s.includes("REFEIÇÕES")) {
+      return "SALGADOS E REFEIÇÕES";
+    }
+    if (s.includes("SHAKES") || s.includes("IOGURTES")) {
+      return "SHAKES E IOGURTES";
+    }
+    return name || "";
+  }
+
+  recipePages.forEach((p) => {
+    (p as any).category = canonicalCategory((p as any).category);
+  });
 
   // Páginas especiais sem TOC
   const specialPages = originalData.filter(
