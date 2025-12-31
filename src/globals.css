@@ -158,7 +158,8 @@
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         overflow: hidden !important;
-        position: relative !important; /* Necessário para posicionar o rodapé absoluto */
+        position: relative !important; /* Manter relative para o contexto de flexbox */
+        padding-bottom: 15mm !important; /* Espaço para o rodapé */
     }
     .mobile-page:last-child { page-break-after: auto !important; }
 
@@ -166,7 +167,7 @@
     .a4-page-texture,
     .bg-grain,
     .bg-grid-pattern,
-    .no-print { /* Removido .no-print-footer daqui */
+    .no-print {
       display: none !important;
     }
 
@@ -198,10 +199,10 @@
     /* Estilos para o rodapé na impressão */
     .print-footer {
         display: flex !important;
-        position: absolute !important;
-        bottom: 10mm !important; /* Ajuste a distância da borda inferior */
-        left: 10mm !important;
-        right: 10mm !important;
+        /* Removido position: absolute */
+        margin-top: auto !important; /* Empurra para o final do flex container */
+        left: 10mm !important; /* Manter para alinhamento horizontal */
+        right: 10mm !important; /* Manter para alinhamento horizontal */
         width: auto !important;
         padding: 0 !important;
         border-top: 1px solid #eee !important; /* Borda superior mais suave */
@@ -213,7 +214,7 @@
         justify-content: space-between !important;
         align-items: flex-end !important;
         box-sizing: border-box !important;
-        padding-top: 3mm !important; /* Espaçamento entre a borda e o texto */
+        padding-top: 5mm !important; /* Espaçamento entre a borda e o texto */
     }
 
     .print-footer span {
