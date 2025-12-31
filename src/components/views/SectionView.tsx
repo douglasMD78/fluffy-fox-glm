@@ -68,10 +68,10 @@ const SectionHeader: React.FC<{ chapterNumber: string; center?: boolean }> = ({ 
   </div>
 );
 
-const SectionTitle: React.FC<{ title: string; sizePx: number }> = ({ title, sizePx }) => (
+const SectionTitle: React.FC<{ title: string; sizePx: number; trackingEm: number; maxWidthPct: number }> = ({ title, sizePx, trackingEm, maxWidthPct }) => (
   <h1
-    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center max-w-[84%] mx-auto select-none"
-    style={{ fontSize: `${sizePx}px`, letterSpacing: '0.12em' }}
+    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center mx-auto select-none"
+    style={{ fontSize: `${sizePx}px`, letterSpacing: `${trackingEm}em`, maxWidth: `${maxWidthPct}%` }}
   >
     {title}
   </h1>
@@ -140,11 +140,21 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData, pageN
     roseMentionEnabled = true,
   } = data as SectionPageData;
 
-  // Layout automático com ajuste específico para página 7
-  const isPage7 = pageNumber === 7;
-  const titleSize = isPage7 ? 31 : 34;
-  const subtitleSize = isPage7 ? 28 : 30;
-  const centerMention = isPage7;
+  // Detecta palavras muito longas e ajusta automaticamente o título
+  const longestWordLen = Math.max(...title.split(/\s+/).map(w => w.length));
+  const isVeryLong = longestWordLen >= 14; // "ACOMPANHAMENTOS" tem 14 letras
+  const isLong = longestWordLen >= 11;
+
+  const baseTitleSize = 34;
+  const titleSize = isVeryLong ? 30 : isLong ? 32 : baseTitleSize;
+  const trackingEm = isVeryLong ? 0.06 : isLong ? 0.08 : 0.12;
+  const titleMaxWidthPct = isVeryLong ? 78 : isLong ? 82 : 84;
+
+  const subtitleSize = isVeryLong ? 28 : 30;
+
+  // Menção à capa centralizada quando título for muito longo (evita peso visual à direita)
+  const centerMention = isLong;
+
   const frameStyle: React.CSSProperties = { left: '0px', top: '0px', padding: '44px' };
 
   // Número do capítulo baseado em categorias conhecidas
@@ -180,7 +190,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData, pageN
         <SectionHeader chapterNumber={chapterNumber} center />
 
         <div className="row-start-2 relative w-full">
-          <SectionTitle title={title} sizePx={titleSize} />
+          <SectionTitle title={title} sizePx={titleSize} trackingEm={trackingEm} maxWidthPct={titleMaxWidthPct} />
           <SectionSubtitle subtitle={subtitle} sizePx={subtitleSize} />
         </div>
 
