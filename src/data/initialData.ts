@@ -96,28 +96,6 @@ export const INITIAL_DATA = {
     subtitle: "FIT",
     author: "@LU.MTSFIT",
     edition: "EDIÇÃO ESPECIAL",
-    coverStyle: {
-      alignment: "center",
-      showIcon: true,
-      showDivider: true,
-      contentOffsetY: 0, // deslocamento vertical do bloco central (px)
-      titleFontSize: 50,
-      subtitleFontSize: 18,
-      titleItalic: true,
-      subtitleUppercase: true,
-      titleLetterSpacingEm: 0, // em
-      subtitleLetterSpacingEm: 0.5, // em
-      editionLetterSpacingEm: 0.4, // em
-      gapTitleSubtitlePx: 8,
-      dividerWidthPx: 48,
-      colors: {
-        background: "", // usa var(--color-bg) se vazio
-        title: "", // usa var(--color-cover-title-text) se vazio
-        divider: "", // usa var(--color-cover-divider-bg) se vazio
-        authorText: "", // usa var(--color-cover-title-text) se vazio
-        authorBorder: "", // usa var(--color-cover-title-text) se vazio
-      },
-    },
   },
   [TEMPLATES.TOC]: {
     title: "Sumário",
