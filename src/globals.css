@@ -142,15 +142,13 @@
 
 /* Print styles for html2pdf.js and browser print */
 @media print {
-    /* Ocultar textura e fundos decorativos no print */
+    /* Ocultar textura para evitar manchas no PDF */
     .a4-page-texture { display: none !important; }
-    .bg-grain { display: none !important; }
-    .no-print { display: none !important; }
 
-    /* Forçar brancos sólidos nas áreas internas para evitar transparências */
+    /* Forçar brancos sólidos (sem transparência) nas áreas de conteúdo */
     .bg-white\/60 { background-color: #ffffff !important; }
 
-    /* Qualidade dos SVGs (ícones) na impressão */
+    /* Melhorar qualidade dos SVGs (ícones) na impressão */
     svg { 
       shape-rendering: geometricPrecision !important; 
       text-rendering: optimizeLegibility !important; 
