@@ -249,7 +249,7 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
 
     const handlePrint = async () => { // Movido para cá
         document.fonts.ready.then(() => {
-            toast.info("⚠️ DICA PARA PDF DIGITAL:\n1. Margens: 'Nenhuma'\n2. Ative: 'Gráficos de plano de fundo'\n3. Salvar como PDF", { duration: 8000 }); 
+            toast.info("Dica: para impressão MAIS RÁPIDA, use Margens: 'Nenhuma' e desative 'Gráficos de plano de fundo'. Ative os gráficos apenas se quiser texturas.", { duration: 8000 });
             window.print(); 
         });
     };

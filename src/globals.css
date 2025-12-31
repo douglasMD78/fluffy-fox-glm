@@ -147,8 +147,7 @@
     aside, main, .no-print, .modal-overlay { display: none !important; }
     #preview-container { display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; padding: 0 !important; margin: 0 !important; background: white !important; }
 
-    /* Margem de segurança: alguns navegadores cortam mesmo com "margens: nenhuma".
-       Então reduzimos um pouco o "page box" para caber dentro da área imprimível. */
+    /* Folga para evitar corte nas bordas */
     .mobile-page {
         margin: 0 auto !important;
         border: none !important;
@@ -160,8 +159,24 @@
         print-color-adjust: exact !important;
         overflow: hidden !important;
     }
-
     .mobile-page:last-child { page-break-after: auto !important; }
-    .shadow-soft, .shadow-glass, .shadow-card-float, .shadow-glow { box-shadow: none !important; border: 1px solid #eee !important; }
-    a { text-decoration: none !important; color: inherit !important; }
+
+    /* Desligar custos visuais pesados no print */
+    .a4-page-texture,
+    .bg-grain,
+    .bg-grid-pattern,
+    .no-print,
+    .no-print-footer {
+      display: none !important;
+    }
+
+    /* Remover sombras e transições para acelerar renderização */
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+    .shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl,
+    [class*="shadow"] {
+      box-shadow: none !important;
+    }
 }

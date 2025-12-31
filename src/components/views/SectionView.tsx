@@ -111,20 +111,20 @@ const SectionFooter: React.FC = () => (
 
 const BackgroundDecorations: React.FC = () => (
   <>
-    <div className="absolute top-8 right-8 opacity-8">
+    <div className="absolute top-8 right-8 opacity-8 print:hidden">
       <div className="w-12 h-12 border-2 border-accent/20 rounded-full flex items-center justify-center">
         <div className="w-4 h-4 bg-accent/10 rounded-full"></div>
       </div>
     </div>
-    <div className="absolute bottom-8 left-8 opacity-8">
+    <div className="absolute bottom-8 left-8 opacity-8 print:hidden">
       <div className="w-10 h-10 border-2 border-accent/15 rounded-full flex items-center justify-center">
         <div className="w-3 h-3 bg-accent/8 rounded-full"></div>
       </div>
     </div>
-    <div className="absolute top-1/4 left-1/4 opacity-3">
+    <div className="absolute top-1/4 left-1/4 opacity-3 print:hidden">
       <div className="w-6 h-6 border border-accent/10 rounded-full"></div>
     </div>
-    <div className="absolute bottom-1/4 right-1/4 opacity-3">
+    <div className="absolute bottom-1/4 right-1/4 opacity-3 print:hidden">
       <div className="w-4 h-4 border border-accent/8 rounded-full"></div>
     </div>
   </>
@@ -169,7 +169,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData, pageN
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] print:hidden" />
 
       <div
         className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 mx-auto shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
