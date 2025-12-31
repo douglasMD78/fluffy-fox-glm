@@ -42,24 +42,26 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
 
     // Criar container temporário para renderização
     const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'fixed'; // Usar fixed para garantir que apareça
-    tempDiv.style.top = '0';
-    tempDiv.style.left = '0';
-    tempDiv.style.width = '100vw';
-    tempDiv.style.height = '100vh';
-    tempDiv.style.zIndex = '99999'; // Garantir que esteja acima de tudo
-    tempDiv.style.backgroundColor = 'rgba(255,255,255,0.9)'; // Fundo semi-transparente
-    tempDiv.style.overflow = 'auto';
-    tempDiv.style.display = 'flex';
-    tempDiv.style.alignItems = 'center';
-    tempDiv.style.justifyContent = 'center';
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.left = '-9999px';
+    tempDiv.style.width = '210mm';
+    tempDiv.style.height = 'auto';
+    tempDiv.style.overflow = 'hidden';
     tempDiv.appendChild(clonedElement);
     document.body.appendChild(tempDiv);
 
-    console.log("Conteúdo HTML para PDF:", clonedElement.outerHTML);
-
     try {
-        // Removido o setTimeout, html2pdf.js deve gerenciar sua própria renderização
+        // Aguardar renderização completa
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Verificar se o conteúdo excede a altura de uma página A5 (aproximadamente 210mm)
+        const elementHeight = clonedElement.scrollHeight;
+        const a5HeightPx = 794; // Aproximadamente 210mm em pixels a 96dpi
+        
+        if (elementHeight > a5HeightPx) {
+            console.warn(`Conteúdo excede altura A5: ${elementHeight}px > ${a5HeightPx}px`);
+        }
+
         await html2pdf().set(opt).from(clonedElement).save();
     } finally {
         // Limpar
