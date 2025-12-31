@@ -12,7 +12,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
             
             {/* Container principal com conteúdo centralizado dentro do quadro */}
-            <div className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 p-10 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border">
+            <div className="relative -left-2 md:-left-3 z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 p-10 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border">
                 {/* Header elegante */}
                 <div className="mb-4 row-start-1">
                     <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
