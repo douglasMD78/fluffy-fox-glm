@@ -1,6 +1,7 @@
 import React from 'react';
-import { SectionPageData, CoverPageData } from '@/data/initialData';
-import { Heart, Sparkles } from 'lucide-react';
+import { SectionPageData } from '@/data/initialData';
+import { CoverPageData } from '@/data/initialData';
+import { Heart } from 'lucide-react';
 
 interface SectionViewProps {
   data: SectionPageData;
@@ -27,17 +28,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
     frameOffsetY = 0,
     contentPadding = 40,
     subtitleItalic = false,
-    // rosé props
-    roseEnabled = true,
-    roseGlowIntensity = 30,
-    roseBadge = 'heart',
-    roseMentionEnabled = true,
-  } = data as SectionPageData & {
-    roseEnabled?: boolean;
-    roseGlowIntensity?: number;
-    roseBadge?: 'heart' | 'sparkles' | 'none';
-    roseMentionEnabled?: boolean;
-  };
+  } = data as SectionPageData;
 
   const textAlignStyle = (align: string): React.CSSProperties => {
     if (align === 'left') return { textAlign: 'left' };
@@ -45,45 +36,29 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
     return { textAlign: 'center' };
   };
 
-  const glowOpacity = Math.max(0, Math.min(roseGlowIntensity, 100)) / 250; // ~0.12 at 30
-  const BadgeIcon = roseBadge === 'sparkles' ? Sparkles : Heart;
-
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
-      {/* Glow rosado sutil dentro da área segura */}
-      {roseEnabled && (
-        <>
-          <div
-            className="absolute top-8 left-8 w-[40%] h-[40%] rounded-full blur-3xl pointer-events-none"
-            style={{ backgroundColor: `rgba(236, 183, 201, ${glowOpacity})` }}
-          ></div>
-          <div
-            className="absolute bottom-10 right-8 w-[36%] h-[36%] rounded-full blur-3xl pointer-events-none"
-            style={{ backgroundColor: `rgba(236, 183, 201, ${glowOpacity})` }}
-          ></div>
-        </>
-      )}
-
       {/* Background decorativo sutil mantido */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
 
       {/* Container principal com conteúdo centralizado dentro do quadro */}
       <div
-        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-visible grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
+        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
         style={{ left: `${frameOffsetX}px`, top: `${frameOffsetY}px`, padding: `${contentPadding}px` }}
       >
-        {/* Menção ao conteúdo da capa: truncada em uma linha para não poluir */}
-        {roseMentionEnabled && coverData && (
-          <div className="absolute top-3 right-4 flex items-center gap-2 text-rose-700/70 max-w-[70%]">
-            <BadgeIcon size={12} className="text-pink-500" />
-            <span className="text-[9px] tracking-[0.25em] uppercase truncate">
+        {/* Emblema rosé dentro do quadro (sempre visível) */}
+        <div className="absolute top-2 left-2 w-7 h-7 bg-pink-100/70 border border-pink-300/60 rounded-full shadow-sm flex items-center justify-center">
+          <Heart className="text-pink-500" size={12} />
+        </div>
+
+        {/* Menção discreta à capa, truncada para não poluir */}
+        {coverData && (
+          <div className="absolute top-3 right-4 max-w-[70%]">
+            <span className="text-[9px] tracking-[0.25em] uppercase text-rose-700/70 truncate">
               {coverData.title}{coverData.subtitle ? ` ${coverData.subtitle}` : ''} • {coverData.edition} • {coverData.author}
             </span>
           </div>
         )}
-
-        {/* Borda interna suave em rosa para delicadeza */}
-        {roseEnabled && <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>}
 
         {/* Header elegante */}
         <div className="mb-4 row-start-1">
@@ -99,9 +74,9 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
 
         {/* Bloco central com controles manuais */}
         <div className="row-start-2 relative w-full">
-          {/* Título com controles e quebra manual */}
+          {/* Título com controles (alinhamento, tracking, largura e offset) */}
           <h1
-            className="font-playfair font-light text-navy mb-4 leading-tight break-normal whitespace-pre select-none"
+            className="font-playfair font-light text-navy mb-4 leading-tight break-normal whitespace-pre mx-auto select-none"
             style={{
               ...textAlignStyle(titleAlign),
               fontSize: `${titleFontSize}px`,
@@ -109,14 +84,12 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
               textTransform: titleUppercase ? 'uppercase' : 'none',
               maxWidth: `${titleMaxWidthPct}%`,
               transform: `translate(${titleOffsetX}px, ${titleOffsetY}px)`,
-              marginLeft: 'auto',
-              marginRight: 'auto',
             }}
           >
             {title}
           </h1>
 
-          {/* Subtítulo com posicionamento manual e quebra manual */}
+          {/* Subtítulo com posicionamento manual */}
           <div
             className="relative select-none"
             style={{
@@ -125,7 +98,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
             }}
           >
             <p
-              className={`font-hand ${subtitleItalic ? 'italic' : ''} mb-6 mx-auto leading-tight break-normal whitespace-pre`}
+              className={`font-hand ${subtitleItalic ? 'italic' : ''} mb-6 mx-auto leading-tight`}
               style={{
                 fontSize: `${subtitleFontSize}px`,
                 color: 'var(--color-accent, #a67c52)',
@@ -133,7 +106,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
                 maxWidth: '80%',
               }}
             >
-              {subtitle}
+              {data.subtitle}
             </p>
             {/* Elemento decorativo sutil abaixo do subtítulo */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
@@ -160,7 +133,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
         </div>
       </div>
 
-      {/* Elementos decorativos fora do quadro (neutros e não intrusivos) */}
+      {/* Elementos decorativos mais elaborados fora do quadro */}
       <div className="absolute top-8 right-8 opacity-8">
         <div className="w-12 h-12 border-2 border-accent/20 rounded-full flex items-center justify-center">
           <div className="w-4 h-4 bg-accent/10 rounded-full"></div>
