@@ -249,8 +249,8 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
 
     const handlePrint = async () => { // Movido para cá
         document.fonts.ready.then(() => {
-            toast.info("Dica: para impressão MAIS RÁPIDA, use Margens: 'Nenhuma' e desative 'Gráficos de plano de fundo'. Ative os gráficos apenas se quiser texturas.", { duration: 8000 });
-            window.print(); 
+            // Removido o aviso/Toast para não aparecer na impressão
+            window.print();
         });
     };
 
