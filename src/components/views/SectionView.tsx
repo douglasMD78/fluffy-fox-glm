@@ -60,18 +60,9 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
         <div className="row-start-2 relative w-full">
           {/* Título */}
           <h1
-            className="font-playfair font-light text-navy uppercase mb-4 leading-tight break-words mx-auto select-none"
-            style={{
-              ...textAlignStyle(titleAlign),
-              fontSize: `${titleFontSize}px`,
-              letterSpacing: `${titleTracking}em`,
-              textTransform: titleUppercase ? 'uppercase' : 'none',
-              maxWidth: `${titleMaxWidthPct}%`,
-              transform: `translate(${titleOffsetX}px, ${titleOffsetY}px)`,
-              textWrap: 'balance',
-            }}
+            className="font-playfair text-[34px] font-light text-navy tracking-[0.12em] uppercase mb-4 leading-tight break-normal whitespace-pre mx-auto"
           >
-            {title}
+            {data.title}
           </h1>
 
           {/* Subtítulo com posicionamento manual */}
@@ -91,7 +82,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
                 maxWidth: '80%',
               }}
             >
-              {subtitle}
+              {data.subtitle}
             </p>
             {/* Elemento decorativo sutil abaixo do subtítulo */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
