@@ -12,7 +12,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
             
             {/* Container principal com conteúdo centralizado dentro do quadro */}
-            <div className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[85%] max-w-[540px] h-[78%] m-4 p-8 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center">
+            <div className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 p-10 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border">
                 {/* Header elegante */}
                 <div className="mb-4 row-start-1">
                     <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
@@ -27,13 +27,16 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
                 
                 {/* Bloco central: título e subtítulo centralizados dentro do quadro */}
                 <div className="row-start-2 flex flex-col items-center justify-center w-full text-center px-2">
-                    <h1 className="font-playfair text-4xl font-light text-navy tracking-[0.15em] uppercase mb-4 leading-tight break-words">
+                    <h1 
+                        className="font-playfair text-[34px] font-light text-navy tracking-[0.12em] uppercase mb-4 leading-tight break-words max-w-[88%] mx-auto"
+                        style={{ textWrap: 'balance' }}
+                    >
                         {data.title}
                     </h1>
                     
                     {/* Subtítulo com posicionamento refinado, ainda dentro do quadro */}
                     <div className="relative">
-                        <p className="font-hand text-4xl text-accent/90 transform -rotate-1 mb-6">
+                        <p className="font-hand text-3xl text-accent/90 transform -rotate-1 mb-6 max-w-[80%] mx-auto leading-tight">
                             {data.subtitle}
                         </p>
                         {/* Elemento decorativo sutil abaixo do subtítulo */}
