@@ -112,7 +112,27 @@ export const INITIAL_DATA = {
     text:
       "Estas legendas foram criadas para facilitar a sua organização. Identifique rapidamente em qual refeição cada receita se encaixa melhor no seu dia a dia.",
   },
-  [TEMPLATES.SECTION]: { title: "NOME DA SEÇÃO", subtitle: "Subtítulo Manuscrito" },
+  [TEMPLATES.SECTION]: { 
+    title: "NOME DA SEÇÃO", 
+    subtitle: "Subtítulo Manuscrito",
+    // CONTROLES MANUAIS
+    titleAlign: "center",
+    subtitleAlign: "center",
+    titleOffsetX: 0,
+    titleOffsetY: 0,
+    subtitleOffsetX: 0,
+    subtitleOffsetY: 0,
+    titleFontSize: 34,
+    subtitleFontSize: 30,
+    subtitleRotate: -1,
+    titleTracking: 0.12,
+    titleUppercase: true,
+    titleMaxWidthPct: 88,
+    frameOffsetX: -8,
+    frameOffsetY: 0,
+    contentPadding: 40,
+    subtitleItalic: false,
+  },
   [TEMPLATES.SHOPPING]: {
     title: "Listinha de Compras",
     hortifruti: "",
