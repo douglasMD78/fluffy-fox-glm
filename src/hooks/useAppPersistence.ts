@@ -5,7 +5,7 @@ import { PageData, PDF_LUIZA_DATA, INITIAL_DATA } from '@/data/initialData';
 import { TEMPLATES } from '@/lib/constants';
 import { usePageManagement } from './usePageManagement'; // Importar o hook de gerenciamento de páginas
 import { buildTocItems, splitTocIntoParts, TOC_MAX_UNITS_PER_PAGE } from '@/utils/toc';
-import { generatePdf } from '@/utils/pdf'; // Importar generatePdf
+// REMOVIDO: import { generatePdf } from '@/utils/pdf'; // Importar generatePdf
 
 interface Theme {
     bg: string;
@@ -249,19 +249,8 @@ export const useAppPersistence = (): UseAppPersistenceResult => {
     };
 
     const handlePrint = async () => {
-        const previewElement = document.getElementById('preview-container');
-        if (previewElement) {
-            toast.loading("Gerando PDF, aguarde...", { id: 'pdf-gen' });
-            try {
-                await generatePdf(previewElement, 'ebook_luiza.pdf');
-                toast.success("PDF gerado com sucesso!", { id: 'pdf-gen' });
-            } catch (error) {
-                console.error("Erro ao gerar PDF:", error);
-                toast.error("Erro ao gerar PDF. Tente novamente.", { id: 'pdf-gen' });
-            }
-        } else {
-            toast.error("Não foi possível encontrar o conteúdo para gerar o PDF.");
-        }
+        // Removido o uso de html2pdf.js e toasts para a impressão
+        window.print();
     };
 
     return {
