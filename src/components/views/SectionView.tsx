@@ -70,8 +70,8 @@ const SectionHeader: React.FC<{ chapterNumber: string; center?: boolean }> = ({ 
 
 const SectionTitle: React.FC<{ title: string; sizePx: number; trackingEm: number; maxWidthPct: number }> = ({ title, sizePx, trackingEm, maxWidthPct }) => (
   <h1
-    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center text-balance break-words mx-auto select-none"
-    style={{ fontSize: `${sizePx}px`, letterSpacing: `${trackingEm}em`, maxWidth: `${maxWidthPct}%`, hyphens: 'auto' as any }}
+    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center text-balance break-normal mx-auto select-none"
+    style={{ fontSize: `${sizePx}px`, letterSpacing: `${trackingEm}em`, maxWidth: `${maxWidthPct}%`, wordBreak: 'keep-all', overflowWrap: 'normal', hyphens: 'manual' as any }}
   >
     {title}
   </h1>
