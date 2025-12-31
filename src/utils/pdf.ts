@@ -13,7 +13,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
             allowTaint: true,
             backgroundColor: '#ffffff',
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }, // Alterado de 'a4' para 'a5'
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
@@ -54,12 +54,12 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
         // Aguardar renderização completa
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Verificar se o conteúdo excede a altura de uma página A4
+        // Verificar se o conteúdo excede a altura de uma página A5 (aproximadamente 210mm)
         const elementHeight = clonedElement.scrollHeight;
-        const a4HeightPx = 1123; // Aproximadamente 297mm em pixels a 96dpi
+        const a5HeightPx = 794; // Aproximadamente 210mm em pixels a 96dpi
         
-        if (elementHeight > a4HeightPx) {
-            console.warn(`Contúdo excede altura A4: ${elementHeight}px > ${a4HeightPx}px`);
+        if (elementHeight > a5HeightPx) {
+            console.warn(`Conteúdo excede altura A5: ${elementHeight}px > ${a5HeightPx}px`);
         }
 
         await html2pdf().set(opt).from(clonedElement).save();
