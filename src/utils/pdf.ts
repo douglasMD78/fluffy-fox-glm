@@ -4,7 +4,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
     const opt = {
         margin: [0, 0, 0, 0] as [number, number, number, number],
         filename: filename,
-        image: { type: 'jpeg', quality: 0.98 }, // Qualidade original
+        image: { type: 'jpeg', quality: 0.9 },
         html2canvas: { 
             scale: 2,
             useCORS: true,
@@ -13,7 +13,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
             allowTaint: true,
             backgroundColor: '#ffffff',
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, // Formato A4 original
+        jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }, // Alterado de 'a4' para 'a5'
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
@@ -42,7 +42,7 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
 
     // Criar container temporário para renderização
     const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'fixed'; // Posição original
+    tempDiv.style.position = 'fixed'; // Usar fixed para garantir que apareça
     tempDiv.style.top = '0';
     tempDiv.style.left = '0';
     tempDiv.style.width = '100vw';
@@ -56,7 +56,10 @@ export const generatePdf = async (element: HTMLElement, filename: string = 'docu
     tempDiv.appendChild(clonedElement);
     document.body.appendChild(tempDiv);
 
+    console.log("Conteúdo HTML para PDF:", clonedElement.outerHTML);
+
     try {
+        // Removido o setTimeout, html2pdf.js deve gerenciar sua própria renderização
         await html2pdf().set(opt).from(clonedElement).save();
     } finally {
         // Limpar
