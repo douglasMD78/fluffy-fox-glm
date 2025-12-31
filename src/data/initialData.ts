@@ -133,6 +133,11 @@ export const INITIAL_DATA = {
     contentPadding: 44,
     subtitleItalic: true,
 
+    // CONTROLES DO CABEÇALHO
+    chapterNumber: "I",
+    chapterAlign: "center",
+    coverMentionAlign: "right",
+
     // TEMA ROSÉ E MENÇÃO
     roseEnabled: true,
     roseGlowIntensity: 30, // 0-100
