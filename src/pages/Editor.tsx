@@ -97,8 +97,8 @@ const Editor = () => {
     return (
         <>
             <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
-                <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0"></div>
-                <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
+                <div className="bg-grain opacity-50 pointer-events-none fixed inset-0 z-0 no-print"></div>
+                <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-b from-pastel/20 to-transparent rounded-full blur-[100px] pointer-events-none z-0 no-print"></div>
 
                 <ThemeStyles theme={theme} />
 
@@ -128,27 +128,29 @@ const Editor = () => {
                 />
 
                 {/* SIDEBAR */}
-                <Sidebar
-                    pages={pages}
-                    selectedId={selectedId}
-                    onPageSelect={handlePageClick}
-                    onAddPage={addPage}
-                    onExportProject={exportProject}
-                    onImportProject={importProject}
-                    onShowThemeEditor={() => setShowThemeEditor(true)}
-                    onShowImporter={() => setShowImporter(true)}
-                    onOpenMagicModal={openMagicModal}
-                    onPrint={handlePrint}
-                    onRestoreDefault={loadPdfData}
-                    isSaving={isSaving}
-                    unsavedChanges={unsavedChanges}
-                    dragItem={dragItem}
-                    dragOverItem={dragOverItem}
-                    onDragStart={handleDragStart}
-                    onDragEnter={onDragEnter} // Usando onDragEnter do hook
-                    onDragEnd={handleSort}
-                    onRefactor={handleRefactor}
-                />
+                <div className="no-print">
+                  <Sidebar
+                      pages={pages}
+                      selectedId={selectedId}
+                      onPageSelect={handlePageClick}
+                      onAddPage={addPage}
+                      onExportProject={exportProject}
+                      onImportProject={importProject}
+                      onShowThemeEditor={() => setShowThemeEditor(true)}
+                      onShowImporter={() => setShowImporter(true)}
+                      onOpenMagicModal={openMagicModal}
+                      onPrint={handlePrint}
+                      onRestoreDefault={loadPdfData}
+                      isSaving={isSaving}
+                      unsavedChanges={unsavedChanges}
+                      dragItem={dragItem}
+                      dragOverItem={dragOverItem}
+                      onDragStart={handleDragStart}
+                      onDragEnter={onDragEnter} // Usando onDragEnter do hook
+                      onDragEnd={handleSort}
+                      onRefactor={handleRefactor}
+                  />
+                </div>
 
                 {/* PREVIEW */}
                 <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
@@ -197,12 +199,14 @@ const Editor = () => {
                 </section>
 
                 {/* EDITOR PANEL */}
-                <EditorPanel
-                    activePage={activePage}
-                    updatePage={updatePage}
-                    onAiRequest={openMagicModal}
-                    onDeletePage={handleDeletePage}
-                />
+                <div className="no-print">
+                  <EditorPanel
+                      activePage={activePage}
+                      updatePage={updatePage}
+                      onAiRequest={openMagicModal}
+                      onDeletePage={handleDeletePage}
+                  />
+                </div>
             </div>
         </>
     );
