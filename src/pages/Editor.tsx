@@ -27,6 +27,7 @@ import { ThemeStyles } from '@/components/ThemeStyles';
 
 // Utils
 import { getPageBackgroundColor } from '@/utils/pageStyles';
+import { getPrintablePageNumberMap } from '@/utils/toc'; // Importar getPrintablePageNumberMap
 
 // Components
 import { Sidebar } from '@/components/Sidebar'; // Importar o novo componente Sidebar
@@ -94,6 +95,9 @@ const Editor = () => {
         }
     };
 
+    // Calcular o mapa de números de página uma vez para todas as páginas
+    const pageNumberMap = React.useMemo(() => getPrintablePageNumberMap(pages), [pages]);
+
     return (
         <>
             <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
@@ -152,47 +156,41 @@ const Editor = () => {
 
                 {/* PREVIEW */}
                 <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
-                    {(() => {
-                        let pageCounter = 0;
-                        const coverData = pages.find((p) => p.type === TEMPLATES.COVER) as CoverPageData | undefined;
+                    {pages.map((p, idx) => {
+                        const printableNumber = pageNumberMap.get(p.id);
+                        const pageNumberLabel = printableNumber ? String(printableNumber).padStart(2, '0') : '';
 
-                        return pages.map((p, idx) => {
-                            const pageNumberLabel =
-                                p.type === TEMPLATES.COVER
-                                    ? ''
-                                    : String((pageCounter += 1)).padStart(2, '0');
+                        return (
+                            <div 
+                                key={p.id} 
+                                id={`preview-${p.id}`} 
+                                className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
+                                style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
+                            >
+                                <div className="a4-page-texture"></div>
+                                <div className="z-10 relative h-full flex flex-col">
+                                    {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
+                                    {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}
+                                    {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} coverData={coverData} pageNumber={printableNumber} />}
 
-                            const printableNumber = p.type === TEMPLATES.COVER ? 0 : pageCounter;
+                                    {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
+                                    {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
 
-                            return (
-                                <div 
-                                    key={p.id} 
-                                    id={`preview-${p.id}`} 
-                                    className={`mobile-page transition-all duration-700 mb-12 shrink-0 ${selectedId === p.id ? 'z-10 ring-4 ring-accent/30 scale-[1.01]' : 'opacity-90 scale-100 hover:opacity-100'}`}
-                                    style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
-                                >
-                                    <div className="a4-page-texture"></div>
-                                    <div className="z-10 relative h-full flex flex-col">
-                                        {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
-                                        {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}
-                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} coverData={coverData} pageNumber={printableNumber} />}
+                                    {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />}
+                                    {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />}
+                                    {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
 
-                                        {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
-                                        {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}
-
-                                        {p.type === TEMPLATES.INTRO && <IntroView data={p as IntroPageData} />}
-                                        {p.type === TEMPLATES.SHOPPING && <ShoppingView data={p as ShoppingPageData} />}
-                                        {p.type === TEMPLATES.LEGEND && <LegendView data={p as LegendPageData} />}
-
-                                        <div className="mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0 no-print-footer">
-                                            <span>{p.type === TEMPLATES.COVER ? '' : 'www.lumts.com'}</span>
-                                            <span>{p.type === TEMPLATES.COVER ? '' : pageNumberLabel}</span>
+                                    {/* Rodapé visível na impressão */}
+                                    {p.type !== TEMPLATES.COVER && (
+                                        <div className="print-footer mt-auto flex justify-between items-end text-[10px] text-navy/40 font-bold tracking-[0.2em] uppercase border-t border-navy/10 pt-4 w-full px-4 pb-0">
+                                            <span>www.lumts.com</span>
+                                            <span>{pageNumberLabel}</span>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
-                            );
-                        });
-                    })()}
+                            </div>
+                        );
+                    })}
                     <div className="h-40 no-print"></div>
                 </section>
 

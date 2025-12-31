@@ -158,6 +158,7 @@
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         overflow: hidden !important;
+        position: relative !important; /* Necessário para posicionar o rodapé absoluto */
     }
     .mobile-page:last-child { page-break-after: auto !important; }
 
@@ -165,8 +166,7 @@
     .a4-page-texture,
     .bg-grain,
     .bg-grid-pattern,
-    .no-print,
-    .no-print-footer {
+    .no-print { /* Removido .no-print-footer daqui */
       display: none !important;
     }
 
@@ -193,6 +193,35 @@
     .fixed[data-sonner-toaster] {
       display: none !important;
       visibility: hidden !important;
+    }
+
+    /* Estilos para o rodapé na impressão */
+    .print-footer {
+        display: flex !important;
+        position: absolute !important;
+        bottom: 10mm !important; /* Ajuste a distância da borda inferior */
+        left: 10mm !important;
+        right: 10mm !important;
+        width: auto !important;
+        padding: 0 !important;
+        border-top: 1px solid #eee !important; /* Borda superior mais suave */
+        color: #666 !important; /* Cor de texto mais suave */
+        font-size: 8pt !important; /* Tamanho de fonte menor */
+        font-weight: normal !important; /* Menos negrito */
+        letter-spacing: normal !important; /* Espaçamento normal */
+        text-transform: none !important; /* Sem caixa alta */
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        box-sizing: border-box !important;
+        padding-top: 3mm !important; /* Espaçamento entre a borda e o texto */
+    }
+
+    .print-footer span {
+        font-size: 8pt !important;
+        color: #666 !important;
+        font-weight: normal !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
     }
 }
 
