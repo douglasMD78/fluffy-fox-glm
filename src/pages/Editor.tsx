@@ -154,6 +154,7 @@ const Editor = () => {
                 <section id="preview-container" className="flex-1 bg-transparent overflow-y-auto p-12 flex flex-col items-center custom-scrollbar print:p-0 print:bg-white z-10 relative">
                     {(() => {
                         let pageCounter = 0;
+                        const coverData = pages.find((p) => p.type === TEMPLATES.COVER) as CoverPageData | undefined;
 
                         return pages.map((p, idx) => {
                             const pageNumberLabel =
@@ -173,7 +174,7 @@ const Editor = () => {
                                     <div className="z-10 relative h-full flex flex-col">
                                         {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
                                         {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}
-                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} />}
+                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} coverData={coverData} />}
 
                                         {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                                         {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}

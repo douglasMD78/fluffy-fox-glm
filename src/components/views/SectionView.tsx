@@ -1,12 +1,14 @@
 import React from 'react';
 import { SectionPageData } from '@/data/initialData';
+import { CoverPageData } from '@/data/initialData';
 import { Heart } from 'lucide-react';
 
 interface SectionViewProps {
   data: SectionPageData;
+  coverData?: CoverPageData;
 }
 
-export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
+export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => {
   const {
     title,
     subtitle,
@@ -36,7 +38,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
-      {/* Glow rosado sutil no fundo */}
+      {/* Glow rosado sutil no fundo para toque feminino */}
       <div className="absolute -top-10 -left-10 w-[40%] h-[40%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute -bottom-10 -right-10 w-[35%] h-[35%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -45,15 +47,25 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
 
       {/* Container principal com conteúdo centralizado dentro do quadro */}
       <div
-        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
+        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-visible grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
         style={{ left: `${frameOffsetX}px`, top: `${frameOffsetY}px`, padding: `${contentPadding}px` }}
       >
+        {/* Menção ao conteúdo da capa (título, subtítulo, edição e autor) */}
+        {coverData && (
+          <div className="absolute top-3 right-4 flex items-center gap-2 text-rose-700/70">
+            <Heart size={12} className="text-pink-500" />
+            <span className="text-[9px] tracking-[0.25em] uppercase whitespace-nowrap">
+              {coverData.title}{coverData.subtitle ? ` ${coverData.subtitle}` : ''} • {coverData.edition} • {coverData.author}
+            </span>
+          </div>
+        )}
+
         {/* Emblema rosado delicado no canto */}
         <div className="absolute -top-2 -left-2 w-8 h-8 bg-pink-100/70 border border-pink-300/60 rounded-full shadow-sm flex items-center justify-center">
           <Heart className="text-pink-500" size={14} />
         </div>
 
-        {/* Borda interna suave em rosa */}
+        {/* Borda interna suave em rosa para delicadeza */}
         <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>
 
         {/* Header elegante */}
