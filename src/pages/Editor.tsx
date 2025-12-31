@@ -162,6 +162,8 @@ const Editor = () => {
                                     ? ''
                                     : String((pageCounter += 1)).padStart(2, '0');
 
+                            const printableNumber = p.type === TEMPLATES.COVER ? 0 : pageCounter;
+
                             return (
                                 <div 
                                     key={p.id} 
@@ -173,7 +175,7 @@ const Editor = () => {
                                     <div className="z-10 relative h-full flex flex-col">
                                         {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
                                         {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}
-                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} coverData={coverData} />}
+                                        {p.type === TEMPLATES.SECTION && <SectionView data={p as SectionPageData} coverData={coverData} pageNumber={printableNumber} />}
 
                                         {/* RECIPE VIEW AGORA TEM LAYOUTS DINÂMICOS */}
                                         {p.type === TEMPLATES.RECIPE && <RecipeView data={p as RecipePageData} updatePage={updatePage} />}

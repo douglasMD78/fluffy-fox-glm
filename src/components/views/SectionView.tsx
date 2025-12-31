@@ -6,15 +6,14 @@ import { Heart, Sparkles } from 'lucide-react';
 interface SectionViewProps {
   data: SectionPageData;
   coverData?: CoverPageData;
+  pageNumber?: number;
 }
 
-// Função para gerar número romano automaticamente
 const getRomanNumber = (index: number): string => {
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-  return romanNumerals[index] || 'I';
+  return romanNumerals[index - 1] || 'I';
 };
 
-// Componente do emblema rosé
 const SectionBadge: React.FC<{ roseEnabled: boolean; roseBadge: string; roseGlowIntensity: number }> = ({ 
   roseEnabled, 
   roseBadge, 
@@ -40,15 +39,15 @@ const SectionBadge: React.FC<{ roseEnabled: boolean; roseBadge: string; roseGlow
   );
 };
 
-// Componente da menção à capa
-const CoverReference: React.FC<{ coverData?: CoverPageData; roseMentionEnabled: boolean }> = ({ 
+const CoverReference: React.FC<{ coverData?: CoverPageData; roseMentionEnabled: boolean; center?: boolean }> = ({ 
   coverData, 
-  roseMentionEnabled 
+  roseMentionEnabled,
+  center = false,
 }) => {
   if (!roseMentionEnabled || !coverData) return null;
 
   return (
-    <div className="absolute top-3 right-4 max-w-[70%]">
+    <div className={`absolute top-3 ${center ? 'left-1/2 -translate-x-1/2' : 'right-4'} max-w-[70%]`}>
       <span className="text-[9px] tracking-[0.25em] uppercase text-rose-700/70 truncate">
         {coverData.title}{coverData.subtitle ? ` ${coverData.subtitle}` : ''} • {coverData.edition} • {coverData.author}
       </span>
@@ -56,9 +55,8 @@ const CoverReference: React.FC<{ coverData?: CoverPageData; roseMentionEnabled: 
   );
 };
 
-// Componente do cabeçalho com número do capítulo
-const SectionHeader: React.FC<{ chapterNumber: string }> = ({ chapterNumber }) => (
-  <div className="mb-4 row-start-1">
+const SectionHeader: React.FC<{ chapterNumber: string; center?: boolean }> = ({ chapterNumber, center = true }) => (
+  <div className={`mb-4 row-start-1 ${center ? 'text-center' : ''}`}>
     <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
       Capítulo {chapterNumber}
     </span>
@@ -70,17 +68,21 @@ const SectionHeader: React.FC<{ chapterNumber: string }> = ({ chapterNumber }) =
   </div>
 );
 
-// Componente do título principal
-const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
-  <h1 className="font-playfair font-light text-navy mb-4 leading-tight text-[34px] tracking-[0.12em] uppercase text-center max-w-[84%] mx-auto select-none">
+const SectionTitle: React.FC<{ title: string; sizePx: number }> = ({ title, sizePx }) => (
+  <h1
+    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center max-w-[84%] mx-auto select-none"
+    style={{ fontSize: `${sizePx}px`, letterSpacing: '0.12em' }}
+  >
     {title}
   </h1>
 );
 
-// Componente do subtítulo
-const SectionSubtitle: React.FC<{ subtitle: string }> = ({ subtitle }) => (
+const SectionSubtitle: React.FC<{ subtitle: string; sizePx: number }> = ({ subtitle, sizePx }) => (
   <div className="relative select-none text-center">
-    <p className="font-hand italic mb-6 leading-tight text-[30px] text-accent mx-auto max-w-[80%] rotate-[-2deg]">
+    <p
+      className="font-hand italic mb-6 leading-tight text-accent mx-auto max-w-[80%]"
+      style={{ fontSize: `${sizePx}px`, transform: 'rotate(-2deg)' }}
+    >
       {subtitle}
     </p>
     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
@@ -93,7 +95,6 @@ const SectionSubtitle: React.FC<{ subtitle: string }> = ({ subtitle }) => (
   </div>
 );
 
-// Componente do rodapé
 const SectionFooter: React.FC = () => (
   <div className="row-start-3 mt-6 pt-4 border-t border-accent/10 w-full">
     <div className="flex items-center justify-center gap-2">
@@ -108,7 +109,6 @@ const SectionFooter: React.FC = () => (
   </div>
 );
 
-// Componente das decorações de fundo
 const BackgroundDecorations: React.FC = () => (
   <>
     <div className="absolute top-8 right-8 opacity-8">
@@ -130,7 +130,7 @@ const BackgroundDecorations: React.FC = () => (
   </>
 );
 
-export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => {
+export const SectionView: React.FC<SectionViewProps> = ({ data, coverData, pageNumber }) => {
   const {
     title = "NOME DA SEÇÃO",
     subtitle = "Subtítulo Manuscrito",
@@ -140,30 +140,30 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
     roseMentionEnabled = true,
   } = data as SectionPageData;
 
-  // Gerar número do capítulo automaticamente baseado no título
-  const chapterNumber = React.useMemo(() => {
-    const categories = [
-      "ACOMPANHAMENTOS, SALADAS & SOPAS",
-      "BOLOS, DOCES & SOBREMESAS", 
-      "CAFÉ DA MANHÃ & LANCHES RÁPIDOS",
-      "SALGADOS E REFEIÇÕES",
-      "SHAKES E IOGURTES"
-    ];
-    const index = categories.indexOf(title);
-    return getRomanNumber(index + 1);
-  }, [title]);
+  // Layout automático com ajuste específico para página 7
+  const isPage7 = pageNumber === 7;
+  const titleSize = isPage7 ? 31 : 34;
+  const subtitleSize = isPage7 ? 28 : 30;
+  const centerMention = isPage7;
+  const frameStyle: React.CSSProperties = { left: '0px', top: '0px', padding: '44px' };
+
+  // Número do capítulo baseado em categorias conhecidas
+  const categories = [
+    "ACOMPANHAMENTOS, SALADAS & SOPAS",
+    "BOLOS, DOCES & SOBREMESAS", 
+    "CAFÉ DA MANHÃ & LANCHES RÁPIDOS",
+    "SALGADOS E REFEIÇÕES",
+    "SHAKES E IOGURTES"
+  ];
+  const chapterNumber = getRomanNumber(Math.max(1, categories.indexOf(title) + 1));
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
 
       <div
-        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
-        style={{ 
-          left: '-6px', 
-          top: '0px', 
-          padding: '44px'
-        }}
+        className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 mx-auto shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
+        style={frameStyle}
       >
         <SectionBadge 
           roseEnabled={roseEnabled} 
@@ -174,13 +174,14 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
         <CoverReference 
           coverData={coverData} 
           roseMentionEnabled={roseMentionEnabled} 
+          center={centerMention}
         />
 
-        <SectionHeader chapterNumber={chapterNumber} />
+        <SectionHeader chapterNumber={chapterNumber} center />
 
         <div className="row-start-2 relative w-full">
-          <SectionTitle title={title} />
-          <SectionSubtitle subtitle={subtitle} />
+          <SectionTitle title={title} sizePx={titleSize} />
+          <SectionSubtitle subtitle={subtitle} sizePx={subtitleSize} />
         </div>
 
         <SectionFooter />
