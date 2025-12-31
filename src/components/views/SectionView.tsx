@@ -70,8 +70,8 @@ const SectionHeader: React.FC<{ chapterNumber: string; center?: boolean }> = ({ 
 
 const SectionTitle: React.FC<{ title: string; sizePx: number; trackingEm: number; maxWidthPct: number }> = ({ title, sizePx, trackingEm, maxWidthPct }) => (
   <h1
-    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center mx-auto select-none"
-    style={{ fontSize: `${sizePx}px`, letterSpacing: `${trackingEm}em`, maxWidth: `${maxWidthPct}%` }}
+    className="font-playfair font-light text-navy mb-4 leading-tight uppercase text-center text-balance break-words mx-auto select-none"
+    style={{ fontSize: `${sizePx}px`, letterSpacing: `${trackingEm}em`, maxWidth: `${maxWidthPct}%`, hyphens: 'auto' as any }}
   >
     {title}
   </h1>
@@ -140,19 +140,19 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData, pageN
     roseMentionEnabled = true,
   } = data as SectionPageData;
 
-  // Detecta palavras muito longas e ajusta automaticamente o título
+  // Ajustes automáticos para palavras longas: centralização e equilíbrio visual
   const longestWordLen = Math.max(...title.split(/\s+/).map(w => w.length));
-  const isVeryLong = longestWordLen >= 14; // "ACOMPANHAMENTOS" tem 14 letras
+  const isVeryLong = longestWordLen >= 14;
   const isLong = longestWordLen >= 11;
 
   const baseTitleSize = 34;
   const titleSize = isVeryLong ? 30 : isLong ? 32 : baseTitleSize;
-  const trackingEm = isVeryLong ? 0.06 : isLong ? 0.08 : 0.12;
-  const titleMaxWidthPct = isVeryLong ? 78 : isLong ? 82 : 84;
+  const trackingEm = isVeryLong ? 0.05 : isLong ? 0.08 : 0.12;
+  const titleMaxWidthPct = isVeryLong ? 90 : isLong ? 88 : 84;
 
   const subtitleSize = isVeryLong ? 28 : 30;
 
-  // Menção à capa centralizada quando título for muito longo (evita peso visual à direita)
+  // Menção à capa centralizada quando título for longo para evitar peso à direita
   const centerMention = isLong;
 
   const frameStyle: React.CSSProperties = { left: '0px', top: '0px', padding: '44px' };
