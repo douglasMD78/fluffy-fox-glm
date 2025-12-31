@@ -9,8 +9,8 @@ interface Theme {
 
 export const getPageBackgroundColor = (pageType: TEMPLATES, theme: Theme): string => {
     if (pageType === TEMPLATES.COVER) return theme.bg;
-    if (pageType === TEMPLATES.LEGEND) return 'white';
+    if (pageType === TEMPLATES.SHOPPING) return theme.surface || '#F9F9F9'; 
+    if (pageType === TEMPLATES.LEGEND) return theme.bg; 
     if (pageType === TEMPLATES.TOC) return 'white';
-    if (pageType === TEMPLATES.SHOPPING) return 'white';
     return 'white';
 };

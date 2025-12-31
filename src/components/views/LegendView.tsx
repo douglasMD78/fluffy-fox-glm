@@ -36,7 +36,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col font-sans bg-white/60 print:bg-white">
+        <div className="flex-1 flex flex-col font-sans bg-white/60">
             {/* Header */}
             <div className="text-center py-8 px-6 border-b border-accent/20">
                 <span className="inline-block text-[10px] font-light text-accent/60 uppercase tracking-[0.3em] mb-3">
@@ -81,7 +81,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                         className="bg-white border border-gray-100 rounded-xl p-4 text-center hover:shadow-md transition-shadow"
                                     >
                                         <div className={`${tag.color} ${tag.text} w-10 h-10 flex items-center justify-center rounded-lg mx-auto mb-3 shadow-sm`}>
-                                            {IconComponent ? <IconComponent size={18} strokeWidth={1.75} className="shrink-0" /> : tag.code}
+                                            {IconComponent ? <IconComponent size={18} /> : tag.code}
                                         </div>
                                         <div className="space-y-1">
                                             <span className="text-navy font-light text-[10px] uppercase tracking-wider block">
@@ -120,7 +120,7 @@ export const LegendView: React.FC<LegendViewProps> = ({ data }) => {
                                         className="bg-white border border-gray-100 rounded-xl p-4 text-center hover:shadow-md transition-shadow"
                                     >
                                         <div className={`${tag.color} ${tag.text} w-10 h-10 flex items-center justify-center rounded-lg mx-auto mb-3 shadow-sm`}>
-                                            {IconComponent ? <IconComponent size={18} strokeWidth={1.75} className="shrink-0" /> : tag.code}
+                                            {IconComponent ? <IconComponent size={18} /> : tag.code}
                                         </div>
                                         <div className="space-y-1">
                                             <span className="text-navy font-light text-[10px] uppercase tracking-wider block">
