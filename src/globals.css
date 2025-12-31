@@ -142,26 +142,34 @@
 
 /* Print styles for html2pdf.js and browser print */
 @media print {
-    @page { size: A5; margin: 0; }
-    body, html, #root, #app-container { width: 100%; height: auto !important; overflow: visible !important; background-color: white !important; display: block !important; }
-    aside, main, .no-print, .modal-overlay { display: none !important; }
-    #preview-container { display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; padding: 0 !important; margin: 0 !important; background: white !important; }
+    /* Ocultar textura para evitar manchas no PDF */
+    .a4-page-texture { display: none !important; }
 
-    /* Margem de segurança: alguns navegadores cortam mesmo com "margens: nenhuma".
-       Então reduzimos um pouco o "page box" para caber dentro da área imprimível. */
-    .mobile-page {
-        margin: 0 auto !important;
-        border: none !important;
-        box-shadow: none !important;
-        page-break-after: always !important;
-        width: 146mm !important;
-        height: 208mm !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        overflow: hidden !important;
+    /* Forçar brancos sólidos (sem transparência) nas áreas de conteúdo */
+    .bg-white\/60 { background-color: #ffffff !important; }
+
+    /* Melhorar qualidade dos SVGs (ícones) na impressão */
+    svg { 
+      shape-rendering: geometricPrecision !important; 
+      text-rendering: optimizeLegibility !important; 
+      image-rendering: optimizeQuality !important; 
     }
-
-    .mobile-page:last-child { page-break-after: auto !important; }
-    .shadow-soft, .shadow-glass, .shadow-card-float, .shadow-glow { box-shadow: none !important; border: 1px solid #eee !important; }
-    a { text-decoration: none !important; color: inherit !important; }
 }
+
+/* Margem de segurança: alguns navegadores cortam mesmo com "margens: nenhuma".
+   Então reduzimos um pouco o "page box" para caber dentro da área imprimível. */
+.mobile-page {
+    margin: 0 auto !important;
+    border: none !important;
+    box-shadow: none !important;
+    page-break-after: always !important;
+    width: 146mm !important;
+    height: 208mm !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: hidden !important;
+}
+
+.mobile-page:last-child { page-break-after: auto !important; }
+.shadow-soft, .shadow-glass, .shadow-card-float, .shadow-glow { box-shadow: none !important; border: 1px solid #eee !important; }
+a { text-decoration: none !important; color: inherit !important; }

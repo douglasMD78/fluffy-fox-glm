@@ -105,7 +105,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 <div className={`flex-1 grid ${columnRatioClass} gap-3 min-h-0`}>
-                    <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -159,7 +159,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
                 <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
-                    <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -212,7 +212,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 <div className={`flex-1 grid ${columnRatioClass} gap-3 min-h-0`}>
-                    <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -260,7 +260,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
                 <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
-                    <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -316,7 +316,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 {/* 3. Colunas de Texto */}
                  <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
-                    <div className="bg-white/60 rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-2 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-1.5 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -371,7 +371,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 </div>
 
                 <div className={`flex-1 grid ${columnRatioClass} gap-2 min-h-0`}>
-                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -428,7 +428,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
 
                 {/* Colunas de Ingredientes e Preparo */}
                 <div className={`flex-1 grid ${columnRatioClass} gap-2 min-h-0`}>
-                    <div className="bg-white/60 rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-xl p-2 border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-lg text-accent mb-1 border-b border-accent/20 pb-0.5 shrink-0">Ingredientes</h3>
                         <ul className="space-y-0.5 pr-0.5">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 pb-0.5 flex gap-1 break-inside-avoid" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[7px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
@@ -487,7 +487,7 @@ export const RecipeView: React.FC<RecipeViewProps> = ({ data, updatePage }) => {
                 {/* Conteúdo em Duas Colunas (Ingredientes e Preparo) */}
                 <div className={`flex-1 grid ${columnRatioClass} gap-4 min-h-0`}>
                     {/* Ingredientes */}
-                    <div className="bg-white/60 rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
+                    <div className="bg-white/60 print:bg-white rounded-2xl p-3 overflow-hidden border border-rose-100 flex flex-col shadow-sm">
                         <h3 className="font-hand text-xl text-accent mb-2 border-b border-accent/20 pb-1 shrink-0">Ingredientes</h3>
                         <ul className="space-y-1 overflow-y-auto custom-scrollbar pr-1">
                             {data.ingredientGroups.map((g, i) => (<React.Fragment key={i}>{(String(g.items || '')).split('\n').filter(l => l.trim()).map((item, j) => (<li key={j} className="font-medium text-navy/80 border-b border-rose-50 pb-0.5 flex gap-1" style={{ fontSize: `${fs.ing}px` }}><span className="text-accent text-[8px] mt-0.5">●</span>{renderMarkdownText(item)}</li>))}</React.Fragment>))}
