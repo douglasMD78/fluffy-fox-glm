@@ -11,42 +11,44 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
             {/* Background decorativo sutil mantido */}
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
             
-            {/* Container principal com design mais sofisticado */}
-            <div className="relative z-10 border-4 border-double border-cream p-10 m-4 rounded-[2rem] w-4/5 shadow-lg">
+            {/* Container principal com conteúdo centralizado dentro do quadro */}
+            <div className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[85%] max-w-[540px] h-[78%] m-4 p-8 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center">
                 {/* Header elegante */}
-                <div className="mb-8">
-                    <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-4">
+                <div className="mb-4 row-start-1">
+                    <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
                         Capítulo de Receitas
                     </span>
-                    <div className="flex items-center justify-center gap-3 mb-6">
+                    <div className="flex items-center justify-center gap-3">
                         <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
                         <div className="w-2 h-2 bg-accent rounded-full shadow-sm"></div>
                         <div className="h-px w-12 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
                     </div>
                 </div>
                 
-                {/* Título principal com mais destaque */}
-                <h1 className="font-playfair text-4xl font-light text-navy tracking-[0.15em] uppercase mb-6 leading-tight">
-                    {data.title}
-                </h1>
-                
-                {/* Subtítulo com posicionamento refinado */}
-                <div className="relative">
-                    <p className="font-hand text-4xl text-accent/90 transform -rotate-1 mb-8">
-                        {data.subtitle}
-                    </p>
-                    {/* Elemento decorativo sutil abaixo do subtítulo */}
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                        <div className="flex items-center gap-1">
-                            <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
-                            <span className="w-1 h-1 bg-accent/40 rounded-full"></span>
-                            <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
+                {/* Bloco central: título e subtítulo centralizados dentro do quadro */}
+                <div className="row-start-2 flex flex-col items-center justify-center w-full text-center px-2">
+                    <h1 className="font-playfair text-4xl font-light text-navy tracking-[0.15em] uppercase mb-4 leading-tight break-words">
+                        {data.title}
+                    </h1>
+                    
+                    {/* Subtítulo com posicionamento refinado, ainda dentro do quadro */}
+                    <div className="relative">
+                        <p className="font-hand text-4xl text-accent/90 transform -rotate-1 mb-6">
+                            {data.subtitle}
+                        </p>
+                        {/* Elemento decorativo sutil abaixo do subtítulo */}
+                        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                            <div className="flex items-center gap-1">
+                                <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
+                                <span className="w-1 h-1 bg-accent/40 rounded-full"></span>
+                                <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Footer elegante */}
-                <div className="mt-10 pt-6 border-t border-accent/10">
+                {/* Footer elegante dentro do quadro */}
+                <div className="row-start-3 mt-6 pt-4 border-t border-accent/10 w-full">
                     <div className="flex items-center justify-center gap-2">
                         <span className="text-[8px] text-navy/30 uppercase tracking-[0.2em] font-light">
                             Receitas selecionadas
@@ -59,7 +61,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
                 </div>
             </div>
 
-            {/* Elementos decorativos mais elaborados */}
+            {/* Elementos decorativos mais elaborados fora do quadro */}
             <div className="absolute top-8 right-8 opacity-8">
                 <div className="w-12 h-12 border-2 border-accent/20 rounded-full flex items-center justify-center">
                     <div className="w-4 h-4 bg-accent/10 rounded-full"></div>
