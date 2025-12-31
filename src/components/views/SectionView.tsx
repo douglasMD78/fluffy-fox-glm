@@ -8,7 +8,13 @@ interface SectionViewProps {
   coverData?: CoverPageData;
 }
 
-// Componentes reutilizáveis para melhor manutenção
+// Função para gerar número romano automaticamente
+const getRomanNumber = (index: number): string => {
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  return romanNumerals[index] || 'I';
+};
+
+// Componente do emblema rosé
 const SectionBadge: React.FC<{ roseEnabled: boolean; roseBadge: string; roseGlowIntensity: number }> = ({ 
   roseEnabled, 
   roseBadge, 
@@ -34,6 +40,7 @@ const SectionBadge: React.FC<{ roseEnabled: boolean; roseBadge: string; roseGlow
   );
 };
 
+// Componente da menção à capa
 const CoverReference: React.FC<{ coverData?: CoverPageData; roseMentionEnabled: boolean }> = ({ 
   coverData, 
   roseMentionEnabled 
@@ -49,10 +56,11 @@ const CoverReference: React.FC<{ coverData?: CoverPageData; roseMentionEnabled: 
   );
 };
 
-const SectionHeader: React.FC = () => (
+// Componente do cabeçalho com número do capítulo
+const SectionHeader: React.FC<{ chapterNumber: string }> = ({ chapterNumber }) => (
   <div className="mb-4 row-start-1">
     <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
-      Capítulo de Receitas
+      Capítulo {chapterNumber}
     </span>
     <div className="flex items-center justify-center gap-3">
       <div className="h-px w-12 bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
@@ -62,101 +70,30 @@ const SectionHeader: React.FC = () => (
   </div>
 );
 
-const SectionTitle: React.FC<{
-  title: string;
-  titleAlign: string;
-  titleOffsetX: number;
-  titleOffsetY: number;
-  titleFontSize: number;
-  titleTracking: number;
-  titleUppercase: boolean;
-  titleMaxWidthPct: number;
-}> = ({ 
-  title, 
-  titleAlign, 
-  titleOffsetX, 
-  titleOffsetY, 
-  titleFontSize, 
-  titleTracking, 
-  titleUppercase, 
-  titleMaxWidthPct 
-}) => {
-  const textAlignStyle = (align: string): React.CSSProperties => {
-    if (align === 'left') return { textAlign: 'left' };
-    if (align === 'right') return { textAlign: 'right' };
-    return { textAlign: 'center' };
-  };
+// Componente do título principal
+const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
+  <h1 className="font-playfair font-light text-navy mb-4 leading-tight text-[34px] tracking-[0.12em] uppercase text-center max-w-[84%] mx-auto select-none">
+    {title}
+  </h1>
+);
 
-  return (
-    <h1
-      className="font-playfair font-light text-navy mb-4 leading-tight break-normal whitespace-pre mx-auto select-none"
-      style={{
-        ...textAlignStyle(titleAlign),
-        fontSize: `${titleFontSize}px`,
-        letterSpacing: `${titleTracking}em`,
-        textTransform: titleUppercase ? 'uppercase' : 'none',
-        maxWidth: `${titleMaxWidthPct}%`,
-        transform: `translate(${titleOffsetX}px, ${titleOffsetY}px)`,
-      }}
-    >
-      {title}
-    </h1>
-  );
-};
-
-const SectionSubtitle: React.FC<{
-  subtitle: string;
-  subtitleAlign: string;
-  subtitleOffsetX: number;
-  subtitleOffsetY: number;
-  subtitleFontSize: number;
-  subtitleRotate: number;
-  subtitleItalic: boolean;
-}> = ({ 
-  subtitle, 
-  subtitleAlign, 
-  subtitleOffsetX, 
-  subtitleOffsetY, 
-  subtitleFontSize, 
-  subtitleRotate, 
-  subtitleItalic 
-}) => {
-  const textAlignStyle = (align: string): React.CSSProperties => {
-    if (align === 'left') return { textAlign: 'left' };
-    if (align === 'right') return { textAlign: 'right' };
-    return { textAlign: 'center' };
-  };
-
-  return (
-    <div
-      className="relative select-none"
-      style={{
-        transform: `translate(${subtitleOffsetX}px, ${subtitleOffsetY}px)`,
-        ...textAlignStyle(subtitleAlign),
-      }}
-    >
-      <p
-        className={`font-hand ${subtitleItalic ? 'italic' : ''} mb-6 mx-auto leading-tight`}
-        style={{
-          fontSize: `${subtitleFontSize}px`,
-          color: 'var(--color-accent, #a67c52)',
-          transform: `rotate(${subtitleRotate}deg)`,
-          maxWidth: '80%',
-        }}
-      >
-        {subtitle}
-      </p>
-      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
-        <div className="flex items-center gap-1">
-          <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
-          <span className="w-1 h-1 bg-accent/40 rounded-full"></span>
-          <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
-        </div>
+// Componente do subtítulo
+const SectionSubtitle: React.FC<{ subtitle: string }> = ({ subtitle }) => (
+  <div className="relative select-none text-center">
+    <p className="font-hand italic mb-6 leading-tight text-[30px] text-accent mx-auto max-w-[80%] rotate-[-2deg]">
+      {subtitle}
+    </p>
+    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
+      <div className="flex items-center gap-1">
+        <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
+        <span className="w-1 h-1 bg-accent/40 rounded-full"></span>
+        <span className="w-1 h-1 bg-accent/20 rounded-full"></span>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
+// Componente do rodapé
 const SectionFooter: React.FC = () => (
   <div className="row-start-3 mt-6 pt-4 border-t border-accent/10 w-full">
     <div className="flex items-center justify-center gap-2">
@@ -171,6 +108,7 @@ const SectionFooter: React.FC = () => (
   </div>
 );
 
+// Componente das decorações de fundo
 const BackgroundDecorations: React.FC = () => (
   <>
     <div className="absolute top-8 right-8 opacity-8">
@@ -196,33 +134,24 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
   const {
     title = "NOME DA SEÇÃO",
     subtitle = "Subtítulo Manuscrito",
-    titleAlign = 'center',
-    subtitleAlign = 'center',
-    titleOffsetX = 0,
-    titleOffsetY = 0,
-    subtitleOffsetX = 0,
-    subtitleOffsetY = 6,
-    titleFontSize = 34,
-    subtitleFontSize = 30,
-    subtitleRotate = -2,
-    titleTracking = 0.12,
-    titleUppercase = true,
-    titleMaxWidthPct = 84,
-    frameOffsetX = -6,
-    frameOffsetY = 0,
-    contentPadding = 44,
-    subtitleItalic = true,
     roseEnabled = true,
     roseGlowIntensity = 30,
     roseBadge = 'heart',
     roseMentionEnabled = true,
   } = data as SectionPageData;
 
-  const frameStyle = {
-    left: `${frameOffsetX}px`, 
-    top: `${frameOffsetY}px`, 
-    padding: `${contentPadding}px`
-  };
+  // Gerar número do capítulo automaticamente baseado no título
+  const chapterNumber = React.useMemo(() => {
+    const categories = [
+      "ACOMPANHAMENTOS, SALADAS & SOPAS",
+      "BOLOS, DOCES & SOBREMESAS", 
+      "CAFÉ DA MANHÃ & LANCHES RÁPIDOS",
+      "SALGADOS E REFEIÇÕES",
+      "SHAKES E IOGURTES"
+    ];
+    const index = categories.indexOf(title);
+    return getRomanNumber(index + 1);
+  }, [title]);
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
@@ -230,7 +159,11 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
 
       <div
         className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
-        style={frameStyle}
+        style={{ 
+          left: '-6px', 
+          top: '0px', 
+          padding: '44px'
+        }}
       >
         <SectionBadge 
           roseEnabled={roseEnabled} 
@@ -243,29 +176,11 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
           roseMentionEnabled={roseMentionEnabled} 
         />
 
-        <SectionHeader />
+        <SectionHeader chapterNumber={chapterNumber} />
 
         <div className="row-start-2 relative w-full">
-          <SectionTitle
-            title={title}
-            titleAlign={titleAlign}
-            titleOffsetX={titleOffsetX}
-            titleOffsetY={titleOffsetY}
-            titleFontSize={titleFontSize}
-            titleTracking={titleTracking}
-            titleUppercase={titleUppercase}
-            titleMaxWidthPct={titleMaxWidthPct}
-          />
-
-          <SectionSubtitle
-            subtitle={subtitle}
-            subtitleAlign={subtitleAlign}
-            subtitleOffsetX={subtitleOffsetX}
-            subtitleOffsetY={subtitleOffsetY}
-            subtitleFontSize={subtitleFontSize}
-            subtitleRotate={subtitleRotate}
-            subtitleItalic={subtitleItalic}
-          />
+          <SectionTitle title={title} />
+          <SectionSubtitle subtitle={subtitle} />
         </div>
 
         <SectionFooter />
