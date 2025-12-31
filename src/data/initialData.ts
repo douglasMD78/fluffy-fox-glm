@@ -132,6 +132,12 @@ export const INITIAL_DATA = {
     frameOffsetY: 0,
     contentPadding: 44,
     subtitleItalic: true,
+
+    // TEMA ROSÉ E MENÇÃO
+    roseEnabled: true,
+    roseGlowIntensity: 30, // 0-100
+    roseBadge: "heart", // 'heart' | 'sparkles' | 'none'
+    roseMentionEnabled: true,
   },
   [TEMPLATES.SHOPPING]: {
     title: "Listinha de Compras",

@@ -22,35 +22,41 @@ interface SectionEditorProps {
 export const SectionEditor: React.FC<SectionEditorProps> = ({ activePage, updatePage }) => {
   const set = (key: keyof SectionPageData) => (value: any) => updatePage({ [key]: value });
 
-  const applyRosePreset = () => {
-    updatePage({
-      titleAlign: 'center',
-      subtitleAlign: 'center',
-      titleOffsetX: 0,
-      titleOffsetY: 0,
-      subtitleOffsetX: 0,
-      subtitleOffsetY: 6,
-      titleFontSize: 34,
-      subtitleFontSize: 30,
-      subtitleRotate: -2,
-      titleTracking: 0.12,
-      titleUppercase: true,
-      titleMaxWidthPct: 84,
-      frameOffsetX: -6,
-      frameOffsetY: 0,
-      contentPadding: 44,
-      subtitleItalic: true,
-    });
-    toast.success('Preset rosé delicado aplicado!');
-  };
-
   return (
     <div className="space-y-6">
-      {/* Preset rápido */}
+      {/* Preset rápido rosé */}
       <div className="flex items-center justify-between gap-3">
-        <Label className="text-xs">Ajuste rápido</Label>
-        <Button variant="secondary" size="sm" onClick={applyRosePreset} className="rounded-lg">
-          Aplicar padrão rosé delicado
+        <Label className="text-xs">Ajuste rápido rosé</Label>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            updatePage({
+              titleAlign: 'center',
+              subtitleAlign: 'center',
+              titleOffsetX: 0,
+              titleOffsetY: 0,
+              subtitleOffsetX: 0,
+              subtitleOffsetY: 6,
+              titleFontSize: 34,
+              subtitleFontSize: 30,
+              subtitleRotate: -2,
+              titleTracking: 0.12,
+              titleUppercase: true,
+              titleMaxWidthPct: 84,
+              frameOffsetX: -6,
+              frameOffsetY: 0,
+              contentPadding: 44,
+              subtitleItalic: true,
+              roseEnabled: true,
+              roseGlowIntensity: 30,
+              roseBadge: 'heart',
+              roseMentionEnabled: true,
+            })
+          }
+          className="rounded-lg"
+        >
+          Aplicar padrão rosé
         </Button>
       </div>
 
@@ -188,6 +194,46 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({ activePage, update
           <Label className="text-xs">Padding interno do quadro</Label>
           <Slider value={[Number(activePage.contentPadding || 40)]} min={16} max={80} step={1} onValueChange={(v) => set('contentPadding')(v[0])} />
           <div className="text-xs text-muted-foreground">{activePage.contentPadding || 40}px</div>
+        </div>
+      </div>
+
+      {/* Tema rosé e menção */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex items-center gap-3">
+          <Switch checked={Boolean(activePage.roseEnabled)} onCheckedChange={(val) => set('roseEnabled')(val)} />
+          <Label className="text-xs">Detalhes rosé ativados</Label>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-xs">Tipo de emblema</Label>
+          <Select
+            value={String(activePage.roseBadge || 'heart')}
+            onValueChange={(v) => set('roseBadge')(v as any)}
+          >
+            <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="heart">Coração</SelectItem>
+              <SelectItem value="sparkles">Brilhinhos</SelectItem>
+              <SelectItem value="none">Sem emblema</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-xs">Intensidade do glow rosé</Label>
+          <Slider
+            value={[Number(activePage.roseGlowIntensity || 30)]}
+            min={0}
+            max={100}
+            step={1}
+            onValueChange={(v) => set('roseGlowIntensity')(v[0])}
+          />
+          <div className="text-xs text-muted-foreground">{activePage.roseGlowIntensity ?? 30}</div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Switch checked={Boolean(activePage.roseMentionEnabled)} onCheckedChange={(val) => set('roseMentionEnabled')(val)} />
+          <Label className="text-xs">Mostrar menção à capa</Label>
         </div>
       </div>
     </div>

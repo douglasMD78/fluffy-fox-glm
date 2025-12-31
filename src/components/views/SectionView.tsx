@@ -1,6 +1,6 @@
 import React from 'react';
 import { SectionPageData, CoverPageData } from '@/data/initialData';
-import { Heart } from 'lucide-react';
+import { Heart, Sparkles } from 'lucide-react';
 
 interface SectionViewProps {
   data: SectionPageData;
@@ -27,7 +27,17 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
     frameOffsetY = 0,
     contentPadding = 40,
     subtitleItalic = false,
-  } = data;
+    // rosé props
+    roseEnabled = true,
+    roseGlowIntensity = 30,
+    roseBadge = 'heart',
+    roseMentionEnabled = true,
+  } = data as SectionPageData & {
+    roseEnabled?: boolean;
+    roseGlowIntensity?: number;
+    roseBadge?: 'heart' | 'sparkles' | 'none';
+    roseMentionEnabled?: boolean;
+  };
 
   const textAlignStyle = (align: string): React.CSSProperties => {
     if (align === 'left') return { textAlign: 'left' };
@@ -35,11 +45,24 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
     return { textAlign: 'center' };
   };
 
+  const glowOpacity = Math.max(0, Math.min(roseGlowIntensity, 100)) / 250; // ~0.12 at 30
+  const BadgeIcon = roseBadge === 'sparkles' ? Sparkles : Heart;
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
-      {/* Glow rosado sutil no fundo para toque feminino */}
-      <div className="absolute -top-10 -left-10 w-[42%] h-[42%] bg-pink-200/25 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute -bottom-10 -right-10 w-[36%] h-[36%] bg-pink-200/25 rounded-full blur-3xl pointer-events-none"></div>
+      {/* Glow rosado sutil dentro da área segura */}
+      {roseEnabled && (
+        <>
+          <div
+            className="absolute top-8 left-8 w-[40%] h-[40%] rounded-full blur-3xl pointer-events-none"
+            style={{ backgroundColor: `rgba(236, 183, 201, ${glowOpacity})` }}
+          ></div>
+          <div
+            className="absolute bottom-10 right-8 w-[36%] h-[36%] rounded-full blur-3xl pointer-events-none"
+            style={{ backgroundColor: `rgba(236, 183, 201, ${glowOpacity})` }}
+          ></div>
+        </>
+      )}
 
       {/* Background decorativo sutil mantido */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
@@ -49,18 +72,18 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
         className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-visible grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
         style={{ left: `${frameOffsetX}px`, top: `${frameOffsetY}px`, padding: `${contentPadding}px` }}
       >
-        {/* Menção ao conteúdo da capa (título, subtítulo, edição e autor) */}
-        {coverData && (
-          <div className="absolute top-3 right-4 flex items-center gap-2 text-rose-700/70">
-            <Heart size={12} className="text-pink-500" />
-            <span className="text-[9px] tracking-[0.25em] uppercase whitespace-nowrap">
+        {/* Menção ao conteúdo da capa: truncada em uma linha para não poluir */}
+        {roseMentionEnabled && coverData && (
+          <div className="absolute top-3 right-4 flex items-center gap-2 text-rose-700/70 max-w-[70%]">
+            <BadgeIcon size={12} className="text-pink-500" />
+            <span className="text-[9px] tracking-[0.25em] uppercase truncate">
               {coverData.title}{coverData.subtitle ? ` ${coverData.subtitle}` : ''} • {coverData.edition} • {coverData.author}
             </span>
           </div>
         )}
 
         {/* Borda interna suave em rosa para delicadeza */}
-        <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>
+        {roseEnabled && <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>}
 
         {/* Header elegante */}
         <div className="mb-4 row-start-1">
@@ -137,7 +160,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
         </div>
       </div>
 
-      {/* Elementos decorativos fora do quadro */}
+      {/* Elementos decorativos fora do quadro (neutros e não intrusivos) */}
       <div className="absolute top-8 right-8 opacity-8">
         <div className="w-12 h-12 border-2 border-accent/20 rounded-full flex items-center justify-center">
           <div className="w-4 h-4 bg-accent/10 rounded-full"></div>
