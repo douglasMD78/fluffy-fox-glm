@@ -98,6 +98,11 @@ const Editor = () => {
     // Calcular o mapa de números de página uma vez para todas as páginas
     const pageNumberMap = React.useMemo(() => getPrintablePageNumberMap(pages), [pages]);
 
+    // Encontrar a página de capa para passar para SectionView
+    const coverData = React.useMemo(() => {
+        return pages.find(p => p.type === TEMPLATES.COVER) as CoverPageData | undefined;
+    }, [pages]);
+
     return (
         <>
             <div id="app-container" className="flex h-screen bg-cream text-navy overflow-hidden font-sans select-none relative">
