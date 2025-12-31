@@ -170,7 +170,6 @@ const Editor = () => {
                                     style={{ backgroundColor: getPageBackgroundColor(p.type, theme) }}
                                 >
                                     <div className="a4-page-texture"></div>
-                                    {/* Wrapper "Safe Print Area" */}
                                     <div className="z-10 relative h-full flex flex-col">
                                         {p.type === TEMPLATES.COVER && <CoverView data={p as CoverPageData} />}
                                         {p.type === TEMPLATES.TOC && <TocView data={p as TocPageData} allPages={pages} />}

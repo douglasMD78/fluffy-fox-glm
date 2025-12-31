@@ -4,6 +4,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import {
   Select,
   SelectTrigger,
@@ -20,8 +22,38 @@ interface SectionEditorProps {
 export const SectionEditor: React.FC<SectionEditorProps> = ({ activePage, updatePage }) => {
   const set = (key: keyof SectionPageData) => (value: any) => updatePage({ [key]: value });
 
+  const applyRosePreset = () => {
+    updatePage({
+      titleAlign: 'center',
+      subtitleAlign: 'center',
+      titleOffsetX: 0,
+      titleOffsetY: 0,
+      subtitleOffsetX: 0,
+      subtitleOffsetY: 6,
+      titleFontSize: 34,
+      subtitleFontSize: 30,
+      subtitleRotate: -2,
+      titleTracking: 0.12,
+      titleUppercase: true,
+      titleMaxWidthPct: 84,
+      frameOffsetX: -6,
+      frameOffsetY: 0,
+      contentPadding: 44,
+      subtitleItalic: true,
+    });
+    toast.success('Preset rosé delicado aplicado!');
+  };
+
   return (
     <div className="space-y-6">
+      {/* Preset rápido */}
+      <div className="flex items-center justify-between gap-3">
+        <Label className="text-xs">Ajuste rápido</Label>
+        <Button variant="secondary" size="sm" onClick={applyRosePreset} className="rounded-lg">
+          Aplicar padrão rosé delicado
+        </Button>
+      </div>
+
       {/* Texto com quebras manuais */}
       <div className="space-y-3">
         <Label className="text-xs">Título (use Enter para quebrar linhas)</Label>

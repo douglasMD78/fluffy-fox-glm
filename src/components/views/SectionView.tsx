@@ -1,6 +1,5 @@
 import React from 'react';
-import { SectionPageData } from '@/data/initialData';
-import { CoverPageData } from '@/data/initialData';
+import { SectionPageData, CoverPageData } from '@/data/initialData';
 import { Heart } from 'lucide-react';
 
 interface SectionViewProps {
@@ -39,8 +38,8 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
       {/* Glow rosado sutil no fundo para toque feminino */}
-      <div className="absolute -top-10 -left-10 w-[40%] h-[40%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute -bottom-10 -right-10 w-[35%] h-[35%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -top-10 -left-10 w-[42%] h-[42%] bg-pink-200/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -bottom-10 -right-10 w-[36%] h-[36%] bg-pink-200/25 rounded-full blur-3xl pointer-events-none"></div>
 
       {/* Background decorativo sutil mantido */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
@@ -60,11 +59,6 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
           </div>
         )}
 
-        {/* Emblema rosado delicado no canto */}
-        <div className="absolute -top-2 -left-2 w-8 h-8 bg-pink-100/70 border border-pink-300/60 rounded-full shadow-sm flex items-center justify-center">
-          <Heart className="text-pink-500" size={14} />
-        </div>
-
         {/* Borda interna suave em rosa para delicadeza */}
         <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>
 
@@ -82,7 +76,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
 
         {/* Bloco central com controles manuais */}
         <div className="row-start-2 relative w-full">
-          {/* Título com controles */}
+          {/* Título com controles e quebra manual */}
           <h1
             className="font-playfair font-light text-navy mb-4 leading-tight break-normal whitespace-pre select-none"
             style={{
@@ -99,7 +93,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data, coverData }) => 
             {title}
           </h1>
 
-          {/* Subtítulo com posicionamento manual */}
+          {/* Subtítulo com posicionamento manual e quebra manual */}
           <div
             className="relative select-none"
             style={{
