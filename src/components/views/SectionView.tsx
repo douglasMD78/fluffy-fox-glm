@@ -9,7 +9,6 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
   const {
     title,
     subtitle,
-    // defaults seguros
     titleAlign = 'center',
     subtitleAlign = 'center',
     titleOffsetX = 0,
@@ -58,11 +57,21 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
 
         {/* Bloco central com controles manuais */}
         <div className="row-start-2 relative w-full">
-          {/* Título */}
+          {/* Título com controles */}
           <h1
-            className="font-playfair text-[34px] font-light text-navy tracking-[0.12em] uppercase mb-4 leading-tight break-normal whitespace-pre mx-auto"
+            className="font-playfair font-light text-navy mb-4 leading-tight break-normal whitespace-pre select-none"
+            style={{
+              ...textAlignStyle(titleAlign),
+              fontSize: `${titleFontSize}px`,
+              letterSpacing: `${titleTracking}em`,
+              textTransform: titleUppercase ? 'uppercase' : 'none',
+              maxWidth: `${titleMaxWidthPct}%`,
+              transform: `translate(${titleOffsetX}px, ${titleOffsetY}px)`,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
           >
-            {data.title}
+            {title}
           </h1>
 
           {/* Subtítulo com posicionamento manual */}
@@ -74,7 +83,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
             }}
           >
             <p
-              className={`font-hand ${subtitleItalic ? 'italic' : ''} mb-6 mx-auto leading-tight`}
+              className={`font-hand ${subtitleItalic ? 'italic' : ''} mb-6 mx-auto leading-tight break-normal whitespace-pre`}
               style={{
                 fontSize: `${subtitleFontSize}px`,
                 color: 'var(--color-accent, #a67c52)',
@@ -82,7 +91,7 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
                 maxWidth: '80%',
               }}
             >
-              {data.subtitle}
+              {subtitle}
             </p>
             {/* Elemento decorativo sutil abaixo do subtítulo */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
