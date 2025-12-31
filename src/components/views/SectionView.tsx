@@ -1,5 +1,6 @@
 import React from 'react';
 import { SectionPageData } from '@/data/initialData';
+import { Heart } from 'lucide-react';
 
 interface SectionViewProps {
   data: SectionPageData;
@@ -35,6 +36,10 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center bg-white/60 h-full relative font-sans">
+      {/* Glow rosado sutil no fundo */}
+      <div className="absolute -top-10 -left-10 w-[40%] h-[40%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -bottom-10 -right-10 w-[35%] h-[35%] bg-pink-200/20 rounded-full blur-3xl pointer-events-none"></div>
+
       {/* Background decorativo sutil mantido */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
 
@@ -43,6 +48,14 @@ export const SectionView: React.FC<SectionViewProps> = ({ data }) => {
         className="relative z-10 border-4 border-double border-cream rounded-[2rem] w-[80%] max-w-[520px] h-[78%] m-4 shadow-lg overflow-hidden grid grid-rows-[auto_1fr_auto] justify-items-center box-border"
         style={{ left: `${frameOffsetX}px`, top: `${frameOffsetY}px`, padding: `${contentPadding}px` }}
       >
+        {/* Emblema rosado delicado no canto */}
+        <div className="absolute -top-2 -left-2 w-8 h-8 bg-pink-100/70 border border-pink-300/60 rounded-full shadow-sm flex items-center justify-center">
+          <Heart className="text-pink-500" size={14} />
+        </div>
+
+        {/* Borda interna suave em rosa */}
+        <div className="absolute inset-3 rounded-[1.75rem] border border-pink-200/40 pointer-events-none"></div>
+
         {/* Header elegante */}
         <div className="mb-4 row-start-1">
           <span className="inline-block text-[10px] font-light text-accent/40 uppercase tracking-[0.3em] mb-3">
